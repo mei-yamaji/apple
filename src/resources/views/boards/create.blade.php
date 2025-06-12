@@ -1,7 +1,13 @@
 <x-app-layout>
-  <div class="bg-white w-full h-screen">
     <div class="w-1/2 mx-auto pt-6 px-8 pb-8">
-      <h1 class="text-4xl">掲示板作成</h1>
+      <h1 class="text-4xl">記事作成</h1>
+      @if ($errors->any())
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              @foreach ($errors->all() as $error)
+                  <li>{{ $error }}</li>
+              @endforeach
+          </div>
+      @endif
       <form class="rounded mb-4" method="POST" action="{{ route('boards.store') }}">
         @csrf
         <div class="mb-4">

@@ -37,10 +37,10 @@
           </x-slot>
           <x-slot name="content">
             <x-dropdown-link :href="route('boards.index')">
-              {{ __('掲示板一覧') }}
+              {{ __('記事一覧') }}
             </x-dropdown-link>
             <x-dropdown-link :href="route('boards.create')">
-              {{ __('掲示板作成') }}
+              {{ __('記事作成') }}
             </x-dropdown-link>
           </x-slot>
         </x-dropdown>

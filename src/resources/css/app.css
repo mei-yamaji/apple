@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.top-wrapper {
+  background-image: url('https://th.bing.com/th/id/OIP.CoRAI_XkG9OLLNwdlokxRwHaHa?rs=1&pid=ImgDetMain');
+  height: calc(100vh - 134px);
+  background-position: center;
+}

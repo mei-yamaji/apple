@@ -33,6 +33,14 @@ class ProfileController extends Controller
     }
 
     $user->fill($request->validated());
+
+    // 画像がアップロードされていれば保存
+    if ($request->hasFile('profile_image')) {
+        $file = $request->file('profile_image');
+        $path = $file->store('profile_images', 'public'); // storage/app/public/profile_images に保存
+        $user->profile_image = $path; // DBにパスを保存
+    }
+
     $user->save();
 
     return Redirect::route('profile.edit')->with('status', 'profile-updated');

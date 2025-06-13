@@ -4,9 +4,12 @@
             {{ __('Profile Information') }}
         </h2>
 
+
+
         <p class="mt-1 text-sm text-gray-600">
             {{ __("Update your account's profile information and email address.") }}
         </p>
+
     </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
@@ -21,6 +24,12 @@
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
+        </div>
+
+        <div class="mt-4">
+            <x-input-label for="bio" :value="__('ひとこと')" />
+            <x-text-input id="bio" name="bio" type="text" class="mt-1 block w-full" :value="old('bio', $user->bio)" autocomplete="off" />
+            <x-input-error class="mt-2" :messages="$errors->get('bio')" />
         </div>
 
         <div>
@@ -46,6 +55,7 @@
                 </div>
             @endif
         </div>
+
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>

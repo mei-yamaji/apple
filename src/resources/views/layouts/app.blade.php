@@ -13,6 +13,7 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @stack('styles')   {{-- CSSの挿入ポイント --}}
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen" style="background-color:#FED16A;">
@@ -36,5 +37,6 @@
                 {{ $slot }}
             </main>
         </div>
+        @stack('scripts')  {{-- JSの挿入ポイント --}}
     </body>
 </html>

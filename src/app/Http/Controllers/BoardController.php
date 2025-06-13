@@ -9,7 +9,7 @@ class BoardController extends Controller
 {
     public function index()
     {
-        $boards = Board::all();
+        $boards = Board::with('user')->latest()->get();
         return view('boards.index', compact('boards'));
     }
 

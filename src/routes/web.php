@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BoardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -20,9 +21,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('boards', BoardController::class);
     Route::get('/articles/{type}', [ArticleController::class, 'getArticles']);
 
+    Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
+
     Route::get('/mypage', function () {
         return view('mypage');
     })->name('mypage');
+
+
 });
 
 

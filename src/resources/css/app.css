@@ -6,4 +6,7 @@
   background-image: url('https://cdn-icons-png.flaticon.com/512/3972/3972999.png');
   height: calc(100vh - 134px);
   background-position: center;
+body {
+  background-color: #FED16A;
+}
 }

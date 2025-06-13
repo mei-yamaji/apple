@@ -5,8 +5,8 @@
       </div>
     @endif
     <div class="top-wrapper relative">
-        <div class="top-inner-text absolute inset-0 flex items-center justify-center text-black">
-            <h1 class="text-4xl font-bold">APPLE</h1>
+        <div class="top-inner-text absolute inset-0 flex items-center justify-center">
+            <h1 class="text-6xl text-center font-bold" style="color:rgb(118, 58, 21);">APPLE</h1>
         </div>
     </div>
     <x-slot name="header">
@@ -15,11 +15,13 @@
         </h2>
     </x-slot>
 
+    <!--
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     {{ __("You're logged in!") }}
+                     -->
                 </div>
             </div>
         </div>

@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BoardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
@@ -22,6 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('boards', BoardController::class);
     Route::get('/boards/{type}', [BoardController::class, 'getBoards']);
     Route::get('/boards/{board}', [BoardController::class, 'show'])->name('boards.show');
+    Route::post('/likes', [LikeController::class, 'store'])->name('likes.store');
+    Route::delete('/likes/{board}', [LikeController::class, 'destroy'])->name('likes.destroy');
 
     Route::post('boards/{board}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::get('/boards/{board}/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');

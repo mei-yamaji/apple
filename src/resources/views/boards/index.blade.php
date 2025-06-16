@@ -29,6 +29,21 @@
            @endif
         </p>
 
+        <!-- いいねボタン（右寄せ） -->
+        <div class="flex justify-end mt-2">
+  <form action="{{ route('likes.store') }}" method="POST">
+    @csrf
+    <input type="hidden" name="board_id" value="{{ $board->id }}">
+    <button type="submit" class="focus:outline-none flex items-center">
+      <i class="ri-heart-fill text-2xl {{ $board->likes->contains('user_id', auth()->id()) ? 'text-red-500' : 'text-gray-400 hover:text-red-400' }}"></i>
+      <span class="ml-2 text-gray-700">{{ $board->like_count }} いいね</span>
+    </button>
+  </form>
+</div>
+
+
+        <!-- ユーザー情報 -->
+        <div class="flex items-center mt-3">
         <!-- 投稿日・更新日・いいね数・閲覧数 -->
         <div class="flex flex-wrap justify-between items-center text-gray-400 dark:text-gray-400 text-sm mb-6">
           <div class="flex space-x-4">
@@ -48,12 +63,14 @@
                  alt="Profile Image"
                  class="w-12 h-12 rounded-full object-cover mr-3">
           @else
+            <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center mr-2">
             <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center mr-3">
               <span class="text-gray-500 text-sm">No Image</span>
             </div>
           @endif
 
           <p class="text-sm text-gray-500 dark:text-gray-400">
+            by <a href="{{ route('user.show', ['id' => $board->user->id]) }}" class="text-blue-500 hover:underline">
              <a href="{{ route('user.show', ['id' => $board->user->id]) }}" class="text-green-500 hover:underline">
               {{ $board->user->name }}
             </a>

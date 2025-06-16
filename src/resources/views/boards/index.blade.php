@@ -11,7 +11,7 @@
         <!-- タイトル -->
         <h5 class="mt-3 mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline">
-          {{ $board->title }}
+            {{ $board->title }}
           </a>
         </h5>
 
@@ -20,14 +20,26 @@
           {{ $board->description }}
         </p>
 
-        <!-- プロフィールアイコン + ユーザー名 -->
+        <!-- いいねボタン（右寄せ） -->
+        <div class="flex justify-end mt-2">
+  <form action="{{ route('likes.store') }}" method="POST">
+    @csrf
+    <input type="hidden" name="board_id" value="{{ $board->id }}">
+    <button type="submit" class="focus:outline-none flex items-center">
+      <i class="ri-heart-fill text-2xl {{ $board->likes->contains('user_id', auth()->id()) ? 'text-red-500' : 'text-gray-400 hover:text-red-400' }}"></i>
+      <span class="ml-2 text-gray-700">{{ $board->like_count }} いいね</span>
+    </button>
+  </form>
+</div>
+
+
+        <!-- ユーザー情報 -->
         <div class="flex items-center mt-3">
           @if ($board->user->profile_image)
             <img src="{{ asset('storage/' . $board->user->profile_image) }}"
                  alt="Profile Image"
                  class="w-10 h-10 rounded-full object-cover mr-2">
           @else
-            <!-- 画像がない場合のデフォルトアイコン -->
             <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center mr-2">
               <span class="text-gray-500 text-sm">No Image</span>
             </div>
@@ -35,8 +47,8 @@
 
           <p class="text-sm text-gray-500 dark:text-gray-400">
             by <a href="{{ route('user.show', ['id' => $board->user->id]) }}" class="text-blue-500 hover:underline">
-            {{ $board->user->name }}
-             </a>
+              {{ $board->user->name }}
+            </a>
           </p>
         </div>
       </div>

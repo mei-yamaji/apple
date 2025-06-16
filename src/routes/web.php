@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BoardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\LikeController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -20,6 +21,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('boards', BoardController::class);
     Route::get('/boards/{type}', [BoardController::class, 'getBoards']);
     Route::get('/boards/{board}', [BoardController::class, 'show'])->name('boards.show');
+    Route::post('/likes', [LikeController::class, 'store'])->name('likes.store');
+    Route::delete('/likes/{board}', [LikeController::class, 'destroy'])->name('likes.destroy');
 
     Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
 

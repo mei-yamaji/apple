@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BoardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CommentController;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -20,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('boards', BoardController::class);
     Route::get('/boards/{type}', [BoardController::class, 'getBoards']);
     Route::get('/boards/{board}', [BoardController::class, 'show'])->name('boards.show');
+    Route::post('boards/{board}/comments', [CommentController::class, 'store'])->name('comments.store');
 
     Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
 

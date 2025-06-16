@@ -48,8 +48,7 @@
           @endif
 
           <p class="text-sm text-gray-500 dark:text-gray-400">
-            <a href="{{ route('user.show', ['id' => $board->user->id]) }}" class="text-green-500 hover:underline">
-              {{ $board->user->name }}
+            <a href="{{ route('user.show', ['user' => $board->user->id]) }}" class="text-green-500 hover:underline">              {{ $board->user->name }}
             </a>
           </p>
         </div>

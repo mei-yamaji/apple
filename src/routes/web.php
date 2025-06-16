@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
+use App\Models\Board;
 
 Route::get('/', function () {
     return view('dashboard');
@@ -31,11 +32,14 @@ Route::middleware('auth')->group(function () {
     Route::put('/boards/{board}/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/boards/{board}/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
 
-    Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
+    Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
+    Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');
+
 
     Route::get('/mypage', function () {
-        return view('mypage');
-    })->name('mypage');
+    $boards = Board::where('user_id', auth()->id())->latest()->get();
+    return view('mypage', compact('boards'));
+})->name('mypage');
 
 
 });

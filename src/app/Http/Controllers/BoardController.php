@@ -33,4 +33,10 @@ class BoardController extends Controller
 
         return redirect()->route('boards.index');
     }
+
+    public function show(Board $board)
+{
+    return view('boards.show', compact('board'));
+}
+
 }

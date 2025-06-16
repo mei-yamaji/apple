@@ -10,7 +10,9 @@
       <div class="p-4 border rounded shadow-sm bg-white dark:bg-gray-800">
         <!-- タイトル -->
         <h5 class="mt-3 mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+          <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline">
           {{ $board->title }}
+          </a>
         </h5>
 
         <!-- 本文 -->

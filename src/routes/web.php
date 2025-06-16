@@ -19,6 +19,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('boards', BoardController::class);
     Route::get('/boards/{type}', [BoardController::class, 'getBoards']);
+    Route::get('/boards/{board}', [BoardController::class, 'show'])->name('boards.show');
 
     Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
 

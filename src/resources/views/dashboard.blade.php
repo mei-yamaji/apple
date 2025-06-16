@@ -23,10 +23,10 @@
     {{-- コンテンツ部分 --}}
     <div class="container mx-auto px-4 py-8">
         <!-- 切り替えボタン -->
-        <div class="tabs flex gap-4 mb-4">
+        <div class="tabs flex gap-4 mb-4 justify-center ">
             <button onclick="loadArticles('latest')" class="tab-button active" id="btn-latest">最新</button>
             <button onclick="loadArticles('popular')" class="tab-button" id="btn-popular">人気</button>
-            <button onclick="loadArticles('views')" class="tab-button" id="btn-views">閲覧数</button>
+            <button onclick="loadArticles('views')" class="tab-button" id="btn-views">閲覧</button>
         </div>
 
         <!-- 記事リスト -->
@@ -48,7 +48,7 @@
         }
 
         .tab-button.active {
-            background-color: #007bff;
+            background-color: #f97316;
             color: white;
         }
 

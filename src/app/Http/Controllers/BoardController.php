@@ -35,7 +35,8 @@ class BoardController extends Controller
     }
 
     public function show(Board $board)
-{
+    {
+    $board->load('comments.user');
     return view('boards.show', compact('board'));
 }
 

@@ -5,19 +5,28 @@
     </h2>
   </x-slot>
 
-  <div class="max-w-4xl mx-auto space-y-4 mt-6">
+  <div class="max-w-5xl mx-auto space-y-6 mt-6 px-4">
     @foreach ($boards as $board)
-      <div class="p-4 border rounded shadow-sm bg-white dark:bg-gray-800">
+      <div class="p-6 border rounded-2xl shadow-lg bg-white dark:bg-gray-800">
+        
         <!-- タイトル -->
-        <h5 class="mt-3 mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+        <h5 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
           <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline">
             {{ $board->title }}
           </a>
         </h5>
 
-        <!-- 本文 -->
-        <p class="my-3 font-normal text-gray-700 dark:text-gray-400 break-words">
-          {{ $board->description }}
+        <!-- 本文 一定文字数で省略-->
+        @php
+        $maxLength = 120; 
+        @endphp
+
+        <p class="text-gray-700 dark:text-gray-400 break-words mb-6 leading-relaxed">
+           {{ Str::limit($board->description, $maxLength, '...') }}
+  
+           @if (Str::length($board->description) > $maxLength)
+             <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>
+           @endif
         </p>
 
         <!-- いいねボタン（右寄せ） -->
@@ -35,22 +44,39 @@
 
         <!-- ユーザー情報 -->
         <div class="flex items-center mt-3">
+        <!-- 投稿日・更新日・いいね数・閲覧数 -->
+        <div class="flex flex-wrap justify-between items-center text-gray-400 dark:text-gray-400 text-sm mb-6">
+          <div class="flex space-x-4">
+            <p>投稿日: {{ $board->created_at->format('Y/m/d H:i') }}</p>
+            <p>更新日: {{ $board->updated_at->format('Y/m/d H:i') }}</p>
+          </div>
+          <div class="flex space-x-4">
+            <p class="text-pink-500">いいね♥: {{ $board->like_count }}</p>
+            <p class="text-gray-500">閲覧数: {{ $board->view_count }}</p>
+          </div>
+        </div>
+
+        <!-- 投稿者情報 -->
+        <div class="flex items-center justify-end">
           @if ($board->user->profile_image)
             <img src="{{ asset('storage/' . $board->user->profile_image) }}"
                  alt="Profile Image"
-                 class="w-10 h-10 rounded-full object-cover mr-2">
+                 class="w-12 h-12 rounded-full object-cover mr-3">
           @else
             <div class="w-10 h-10 rounded-full bg-gray-300 flex items-center justify-center mr-2">
+            <div class="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center mr-3">
               <span class="text-gray-500 text-sm">No Image</span>
             </div>
           @endif
 
           <p class="text-sm text-gray-500 dark:text-gray-400">
             by <a href="{{ route('user.show', ['id' => $board->user->id]) }}" class="text-blue-500 hover:underline">
+             <a href="{{ route('user.show', ['id' => $board->user->id]) }}" class="text-green-500 hover:underline">
               {{ $board->user->name }}
             </a>
           </p>
         </div>
+
       </div>
     @endforeach
   </div>

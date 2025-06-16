@@ -36,6 +36,7 @@ class BoardController extends Controller
 
     public function show(Board $board)
 {
+    $board->load('comments');
     return view('boards.show', compact('board'));
 }
 

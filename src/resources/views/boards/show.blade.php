@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Facades\Auth; @endphp
 <x-app-layout>
     <div class="container mx-auto px-4 py-8">
         <div class="bg-white p-6 rounded shadow">
@@ -6,6 +7,56 @@
             <p class="text-sm text-gray-600">閲覧数: {{ $board->view_count }}</p>
             <p class="text-sm text-gray-600">いいね数: {{ $board->like_count }}</p>
             <a href="{{ url()->previous() }}" class="text-blue-500 mt-4 inline-block">戻る</a>
+        </div>
+
+        {{-- コメントセクション --}}
+        <div class="bg-white mt-8 p-6 rounded shadow">
+            <h3 class="text-xl font-semibold mb-4">コメント一覧</h3>
+
+            @if(session('success'))
+                <div class="mb-4 p-2 bg-green-100 text-green-800 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+           @if($board->comments->count() > 0)
+              <ul class="mb-6 space-y-4">
+                  @foreach ($board->comments as $comment)
+                     <li class="border-b pb-2">
+                         <strong>{{ $comment->user?->name ?? Auth::user()->name ?? '名無し' }}:</strong> {{ $comment->comment }}
+                         <br>
+                         <small class="text-gray-500">{{ $comment->created_at->format('Y-m-d H:i') }}</small>
+                     </li>
+                   @endforeach
+               </ul>
+            @else
+                <p class="text-gray-600">まだコメントはありません。</p>
+            @endif
+
+            <h3 class="text-xl font-semibold mt-6 mb-2">コメント投稿</h3>
+
+            @if ($errors->any())
+                <div class="mb-4 text-red-600">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li class="text-sm">{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('comments.store', $board) }}">
+                @csrf
+
+                <div class="mb-4">
+                    <label class="block mb-1 font-medium">コメント</label>
+                    <textarea name="comment" rows="4" class="w-full border rounded px-3 py-2" required>{{ old('comment') }}</textarea>
+                </div>
+
+                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    コメント投稿
+                </button>
+            </form>
         </div>
     </div>
 </x-app-layout>

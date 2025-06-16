@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BoardController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\UserController;
 
 Route::get('/', function () {
@@ -19,7 +18,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('boards', BoardController::class);
-    Route::get('/articles/{type}', [ArticleController::class, 'getArticles']);
+    Route::get('/boards/{type}', [BoardController::class, 'getBoards']);
 
     Route::get('/user/{id}', [UserController::class, 'show'])->name('user.show');
 

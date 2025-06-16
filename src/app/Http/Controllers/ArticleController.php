@@ -3,32 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Article;
+use App\Models\Board;
 
-class ArticleController extends Controller
+class BoardController extends Controller
 {
-    public function getArticles($type)
+    public function getBoards($type)
     {
         switch ($type) {
             case 'popular':
-                $articles = Article::withCount('likes')
+                $boards = Board::withCount('likes')
                     ->orderByDesc('likes_count')
                     ->take(10)
                     ->get();
                 break;
             case 'views':
-                $articles = Article::orderByDesc('view_count')
+                $boards = Board::orderByDesc('view_count')
                     ->take(10)
                     ->get();
                 break;
             case 'latest':
             default:
-                $articles = Article::latest()
+                $boards = Board::latest()
                     ->take(10)
                     ->get();
                 break;
         }
 
-        return response()->json($articles);
+        return response()->json($boards);
     }
 }

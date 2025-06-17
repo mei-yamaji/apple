@@ -13,18 +13,18 @@
 
   {{-- プロフィール画像 --}}
   @if (Auth::user()->profile_image)
-    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="プロフィール画像" class="w-20 h-20 rounded-full object-cover">
+    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="プロフィール画像" class="w-20 h-20 rounded-full object-cover ml-4">
   @else
-    <div class="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-gray-500">
+    <div class="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-gray-500 ">
       No Image
     </div>
   @endif
 
   {{-- 名前・ひとこと・メールアドレス --}}
-  <div class="flex-1">
+  <div class="flex-1 pl-4">
     {{-- 名前 --}}
     <div class="flex items-center">
-      <i class="ri-user-line text-orange-500 text-3xl mr-2"></i>
+      <i class="ri-user-line text-orange-500 text-3xl "></i>
       <h3 class="text-2xl font-semibold text-gray-800">{{ Auth::user()->name }}</h3>
     </div>
 

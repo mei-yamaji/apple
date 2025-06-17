@@ -15,6 +15,26 @@
             {{ $board->title }}
           </a>
         </h5>
+
+        <!-- カテゴリー表示 -->
+      <div class="mb-2">
+          <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+              {{ $board->category->name ?? '未分類' }}
+          </span>
+      </div>
+
+      <!-- タグ表示 -->
+      <div class="flex flex-wrap">
+        @if (!empty($board->tags) && $board->tags->isNotEmpty())
+            <div class="flex flex-wrap">
+                @foreach ($board->tags as $tag)
+                    <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold mr-2 mb-2 px-2.5 py-0.5 rounded-full">
+                        #{{ $tag->name }}
+                    </span>
+                @endforeach
+            </div>
+        @endif
+      </div>
  
         <!-- 本文 一定文字数で省略-->
         @php

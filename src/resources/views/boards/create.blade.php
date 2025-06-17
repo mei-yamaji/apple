@@ -23,6 +23,28 @@
             class="shadow appearance-none border border-slate-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="title" type="text" name="title" value={{ old('title') }}>
         </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="category_id">
+            カテゴリー
+          </label>
+          <select name="category_id" id="category_id" class="border border-slate-300 rounded w-full py-2 px-3">
+            @foreach($categories as $category)
+              <option value="{{ $category->id }}">{{ $category->name }}</option>
+            @endforeach
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="tags">
+            タグ（カンマ区切りで入力）
+          </label>
+          <input
+            class="shadow appearance-none border border-slate-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="tags" type="text" name="tags" value="{{ old('tags') }}">
+          <p class="text-gray-500 text-sm mt-1">例: Laravel, PHP, Vue</p>
+        </div>
+
         <div class="mb-6">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="description">
             本文

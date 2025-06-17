@@ -9,6 +9,26 @@
         {{ $board->title }}
       </h5>
 
+        <!-- カテゴリー表示 -->
+      <div class="mb-2">
+          <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+              {{ $board->category->name ?? '未分類' }}
+          </span>
+      </div>
+
+      <!-- タグ表示 -->
+      <div class="flex flex-wrap">
+        @if (!empty($board->tags) && $board->tags->isNotEmpty())
+            <div class="flex flex-wrap">
+                @foreach ($board->tags as $tag)
+                    <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold mr-2 mb-2 px-2.5 py-0.5 rounded-full">
+                        #{{ $tag->name }}
+                    </span>
+                @endforeach
+            </div>
+        @endif
+      </div>
+
       <!-- 本文 -->
       <p class="text-gray-700 dark:text-gray-400 break-words mb-6 leading-relaxed">
         {{ $board->description }}
@@ -51,8 +71,19 @@
             </a>
           </p>
         </div>
-
       </div>
+
+      <!-- 編集・削除ボタン（投稿者のみ） -->
+      @if (Auth::check() && Auth::id() === $board->user_id)
+        <div class="mt-6 flex space-x-4">
+          <a href="{{ route('boards.edit', $board->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">編集</a>
+          <form method="POST" action="{{ route('boards.destroy', $board->id) }}" onsubmit="return confirm('本当に削除しますか？');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">削除</button>
+          </form>
+        </div>
+      @endif
 
       <!-- 戻るボタン -->
       <div class="mt-4">

@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     // いいね関連
     Route::post('/likes', [LikeController::class, 'store'])->name('likes.store');
     Route::delete('/likes/{board}', [LikeController::class, 'destroy'])->name('likes.destroy');
-
+    
     // コメント関連
     Route::post('boards/{board}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::get('/boards/{board}/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');

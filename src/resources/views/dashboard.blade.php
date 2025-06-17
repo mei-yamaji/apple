@@ -21,21 +21,58 @@
     </div>
 
     {{-- コンテンツ部分 --}}
-<div class="container mx-auto px-4 py-8">
-    <!-- 切り替えボタン -->
-    <div class="tabs flex gap-4 mb-4 justify-center">
-        <button onclick="loadBoards('latest')" class="tab-button active" id="btn-latest">最新</button>
-        <button onclick="loadBoards('popular')" class="tab-button" id="btn-popular">人気</button>
-        <button onclick="loadBoards('views')" class="tab-button" id="btn-views">閲覧</button>
+    <div class="container mx-auto px-4 py-8">
+        <!-- 切り替えボタン -->
+        <div class="tabs flex gap-4 mb-4 justify-center">
+            <button onclick="loadBoards('latest')" class="tab-button active" id="btn-latest">最新</button>
+            <button onclick="loadBoards('popular')" class="tab-button" id="btn-popular">人気</button>
+            <button onclick="loadBoards('views')" class="tab-button" id="btn-views">閲覧</button>
+        </div>
+
+        <div id="boards-container" class="grid gap-4">
+            <!-- ランキング表示領域 -->
+        </div>
     </div>
 
-    <!-- 記事リスト -->
-    <div id="board-list" class="mt-4">
-        読み込み中...
-    </div>
-</div>
+     {{-- JS --}}
+    <script>
+        function loadBoards(type) {
+            fetch(`/boards/ranking/${type}`)
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('boards-container');
+                    container.innerHTML = ''; // 一旦クリア
 
-    {{-- CSS --}}
+                    data.forEach((board, index) => {
+                            let rankMark = '';
+                            if (index === 0) rankMark = '🥇';  // 1位
+                            else if (index === 1) rankMark = '🥈';  // 2位
+                            else if (index === 2) rankMark = '🥉';  // 3位
+
+                        container.innerHTML += `
+                             <div class="board-item border p-4 rounded shadow bg-white">
+                              <span class="rank-mark text-xl">${rankMark}</span>
+                                <h3 class="text-lg font-semibold">${board.title}</h3>
+                                <p>投稿者: ${board.user.name}</p>
+                                <p>いいね: ${board.likes_count} | 閲覧: ${board.view_count}</p>
+                                <p>投稿日: ${new Date(board.created_at).toLocaleDateString()}</p>
+                            </div>
+                        `;
+                    });
+
+                    // ボタンの active クラス切り替え
+                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                    document.getElementById(`btn-${type}`).classList.add('active');
+                })
+                .catch(() => {
+                    alert('ランキングの読み込みに失敗しました');
+                });
+        }
+
+        // ページ読み込み時に最新を表示
+        document.addEventListener('DOMContentLoaded', () => loadBoards('latest'));
+    </script>
+
     @push('styles')
     <style>
         .tab-button {
@@ -57,45 +94,4 @@
         }
     </style>
     @endpush
-
-    <!-- 記事リスト 
-    {{-- JS --}}
-@push('scripts')
-<script>
-    function setActiveButton(type) {
-        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-        document.getElementById('btn-' + type).classList.add('active');
-    }
-
-    function loadBoards(type) {
-        setActiveButton(type);
-
-        fetch(`/boards/${type}`)
-            .then(res => res.json())
-            .then(data => {
-                const container = document.getElementById('board-list');
-                container.innerHTML = '';
-
-                if (data.length === 0) {
-                    container.innerHTML = '<p>ボードが見つかりません。</p>';
-                    return;
-                }
-
-                data.forEach(board => {
-                    container.innerHTML += `
-                        <div class="board-card border p-4 mb-4 bg-white rounded shadow">
-                            <h3 class="text-lg font-bold mb-2">${board.title}</h3>
-                            <p class="mb-1">${board.summary ?? ''}</p>
-                            <small class="text-gray-600">閲覧数: ${board.view_count ?? 0}</small>
-                        </div>
-                    `;
-                });
-            });
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        loadBoards('latest');
-    });
-</script>
-@endpush　-->
 </x-app-layout>

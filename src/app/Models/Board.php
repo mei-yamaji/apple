@@ -29,4 +29,19 @@ class Board extends Model
     {
         return $this->hasMany(Comment::class);
     }
+
+    public function scopeLatestBoards($query)
+    {
+        return $query->orderBy('created_at', 'desc');
+    }
+
+    public function scopePopularBoards($query)
+    {
+        return $query->orderBy('likes_count', 'desc');
+    }
+
+    public function scopeMostViewedBoards($query)
+    {
+        return $query->orderBy('view_count', 'desc');
+    }
 }

@@ -30,16 +30,13 @@
         </p>
  
         <!-- いいねボタン（右寄せ） -->
-        <div class="flex justify-end mt-2">
-          <form action="{{ route('likes.store') }}" method="POST">
-            @csrf
-            <input type="hidden" name="board_id" value="{{ $board->id }}">
-            <button type="submit" class="focus:outline-none flex items-center">
-              <i class="ri-heart-fill text-2xl {{ $board->likes->contains('user_id', auth()->id()) ? 'text-red-500' : 'text-gray-400 hover:text-red-400' }}"></i>
-              <span class="ml-2 "style="color:rgb(234, 88, 100);">{{ $board->like_count }} </span>
-            </button>
-          </form>
-        </div>
+<div class="flex justify-end mt-2">
+  <button class="like-button flex items-center focus:outline-none" data-board-id="{{ $board->id }}">
+    <i class="ri-heart-fill text-2xl {{ $board->likes->contains('user_id', auth()->id()) ? 'text-red-500' : 'text-gray-400 hover:text-red-400' }}"></i>
+    <span class="ml-2" style="color:rgb(234, 88, 100);">{{ $board->like_count }}</span>
+  </button>
+</div>
+
  
         <!-- 投稿日・更新日・いいね数・閲覧数 + ユーザー情報 -->
         <div class="flex items-center mt-3 justify-between text-gray-400 dark:text-gray-400 text-sm mb-6">
@@ -76,5 +73,36 @@
     @endforeach
   </div>
 </x-app-layout>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(function() {
+  $('.like-button').on('click', function() {
+    var button = $(this);
+    var boardId = button.data('board-id');
+
+    $.ajax({
+      url: '{{ route("likes.store") }}',  // ルート名を合わせてください
+      method: 'POST',
+      data: {
+        board_id: boardId,
+        _token: '{{ csrf_token() }}'
+      },
+      success: function(response) {
+        if (response.liked) {
+          button.find('i').removeClass('text-gray-400 hover:text-red-400').addClass('text-red-500');
+        } else {
+          button.find('i').removeClass('text-red-500').addClass('text-gray-400 hover:text-red-400');
+        }
+        button.find('span').text(response.likeCount);
+      },
+      error: function() {
+        alert('通信エラーが発生しました。');
+      }
+    });
+  });
+});
+</script>
+
  
  

@@ -44,4 +44,6 @@ class Board extends Model
     {
         return $query->orderBy('view_count', 'desc');
     }
+
+    
 }

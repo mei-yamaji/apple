@@ -52,8 +52,19 @@
             </a>
           </p>
         </div>
-
       </div>
+
+      <!-- 編集・削除ボタン（投稿者のみ） -->
+      @if (Auth::check() && Auth::id() === $board->user_id)
+        <div class="mt-6 flex space-x-4">
+          <a href="{{ route('boards.edit', $board->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">編集</a>
+          <form method="POST" action="{{ route('boards.destroy', $board->id) }}" onsubmit="return confirm('本当に削除しますか？');">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">削除</button>
+          </form>
+        </div>
+      @endif
 
       <!-- 戻るボタン -->
       <div class="mt-4">

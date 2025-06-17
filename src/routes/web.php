@@ -17,34 +17,31 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
  
 Route::middleware('auth')->group(function () {
+    // プロフィール関連
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
- 
+
+    // ボード関連リソースルート（RESTful）
     Route::resource('boards', BoardController::class);
-    Route::get('/boards/{type}', [BoardController::class, 'getBoards']);
-    Route::get('/boards/{board}', [BoardController::class, 'show'])->name('boards.show');
+
+    // 人気・閲覧・最新ランキング用ルート（リソースルートの下に置く）
+    Route::get('/boards/ranking/{type}', [BoardController::class, 'fetchRanking'])->name('boards.rankings');
+
+    // いいね関連
     Route::post('/likes', [LikeController::class, 'store'])->name('likes.store');
     Route::delete('/likes/{board}', [LikeController::class, 'destroy'])->name('likes.destroy');
- 
+
+    // コメント関連
     Route::post('boards/{board}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::get('/boards/{board}/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');
     Route::put('/boards/{board}/comments/{comment}', [CommentController::class, 'update'])->name('comments.update');
     Route::delete('/boards/{board}/comments/{comment}', [CommentController::class, 'destroy'])->name('comments.destroy');
- 
+
+    // ユーザー関連
     Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');
  
- 
-    Route::get('/mypage', function () {
-    $boards = Board::where('user_id', auth()->id())->latest()->get();
-    return view('mypage', compact('boards'));
-})->name('mypage');
- 
- 
 });
- 
- 
- 
- 
+
 require __DIR__.'/auth.php';

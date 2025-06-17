@@ -36,8 +36,30 @@ class BoardController extends Controller
 
     public function show(Board $board)
     {
-    $board->load('comments.user');
-    return view('boards.show', compact('board'));
-}
+        $board->increment('view_count');
+        $board->load('comments.user');
+        return view('boards.show', compact('board'));
+    }
 
+    public function fetchRanking($type = 'latest')
+    {
+        $query = Board::with('user')->withCount('likes'); // ← ここで user 情報も一緒に取得（任意）
+
+        switch ($type) {
+            case 'popular':
+                $query = $query->popularBoards(); // ← $query にスコープを適用
+                break;
+            case 'views':
+                $query = $query->mostViewedBoards();
+                break;
+            case 'latest':
+            default:
+                $query = $query->latestBoards();
+                break;
+        }
+
+        $boards = $query->take(5)->get();
+
+        return response()->json($boards);
+    } 
 }

@@ -59,7 +59,12 @@ class BoardController extends Controller
         }
 
         $boards = $query->take(5)->get();
-
+        
+        $boards->transform(function ($board) {
+        $board->detail_url = route('boards.show', $board->id);
+        return $board;
+    });
+    
         return response()->json($boards);
     } 
 }

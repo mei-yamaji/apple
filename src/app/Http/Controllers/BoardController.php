@@ -9,13 +9,14 @@ class BoardController extends Controller
 {
     public function index()
     {
-        $boards = Board::with('user')->latest()->get();
+        $boards = Board::with(['user', 'tags'])->latest()->get();
         return view('boards.index', compact('boards'));
     }
 
     public function create()
     {
-        return view('boards.create');
+        $categories = \App\Models\Category::all();
+        return view('boards.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -23,13 +24,31 @@ class BoardController extends Controller
         $validatedData = $request->validate([
             'title'       => 'required|max:255',
             'description' => 'required|max:65535',
+            'category_id' => 'required|exists:categories,id',
+            'tags'        => 'nullable|string',
+
         ]);
 
         $board = new Board();
         $board->title = $validatedData['title'];
         $board->description = $validatedData['description'];
+        $board->category_id = $validatedData['category_id'];
         $board->user_id = auth()->id();
         $board->save();
+
+        if (!empty($validatedData['tags'])) {
+           $tagNames = array_map('trim', explode(',', $validatedData['tags'])); // カンマ区切り配列にする
+
+           $tagIds = [];
+           foreach ($tagNames as $tagName) {
+              if ($tagName === '') continue; // 空文字除外
+              $tag = \App\Models\Tag::firstOrCreate(['name' => $tagName]);
+              $tagIds[] = $tag->id;
+        }
+
+        // 中間テーブルに登録
+          $board->tags()->sync($tagIds);
+    }
 
         return redirect()->route('boards.index');
     }
@@ -37,7 +56,7 @@ class BoardController extends Controller
     public function show(Board $board)
     {
         $board->increment('view_count');
-        $board->load('comments.user');
+        $board->load(['tags', 'category', 'comments.user']);
         return view('boards.show', compact('board'));
     }
 

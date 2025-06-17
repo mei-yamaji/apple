@@ -1,9 +1,10 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 class="w-1/2 mx-auto pt-2 px-8 font-semibold text-4xl text-gray-800 leading-tight">
-            記事作成
-        </h1>
-    </x-slot>
+  <h2 class="text-xl font-semibold leading-tight text-gray-800">
+    {{ __('記事作成') }}
+  </h2>
+</x-slot>
+
     <div class="w-1/2 mx-auto pt-6 px-8 pb-8">
       @if ($errors->any())
           <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">

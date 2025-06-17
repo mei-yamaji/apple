@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Board;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class BoardController extends Controller
 {
+    use AuthorizesRequests;
+
     public function index()
     {
         $boards = Board::with('user')->latest()->get();
@@ -59,7 +63,35 @@ class BoardController extends Controller
         }
 
         $boards = $query->take(5)->get();
-
+        
+        $boards->transform(function ($board) {
+        $board->detail_url = route('boards.show', $board->id);
+        return $board;
+    });
+    
         return response()->json($boards);
     } 
+
+
+    public function edit(Board $board)
+    {
+        $this->authorize('update', $board);
+        return view('boards.edit', compact('board'));
+    }
+
+    public function update(Request $request, Board $board)
+    {
+        $this->authorize('update', $board);
+
+        $board->update($request->only(['title', 'description']));
+        return redirect()->route('boards.show', $board);
+    }
+
+    public function destroy(Board $board)
+    {
+        $this->authorize('delete', $board);
+
+        $board->delete();
+        return redirect()->route('boards.index');
+    }
 }

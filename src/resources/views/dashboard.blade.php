@@ -29,6 +29,8 @@
             <button onclick="loadBoards('views')" class="tab-button" id="btn-views">閲覧</button>
         </div>
 
+        <div id="ranking-container"></div>
+
         <div id="boards-container" class="grid gap-4">
             <!-- ランキング表示領域 -->
         </div>
@@ -48,14 +50,38 @@
                             if (index === 0) rankMark = '🥇';  // 1位
                             else if (index === 1) rankMark = '🥈';  // 2位
                             else if (index === 2) rankMark = '🥉';  // 3位
+                        
+                        let profileImgHtml = '';
+                        if (board.user.profile_image) {
+                            profileImgHtml = `
+                                 <img src="/storage/${board.user.profile_image}" 
+                                      alt="Profile Image" 
+                                      class="w-16 h-16 rounded-full object-cover mr-3" />
+                            `;
+                        } else {
+                            profileImgHtml = `
+                                 <div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center mr-3">
+                                    <span class="text-gray-500 text-sm">No Image</span>
+                                 </div>
+                            `;
+                        }
 
                         container.innerHTML += `
-                             <div class="board-item border p-4 rounded shadow bg-white">
+                             <div class="board-item border p-4 rounded shadow bg-white flex items-center justify-between gap-4">
+                              <div>
                               <span class="rank-mark text-xl">${rankMark}</span>
-                                <h3 class="text-lg font-semibold">${board.title}</h3>
+                                <h3 class="text-lg font-semibold">
+                                <a href="${board.detail_url}" class="text-orange-600 hover:underline">
+                                   ${board.title}
+                                </a>
+                                </h3>
                                 <p>投稿者: ${board.user.name}</p>
                                 <p>いいね: ${board.likes_count} | 閲覧: ${board.view_count}</p>
                                 <p>投稿日: ${new Date(board.created_at).toLocaleDateString()}</p>
+                              </div>
+                              <div class="flex flex-col justify-end items-end">
+                                ${profileImgHtml}
+                              </div>
                             </div>
                         `;
                     });

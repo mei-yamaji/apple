@@ -95,7 +95,7 @@
                 {{ $board->user->name }}
               </a>
               @if ($board->user->is_runteq_student)
-                <span class="text-yellow-400 ml-1">★</span>
+                <span>🍎</span>
               @endif
             </p>
           </div>

@@ -100,7 +100,7 @@
               {{ $board->user->name }}
             </a>
             @if ($board->user->is_runteq_student)
-              <span class="text-yellow-400 text-sm ml-1">★</span>
+              <span>🍎</span>
             @endif
           </p>
         </div>
@@ -137,7 +137,7 @@
                       {{ $comment->user?->name ?? '名無し' }}
                     </a>
                     @if ($comment->user?->is_runteq_student)
-                      <span class="text-yellow-400 text-sm ml-1">★</span>
+                      <span>🍎</span>
                     @endif
                   </strong>
                   <span class="text-sm text-gray-500">{{ $comment->created_at->format('Y-m-d H:i') }}</span>

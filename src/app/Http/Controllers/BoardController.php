@@ -13,13 +13,31 @@ class BoardController extends Controller
 {
     use AuthorizesRequests;
 
-   public function index()
-   {
-     // 公開されている投稿のみ取得するように修正
-    $boards = Board::where('is_published', true)->latest()->get();
-
-    $boards = Board::latest()->paginate(10);
+   public function index(Request $request)
+{
     $converter = new CommonMarkConverter();
+
+    $query = Board::where('is_published', true)
+        ->with(['user', 'category', 'tags', 'likes']);
+
+        //記事検索機能(タイトル、タグ、本文、カテゴリが対象)
+    if ($request->filled('keyword')) {
+    $keyword = $request->input('keyword');
+    $query->where(function ($q) use ($keyword) {
+        $q->where('title', 'like', '%' . $keyword . '%')
+          ->orWhere('description', 'like', '%' . $keyword . '%')
+          ->orWhereHas('tags', function ($tagQuery) use ($keyword) {
+              $tagQuery->where('name', 'like', '%' . $keyword . '%');
+          })
+          ->orWhereHas('category', function ($categoryQuery) use ($keyword) {
+              $categoryQuery->where('name', 'like', '%' . $keyword . '%');
+          });
+    });
+}
+
+
+    // 記事の公開非公開
+    $boards = $query->latest()->paginate(10);
 
     $boards->getCollection()->transform(function ($board) use ($converter) {
         $board->description_html = $converter->convert($board->description ?? '')->getContent();
@@ -27,7 +45,8 @@ class BoardController extends Controller
     });
 
     return view('boards.index', compact('boards'));
-    }
+}
+
 
     public function create()
     {

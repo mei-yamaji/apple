@@ -6,6 +6,19 @@
   </x-slot>
 
   <div class="max-w-5xl mx-auto space-y-6 mt-6 px-4">
+    <!-- 検索フォーム -->
+<form action="{{ route('boards.index') }}" method="GET" class="mb-6">
+  <div class="flex space-x-2">
+    <input type="text" name="keyword" placeholder="キーワードで検索"
+           value="{{ request('keyword') }}"
+           class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-300" />
+    <button type="submit"
+            class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
+      検索
+    </button>
+  </div>
+</form>
+
     @foreach ($boards as $board)
       <div class="p-6 border rounded-2xl shadow-lg bg-white dark:bg-gray-800">
 

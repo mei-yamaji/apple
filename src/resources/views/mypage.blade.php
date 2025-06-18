@@ -66,10 +66,15 @@
                 </a>
               </h5>
 
-              <div class="prose prose-slate max-w-none dark:prose-invert break-words mb-6 leading-relaxed
-            prose-img:w-64 prose-img:h-auto prose-img:mx-auto prose-img:rounded">
-             {!! \Illuminate\Support\Str::markdown($board->description) !!}
-              </div>
+              @php
+  // Markdown画像記法（![alt](url)）を除去
+  $cleanDescription = preg_replace('/!\[.*?\]\(.*?\)/', '', $board->description);
+@endphp
+
+<div class="prose prose-lg prose-slate max-w-none dark:prose-invert break-words mb-6 leading-relaxed">
+
+  {!! \Illuminate\Support\Str::markdown($cleanDescription) !!}
+</div>
 
 
               <div class="flex items-center mt-3 justify-between text-gray-400 dark:text-gray-400 text-sm mb-6">

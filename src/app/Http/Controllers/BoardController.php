@@ -127,8 +127,9 @@ class BoardController extends Controller
     public function uploadImage(Request $request)
     {
         $request->validate([
-        'image' => 'required|image|max:2048', // 2MBまで
-    ]);
+    'image' => 'required|image|mimes:jpeg,png,gif|max:2048',
+]);
+
 
          $path = $request->file('image')->store('board_images', 'public');
 

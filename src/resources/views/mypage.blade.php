@@ -66,12 +66,11 @@
                 </a>
               </h5>
 
-              <p class="text-gray-700 dark:text-gray-400 break-words mb-6 leading-relaxed">
-                {{ Str::limit($board->description, 120, '...') }}
-                @if (Str::length($board->description) > 120)
-                  <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>
-                @endif
-              </p>
+              <div class="prose prose-slate max-w-none dark:prose-invert break-words mb-6 leading-relaxed
+            prose-img:w-64 prose-img:h-auto prose-img:mx-auto prose-img:rounded">
+             {!! \Illuminate\Support\Str::markdown($board->description) !!}
+              </div>
+
 
               <div class="flex items-center mt-3 justify-between text-gray-400 dark:text-gray-400 text-sm mb-6">
                 <div class="flex space-x-4">

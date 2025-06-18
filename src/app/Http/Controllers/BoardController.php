@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Board;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -37,8 +38,7 @@ class BoardController extends Controller
             'title'       => 'required|max:255',
             'description' => 'required|max:65535',
             'category_id' => 'required|exists:categories,id',
-            'tags'        => 'nullable|string',
-
+            'tags'        => 'nullable|string', // カンマ区切りで受け取る
         ]);
 
         $board = new Board();
@@ -49,20 +49,21 @@ class BoardController extends Controller
         $board->save();
 
         if (!empty($validatedData['tags'])) {
-           $tagNames = array_map('trim', explode(',', $validatedData['tags'])); // カンマ区切り配列にする
+            // 入力されたタグをカンマで分割し、前後の空白を除去
+            $tagNames = array_filter(array_map('trim', explode(',', $validatedData['tags'])));
 
-           $tagIds = [];
-           foreach ($tagNames as $tagName) {
-              if ($tagName === '') continue; // 空文字除外
-              $tag = \App\Models\Tag::firstOrCreate(['name' => $tagName]);
-              $tagIds[] = $tag->id;
+            $tagIds = [];
+            foreach ($tagNames as $tagName) {
+                // タグが存在しなければ作成
+                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+
+            // 中間テーブルにタグを同期
+            $board->tags()->sync($tagIds);
         }
 
-        // 中間テーブルに登録
-          $board->tags()->sync($tagIds);
-    }
-
-        return redirect()->route('boards.index');
+        return redirect()->route('boards.index')->with('success', '投稿が完了しました');
     }
 
     public function show(Board $board)
@@ -74,11 +75,11 @@ class BoardController extends Controller
 
     public function fetchRanking($type = 'latest')
     {
-        $query = Board::with('user')->withCount('likes'); // ← ここで user 情報も一緒に取得（任意）
+        $query = Board::with('user')->withCount('likes');
 
         switch ($type) {
             case 'popular':
-                $query = $query->popularBoards(); // ← $query にスコープを適用
+                $query = $query->popularBoards();
                 break;
             case 'views':
                 $query = $query->mostViewedBoards();
@@ -90,28 +91,55 @@ class BoardController extends Controller
         }
 
         $boards = $query->take(5)->get();
-        
-        $boards->transform(function ($board) {
-        $board->detail_url = route('boards.show', $board->id);
-        return $board;
-    });
-    
-        return response()->json($boards);
-    } 
 
+        $boards->transform(function ($board) {
+            $board->detail_url = route('boards.show', $board->id);
+            return $board;
+        });
+
+        return response()->json($boards);
+    }
 
     public function edit(Board $board)
     {
         $this->authorize('update', $board);
-        return view('boards.edit', compact('board'));
+        $categories = \App\Models\Category::all();
+        return view('boards.edit', compact('board', 'categories'));
     }
 
     public function update(Request $request, Board $board)
     {
         $this->authorize('update', $board);
 
-        $board->update($request->only(['title', 'description']));
-        return redirect()->route('boards.show', $board);
+        $validatedData = $request->validate([
+            'title'       => 'required|max:255',
+            'description' => 'required|max:65535',
+            'category_id' => 'required|exists:categories,id',
+            'tags'        => 'nullable|string',
+        ]);
+
+        $board->update([
+            'title' => $validatedData['title'],
+            'description' => $validatedData['description'],
+            'category_id' => $validatedData['category_id'],
+        ]);
+
+        if (!empty($validatedData['tags'])) {
+            $tagNames = array_filter(array_map('trim', explode(',', $validatedData['tags'])));
+
+            $tagIds = [];
+            foreach ($tagNames as $tagName) {
+                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tagIds[] = $tag->id;
+            }
+
+            $board->tags()->sync($tagIds);
+        } else {
+            // タグが空なら全て解除
+            $board->tags()->detach();
+        }
+
+        return redirect()->route('boards.show', $board)->with('success', '投稿を更新しました');
     }
 
     public function destroy(Board $board)
@@ -119,7 +147,7 @@ class BoardController extends Controller
         $this->authorize('delete', $board);
 
         $board->delete();
-        return redirect()->route('boards.index');
+        return redirect()->route('boards.index')->with('success', '投稿を削除しました');
     }
 
     // app/Http/Controllers/BoardController.php

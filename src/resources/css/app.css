@@ -11,6 +11,36 @@ body {
 }
 }
 
+/* ドロップダウンメニューの全体デザイン */
+.dropdown-menu {
+    padding: 8px;
+    background-color: #FFE5B4; /* 柔らかいオレンジ */
+    border: 2px solid #FDBA74; /* しっかりめのオレンジ枠 */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(253, 186, 116, 0.4);
+}
+
+/* メニュー内のリンクホバーエフェクト */
+.dropdown-menu a {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.dropdown-menu a:hover {
+    background: linear-gradient(135deg, #FDBA74, #F97316);
+    color: white !important;
+    transform: scale(1.05);
+}
+
+/* ドロップダウンが開いたときの可愛い影 */
+.dropdown-menu {
+    transition: box-shadow 0.3s ease;
+}
+
+.dropdown-menu:hover {
+    box-shadow: 0 6px 16px rgba(253, 186, 116, 0.6);
 /* Markdownで変換された画像にサイズ制限をかける */
 .markdown-body img {
     max-width: 100%;

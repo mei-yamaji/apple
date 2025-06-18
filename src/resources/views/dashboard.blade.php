@@ -8,7 +8,7 @@
 
     {{-- ヘッダー --}}
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-orange-900 leading-tight">
             記事ランキング
         </h2>
     </x-slot>

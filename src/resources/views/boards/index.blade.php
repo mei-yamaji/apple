@@ -1,6 +1,6 @@
 <x-app-layout>
   <x-slot name="header">
-    <h2 class="text-xl font-semibold leading-tight text-gray-800">
+    <h2 class="text-xl font-semibold leading-tight text-orange-900">
       {{ __('投稿記事一覧') }}
     </h2>
   </x-slot>
@@ -25,15 +25,15 @@
 
       <!-- タグ表示 -->
       <div class="flex flex-wrap">
-        @if (!empty($board->tags) && $board->tags->isNotEmpty())
-            <div class="flex flex-wrap">
-                @foreach ($board->tags as $tag)
-                    <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold mr-2 mb-2 px-2.5 py-0.5 rounded-full">
-                        #{{ $tag->name }}
-                    </span>
-                @endforeach
-            </div>
-        @endif
+    @if (!empty($board->tags) && $board->tags->isNotEmpty())
+        <div class="flex flex-wrap">
+            @foreach ($board->tags as $tag)
+                <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold mr-2 mb-2 px-2.5 py-0.5 rounded-full">
+                    #{{ $tag->name }}
+                </span>
+            @endforeach
+        </div>
+    @endif
       </div>
  
         <!-- 本文 一定文字数で省略-->

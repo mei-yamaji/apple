@@ -31,12 +31,6 @@
                         <span class="ms-2 text-sm text-yellow-50">{{ __('Remember me') }}</span>
                     </label>
                 </div>
-                <div class="block mt-4">
-                    <label for="remember_me" class="inline-flex items-center">
-                        <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-green-500 shadow-sm focus:ring-indigo-400" name="remember">
-                        <span class="ms-2 text-sm text-yellow-50">{{ __('Are you RUNTEQ?') }}</span>
-                    </label>
-                </div>
 
                 <div class="flex items-center justify-end mt-4">
                     @if (Route::has('register'))

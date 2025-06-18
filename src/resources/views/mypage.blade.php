@@ -25,7 +25,12 @@
     {{-- 名前 --}}
     <div class="flex items-center">
       <i class="ri-user-line text-orange-500 text-3xl "></i>
-      <h3 class="text-2xl font-semibold text-gray-800">{{ Auth::user()->name }}</h3>
+      <h3 class="text-2xl font-semibold text-gray-800">
+        {{ Auth::user()->name }}
+        @if (Auth::user()->is_runteq_student)
+          <span class="text-yellow-400">🍎</span>
+        @endif
+      </h3>
     </div>
 
     {{-- ひとこと --}}

@@ -22,6 +22,7 @@ class User extends Authenticatable
         'email',
         'password',
         'bio',
+        'is_runteq_student',
     ];
 
     /**

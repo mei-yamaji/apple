@@ -67,22 +67,25 @@
                         }
 
                         container.innerHTML += `
-                             <div class="board-item border p-4 rounded shadow bg-white flex items-center justify-between gap-4">
-                              <div>
+                          <div class="board-item border p-4 rounded shadow bg-white flex items-center justify-between gap-4">
+                            <div>
                               <span class="rank-mark text-xl">${rankMark}</span>
-                                <h3 class="text-lg font-semibold">
+                              <h3 class="text-lg font-semibold">
                                 <a href="${board.detail_url}" class="text-orange-600 hover:underline">
-                                   ${board.title}
+                                  ${board.title}
                                 </a>
-                                </h3>
-                                <p>投稿者: ${board.user.name}</p>
-                                <p>いいね: ${board.likes_count} | 閲覧: ${board.view_count}</p>
-                                <p>投稿日: ${new Date(board.created_at).toLocaleDateString()}</p>
-                              </div>
-                              <div class="flex flex-col justify-end items-end">
-                                ${profileImgHtml}
-                              </div>
+                              </h3>
+                              <p>
+                                投稿者: ${board.user.name}
+                                ${board.user.is_runteq_student ? '<span">🍎</span>' : ''}
+                              </p>
+                              <p>いいね: ${board.likes_count} | 閲覧: ${board.view_count}</p>
+                              <p>投稿日: ${new Date(board.created_at).toLocaleDateString()}</p>
                             </div>
+                            <div class="flex flex-col justify-end items-end">
+                              ${profileImgHtml}
+                            </div>
+                          </div>
                         `;
                     });
 

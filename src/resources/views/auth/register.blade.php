@@ -39,6 +39,13 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <div class="mt-4">
+            <label for="runteq_student" class="inline-flex items-center">
+                <input id="runteq_student" type="checkbox" name="runteq_student" value="1" class="rounded border-gray-300 text-green-600 shadow-sm focus:ring-green-500" {{ old('runteq_student') ? 'checked' : '' }}>
+                <span class="ml-2 text-sm text-white">あなたはRUNTEQの受講生ですか</span>
+            </label>
+        </div>
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-yellow-50 hover:text-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ __('Already registered?') }}

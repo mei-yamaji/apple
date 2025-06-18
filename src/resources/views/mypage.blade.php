@@ -81,6 +81,9 @@
               </div>
             </div>
           @endforeach
+          <div class="mt-4">
+              {{ $boards->links() }}
+          </div>
         </div>
       @else
         <div class="text-gray-500 mt-8">

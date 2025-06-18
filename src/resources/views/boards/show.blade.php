@@ -2,6 +2,12 @@
 <x-app-layout>
   <div class="max-w-5xl mx-auto space-y-6 mt-6 px-4">
 
+        <!-- 戻るボタン -->
+      <div class="mt-4">
+        <a href="{{ route('boards.index') }}" class="text-white hover:underline">＜ 一覧へ戻る</a>
+      </div>
+
+
     <div class="p-6 border rounded-2xl shadow-lg bg-white dark:bg-gray-800">
       
       <!-- タイトル -->
@@ -85,12 +91,6 @@
           </form>
         </div>
       @endif
-
-      <!-- 戻るボタン -->
-      <div class="mt-4">
-        <a href="{{ url()->previous() }}" class="text-green-500 hover:underline">戻る</a>
-      </div>
-
     </div>
 
     <!-- コメントセクション -->

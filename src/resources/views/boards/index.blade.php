@@ -36,7 +36,7 @@
 
         <!-- 本文＋いいねボタンを横並びに -->
         @php
-  $maxLength = 120;
+  $maxLength = 80;
   $plainDescription = preg_replace('/!\[.*?\]\(.*?\)/', '', $board->description);
   $textOnly = Str::limit(strip_tags($plainDescription), $maxLength, '...');
 @endphp

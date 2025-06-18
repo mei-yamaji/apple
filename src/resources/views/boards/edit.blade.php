@@ -50,6 +50,18 @@
                             <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                    <div class="mb-4">
+                         <label class="inline-flex items-center">
+                            <input
+                                 type="checkbox"
+                                 name="is_published"
+                                 value="1"
+                                 class="form-checkbox text-orange-500"
+                                {{ old('is_published', $board->is_published) ? 'checked' : '' }}>
+                            <span class="ml-2 text-gray-700">公開する</span>
+                         </label>
+                    </div>
+
 
                     {{-- 画像アップロード --}}
                     <div class="mb-4">

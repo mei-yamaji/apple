@@ -11,7 +11,7 @@ class Board extends Model
 
     protected $with = ['user', 'category', 'tags'];
 
-    protected $fillable = ['title', 'description','publish_date','category_id'];
+    protected $fillable = ['title', 'description','publish_date','category_id','is_published'];
  
     public function user()
     {

@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     // ボード関連リソースルート（RESTful）
     Route::resource('boards', BoardController::class);
     Route::get('/boards/rankings/{type?}', [BoardController::class, 'fetchRanking'])->name('boards.rankings');
+    Route::get('/mypage/boards', [BoardController::class, 'myBoards'])->name('boards.my');
 
     // 人気・閲覧・最新ランキング用ルート（リソースルートの下に置く）
     Route::get('/boards/ranking/{type}', [BoardController::class, 'fetchRanking'])->name('boards.rankings');
@@ -45,6 +46,7 @@ Route::middleware('auth')->group(function () {
 
     // 画像投稿機能
     Route::post('/boards/image-upload', [BoardController::class, 'uploadImage'])->name('boards.image-upload');
+
 
  
 });

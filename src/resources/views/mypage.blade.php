@@ -66,6 +66,12 @@
                 </a>
               </h5>
 
+              <p class="text-sm text-gray-600 mt-1">
+                 公開状態: <span class="{{ $board->is_published ? 'text-green-600' : 'text-red-600' }}">
+                   {{ $board->is_published ? '公開中' : '非公開' }}
+                 </span>
+              </p>
+
               @php
   // Markdown画像記法（![alt](url)）を除去
   $cleanDescription = preg_replace('/!\[.*?\]\(.*?\)/', '', $board->description);

@@ -1,28 +1,10 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h1 class="w-1/2 mx-auto pt-2 px-8 font-semibold text-4xl text-orange-900 leading-tight">
-            記事作成
-        </h1>
-    </x-slot>
-    <div class="w-1/2 mx-auto pt-6 px-8 pb-8">
-      @if ($errors->any())
-          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-              @foreach ($errors->all() as $error)
-                  <li>{{ $error }}</li>
-              @endforeach
-          </div>
-      @endif
-      <form class="rounded mb-4" method="POST" action="{{ route('boards.store') }}">
-        @csrf
-        <div class="mb-4">
-          <label class="block text-gray-700 text-sm font-bold mb-2" for="title">
-            タイトル
-          </label>
-          <input
-            class="shadow appearance-none border border-slate-300 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="title" type="text" name="title" value={{ old('title') }}>
-        </div>
-
+  <x-slot name="header">
+    <h2 class="text-xl font-semibold leading-tight text-gray-800">
+      {{ __('記事作成') }}
+    </h2>
+  </x-slot>
+ 
   <div class="w-1/2 mx-auto pt-6 px-8 pb-8">
     @if ($errors->any())
       <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -31,15 +13,15 @@
         @endforeach
       </div>
     @endif
-
+ 
     <form class="rounded mb-4" method="POST" action="{{ route('boards.store') }}">
       @csrf
-
+ 
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">タイトル</label>
         <input class="shadow border border-slate-300 rounded w-full py-2 px-3" type="text" name="title" value="{{ old('title') }}">
       </div>
-
+ 
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">カテゴリー</label>
         <select name="category_id" class="border border-slate-300 rounded w-full py-2 px-3">
@@ -48,26 +30,26 @@
           @endforeach
         </select>
       </div>
-
+ 
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">タグ（カンマ区切り）</label>
         <input class="shadow border border-slate-300 rounded w-full py-2 px-3" type="text" name="tags" value="{{ old('tags') }}">
         <p class="text-sm text-gray-500">例: Laravel, PHP</p>
       </div>
-
+ 
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">本文（Markdown可）</label>
         <textarea id="description" name="description" rows="6"
           class="shadow border border-slate-300 rounded w-full py-2 px-3">{{ old('description') }}</textarea>
       </div>
-
+ 
       <!-- 画像アップロード -->
       <div class="mb-4">
         <label class="block text-gray-700 text-sm font-bold mb-2">画像アップロード</label>
         <input type="file" id="imageUpload" accept="image/*" />
         <p class="text-sm text-gray-500">アップロード後、自動でMarkdown形式を本文に挿入します</p>
       </div>
-
+ 
       <div class="flex justify-end">
         <button type="submit"
           class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
@@ -76,17 +58,17 @@
       </div>
     </form>
   </div>
-
+ 
   <!-- JS (画像アップロードとMarkdown挿入) -->
   <script>
     document.getElementById('imageUpload').addEventListener('change', function () {
       const file = this.files[0];
       if (!file) return;
-
+ 
       const formData = new FormData();
       formData.append('image', file);
       formData.append('_token', '{{ csrf_token() }}');
-
+ 
       fetch('{{ route("boards.image-upload") }}', {
         method: 'POST',
         body: formData

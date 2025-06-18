@@ -66,6 +66,12 @@
                 </a>
               </h5>
 
+              <p class="text-sm text-gray-600 mt-1">
+                 公開状態: <span class="{{ $board->is_published ? 'text-green-600' : 'text-red-600' }}">
+                   {{ $board->is_published ? '公開中' : '非公開' }}
+                 </span>
+              </p>
+
               <div class="prose prose-slate max-w-none dark:prose-invert break-words mb-6 leading-relaxed
             prose-img:w-64 prose-img:h-auto prose-img:mx-auto prose-img:rounded">
              {!! \Illuminate\Support\Str::markdown($board->description) !!}

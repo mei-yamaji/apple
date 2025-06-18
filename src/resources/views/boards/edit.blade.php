@@ -38,12 +38,23 @@
                             <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                         @enderror
                     </div>
+                    <div class="mb-4">
+                         <label class="inline-flex items-center">
+                            <input
+                                 type="checkbox"
+                                 name="is_published"
+                                 value="1"
+                                 class="form-checkbox text-orange-500"
+                                {{ old('is_published', $board->is_published) ? 'checked' : '' }}>
+                            <span class="ml-2 text-gray-700">公開する</span>
+                         </label>
+                    </div>
+
 
                     <div class="flex items-center justify-between">
                         <button
                             type="submit"
-                            class="inline-flex items-center px-4 py-2 bg-orange-600 border border-transparent rounded-md font-semibold text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        >
+                            class="inline-flex items-center px-4 py-2 bg-orange-600 border border-transparent rounded-md font-semibold text-white hover:bg-orange-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                             更新する
                         </button>
 

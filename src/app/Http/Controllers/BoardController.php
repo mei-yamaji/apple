@@ -14,8 +14,10 @@ class BoardController extends Controller
     use AuthorizesRequests;
 
    public function index()
-{
-    $boards = Board::latest()->get();
+   {
+     // 公開されている投稿のみ取得するように修正
+    $boards = Board::where('is_published', true)->latest()->get();
+
     $converter = new CommonMarkConverter();
 
     $boards->map(function ($board) use ($converter) {
@@ -24,7 +26,7 @@ class BoardController extends Controller
     });
 
     return view('boards.index', compact('boards'));
-}
+    }
 
     public function create()
     {
@@ -39,6 +41,7 @@ class BoardController extends Controller
             'description' => 'required|max:65535',
             'category_id' => 'required|exists:categories,id',
             'tags'        => 'nullable|string', // カンマ区切りで受け取る
+            'is_published' => 'nullable|boolean', // チェックボックスなのでnullable|booleanでOK
         ]);
 
         $board = new Board();
@@ -46,6 +49,7 @@ class BoardController extends Controller
         $board->description = $validatedData['description'];
         $board->category_id = $validatedData['category_id'];
         $board->user_id = auth()->id();
+        $board->is_published = $request->has('is_published'); // チェックがあればtrue、なければfalse
         $board->save();
 
         if (!empty($validatedData['tags'])) {
@@ -75,7 +79,8 @@ class BoardController extends Controller
 
     public function fetchRanking($type = 'latest')
     {
-        $query = Board::with('user')->withCount('likes');
+        // 公開済みのボードに絞る
+        $query = Board::where('is_published', true)->with('user')->withCount('likes');
 
         switch ($type) {
             case 'popular':
@@ -109,6 +114,7 @@ class BoardController extends Controller
 
     public function update(Request $request, Board $board)
     {
+
         $this->authorize('update', $board);
 
         $validatedData = $request->validate([
@@ -116,12 +122,14 @@ class BoardController extends Controller
             'description' => 'required|max:65535',
             'category_id' => 'required|exists:categories,id',
             'tags'        => 'nullable|string',
+            'is_published' => 'nullable|boolean',
         ]);
 
         $board->update([
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
             'category_id' => $validatedData['category_id'],
+            'is_published' => $request->has('is_published'),
         ]);
 
         if (!empty($validatedData['tags'])) {
@@ -139,7 +147,8 @@ class BoardController extends Controller
             $board->tags()->detach();
         }
 
-        return redirect()->route('boards.show', $board)->with('success', '投稿を更新しました');
+         return redirect()->route('boards.show', $board->id)
+                          ->with('success', '投稿を更新しました');
     }
 
     public function destroy(Board $board)

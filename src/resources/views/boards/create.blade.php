@@ -49,6 +49,14 @@
         <input type="file" id="imageUpload" accept="image/*" />
         <p class="text-sm text-gray-500">アップロード後、自動でMarkdown形式を本文に挿入します</p>
       </div>
+
+      <div class="mb-4">
+        <label class="inline-flex items-center">
+         <input type="checkbox" name="is_published" value="1" class="form-checkbox text-orange-500"
+           {{ old('is_published') ? 'checked' : '' }}>
+         <span class="ml-2 text-gray-700">公開する</span>
+       </label>
+     </div>
  
       <div class="flex justify-end">
         <button type="submit"

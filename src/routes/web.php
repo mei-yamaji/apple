@@ -42,6 +42,10 @@ Route::middleware('auth')->group(function () {
     // ユーザー関連
     Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');
+
+    // 画像投稿機能
+    Route::post('/boards/image-upload', [BoardController::class, 'uploadImage'])->name('boards.image-upload');
+
  
 });
 

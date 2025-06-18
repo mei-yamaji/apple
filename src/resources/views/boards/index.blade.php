@@ -41,13 +41,14 @@
           $maxLength = 120;
         @endphp
  
-        <p class="text-gray-700 dark:text-gray-400 break-words mb-6 leading-relaxed">
-          {{ Str::limit($board->description, $maxLength, '...') }}
- 
-          @if (Str::length($board->description) > $maxLength)
-            <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>
-          @endif
-        </p>
+        <div class="markdown-body text-gray-700 dark:text-gray-400 break-words mb-6 leading-relaxed">
+  {!! $board->description_html !!}
+
+  @if (Str::length(strip_tags($board->description)) > $maxLength)
+    <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>
+  @endif
+</div>
+
  
         <!-- いいねボタン（右寄せ） -->
 <div class="flex justify-end mt-2">

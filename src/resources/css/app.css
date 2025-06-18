@@ -10,3 +10,12 @@ body {
   background-color: #FED16A;
 }
 }
+
+/* Markdownで変換された画像にサイズ制限をかける */
+.markdown-body img {
+    max-width: 100%;
+    height: auto;
+    width: 200px; /* 任意の幅に調整。統一表示される */
+    display: block;
+    margin: 0 auto;
+}

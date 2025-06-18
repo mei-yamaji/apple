@@ -2,6 +2,12 @@
 <x-app-layout>
   <div class="max-w-5xl mx-auto space-y-6 mt-6 px-4">
 
+        <!-- 戻るボタン -->
+      <div class="mt-4">
+        <a href="{{ route('boards.index') }}" class="text-white hover:underline">＜ 一覧へ戻る</a>
+      </div>
+
+
     <div class="p-6 border rounded-2xl shadow-lg bg-white dark:bg-gray-800">
       
       <!-- タイトル -->
@@ -31,7 +37,7 @@
 
       <!-- 本文 -->
 <div class="prose prose-slate max-w-none dark:prose-invert break-words mb-6 leading-relaxed
-            prose-img:w-64 prose-img:h-auto prose-img:mx-auto prose-img:rounded">
+            prose-img:w-[700px] prose-img:h-auto prose-img:mx-auto prose-img:rounded">
   {!! \Illuminate\Support\Str::markdown($board->description) !!}
 </div>
 
@@ -85,12 +91,6 @@
           </form>
         </div>
       @endif
-
-      <!-- 戻るボタン -->
-      <div class="mt-4">
-        <a href="{{ url()->previous() }}" class="text-green-500 hover:underline">戻る</a>
-      </div>
-
     </div>
 
     <!-- コメントセクション -->

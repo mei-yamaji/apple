@@ -18,9 +18,10 @@ class BoardController extends Controller
      // 公開されている投稿のみ取得するように修正
     $boards = Board::where('is_published', true)->latest()->get();
 
+    $boards = Board::latest()->paginate(10);
     $converter = new CommonMarkConverter();
 
-    $boards->map(function ($board) use ($converter) {
+    $boards->getCollection()->transform(function ($board) use ($converter) {
         $board->description_html = $converter->convert($board->description ?? '')->getContent();
         return $board;
     });
@@ -109,7 +110,8 @@ class BoardController extends Controller
     {
         $this->authorize('update', $board);
         $categories = \App\Models\Category::all();
-        return view('boards.edit', compact('board', 'categories'));
+        $tags = $board->tags->pluck('name')->implode(', ');
+        return view('boards.edit', compact('board', 'categories', 'tags'));
     }
 
     public function update(Request $request, Board $board)
@@ -174,6 +176,5 @@ class BoardController extends Controller
 
          return response()->json(['url' => $url]);
     }
-
-
-}
+    
+   }

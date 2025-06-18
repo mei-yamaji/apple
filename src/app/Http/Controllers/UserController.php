@@ -18,10 +18,10 @@ class UserController extends Controller
 
 
 public function mypage()
-    {
-        $boards = \App\Models\Board::where('user_id', auth()->id())
-            ->latest()
-            ->get();
+{
+    $boards = \App\Models\Board::where('user_id', auth()->id())
+        ->latest()
+        ->paginate(10);
 
         $converter = new CommonMarkConverter();
 
@@ -30,6 +30,6 @@ public function mypage()
             return $board;
         });
 
-        return view('mypage', compact('boards'));
-    }
+    return view('mypage', compact('boards'));
+}
 }

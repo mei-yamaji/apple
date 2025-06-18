@@ -37,7 +37,7 @@
 
       <!-- 本文 -->
 <div class="prose prose-slate max-w-none dark:prose-invert break-words mb-6 leading-relaxed
-            prose-img:w-[500px] prose-img:h-auto prose-img:mx-auto prose-img:rounded">
+            prose-img:w-[700px] prose-img:h-auto prose-img:mx-auto prose-img:rounded">
   {!! \Illuminate\Support\Str::markdown($board->description) !!}
 </div>
 

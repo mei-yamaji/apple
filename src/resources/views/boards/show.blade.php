@@ -30,9 +30,10 @@
       </div>
 
       <!-- 本文 -->
-      <p class="text-gray-700 dark:text-gray-400 break-words mb-6 leading-relaxed">
-        {{ $board->description }}
-      </p>
+<div class="prose prose-slate max-w-none dark:prose-invert break-words mb-6 leading-relaxed
+            prose-img:w-64 prose-img:h-auto prose-img:mx-auto prose-img:rounded">
+  {!! \Illuminate\Support\Str::markdown($board->description) !!}
+</div>
 
       <!-- いいねボタン（右寄せ） -->
 <div class="flex justify-end mt-2">

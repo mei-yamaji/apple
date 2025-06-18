@@ -7,16 +7,24 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use League\CommonMark\CommonMarkConverter;
 
 class BoardController extends Controller
 {
     use AuthorizesRequests;
 
-    public function index()
-    {
-        $boards = Board::with(['user', 'tags'])->latest()->get();
-        return view('boards.index', compact('boards'));
-    }
+   public function index()
+{
+    $boards = Board::latest()->get();
+    $converter = new CommonMarkConverter();
+
+    $boards->map(function ($board) use ($converter) {
+        $board->description_html = $converter->convert($board->description ?? '')->getContent();
+        return $board;
+    });
+
+    return view('boards.index', compact('boards'));
+}
 
     public function create()
     {
@@ -141,4 +149,21 @@ class BoardController extends Controller
         $board->delete();
         return redirect()->route('boards.index')->with('success', '投稿を削除しました');
     }
+
+    // app/Http/Controllers/BoardController.php
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+        'image' => 'required|image|max:2048', // 2MBまで
+    ]);
+
+         $path = $request->file('image')->store('board_images', 'public');
+
+         $url = asset('storage/' . $path);
+
+         return response()->json(['url' => $url]);
+    }
+
+
 }

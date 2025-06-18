@@ -41,4 +41,11 @@ body {
 
 .dropdown-menu:hover {
     box-shadow: 0 6px 16px rgba(253, 186, 116, 0.6);
+/* Markdownで変換された画像にサイズ制限をかける */
+.markdown-body img {
+    max-width: 100%;
+    height: auto;
+    width: 200px; /* 任意の幅に調整。統一表示される */
+    display: block;
+    margin: 0 auto;
 }

@@ -1,46 +1,94 @@
-{{-- resources/views/mypage.blade.php --}}
 <x-app-layout>
-<x-slot name="header">
-<h2 class="text-xl font-semibold leading-tight text-orange-900">
-            {{ __('マイページ') }}
-</h2>
-</x-slot>
- 
-    <div class="py-12">
-<div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
-<div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-<p>ようこそ、{{ Auth::user()->name }} さん！</p>
- 
-                <div class="mt-4">
-<a href="{{ route('profile.edit') }}" class="text-blue-500 underline">
-                        プロフィールを編集する
-</a>
-</div>
-</div>
+  <x-slot name="header">
+    <h2 class="text-xl font-semibold leading-tight text-gray-800">
+      {{ __('マイページ') }}
+    </h2>
+  </x-slot>
+
+  <div class="py-12">
+    <div class="max-w-5xl mx-auto space-y-6 mt-6 px-4">
+
+      <!-- プロフィール表示エリア -->
+<div class="flex items-center space-x-6 bg-white p-6 rounded-2xl shadow-lg">
+
+  {{-- プロフィール画像 --}}
+  @if (Auth::user()->profile_image)
+    <img src="{{ asset('storage/' . Auth::user()->profile_image) }}" alt="プロフィール画像" class="w-20 h-20 rounded-full object-cover ml-4">
+  @else
+    <div class="w-20 h-20 rounded-full bg-gray-300 flex items-center justify-center text-gray-500 ">
+      No Image
+    </div>
+  @endif
+
+  {{-- 名前・ひとこと・メールアドレス --}}
+  <div class="flex-1 pl-4">
+    {{-- 名前 --}}
+    <div class="flex items-center">
+      <i class="ri-user-line text-orange-500 text-3xl "></i>
+      <h3 class="text-2xl font-semibold text-gray-800">{{ Auth::user()->name }}</h3>
+    </div>
+
+    {{-- ひとこと --}}
+    @if (Auth::user()->bio)
+      <p class="mt-2 text-gray-600 flex items-center">
+        <i class="ri-chat-smile-2-line mr-2 text-orange-500 text-3xl"></i>
+        {{ Auth::user()->bio }}
+      </p>
+    @else
+      <p class="mt-2 text-gray-400 italic">ひとことが設定されていません</p>
+    @endif
+
+    {{-- メールアドレス --}}
+    <p class="mt-2 text-gray-600 flex items-center">
+      <i class="ri-mail-line mr-2 text-orange-500 text-3xl"></i>
+      {{ Auth::user()->email }}
+    </p>
+  </div>
+
+  {{-- プロフィール編集ボタン --}}
+  <div>
+    <a href="{{ route('profile.edit') }}"
+       class="inline-block bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+      プロフィール編集
+    </a>
+  </div>
 </div>
 
-@if($boards->isNotEmpty())
-  <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 mt-8">
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-      <h3 class="text-lg font-bold mb-4">投稿一覧</h3>
-      @foreach ($boards as $board)
-        <div class="border-b border-gray-200 py-4">
-          <h4 class="text-xl font-semibold">
-            <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline">
-              {{ $board->title }}
-            </a>
-          </h4>
-          <p class="text-sm text-gray-500">投稿日：{{ $board->created_at->format('Y/m/d H:i') }}</p>
-          <p class="text-gray-700">{{ Str::limit($board->description, 100, '...') }}</p>
+
+      {{-- 投稿一覧 --}}
+      @if ($boards->isNotEmpty())
+        <div class="space-y-6 mt-8">
+          @foreach ($boards as $board)
+            <div class="p-6 border rounded-2xl shadow-lg bg-white dark:bg-gray-800">
+              <h5 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
+                <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline">
+                  {{ $board->title }}
+                </a>
+              </h5>
+
+              <p class="text-gray-700 dark:text-gray-400 break-words mb-6 leading-relaxed">
+                {{ Str::limit($board->description, 120, '...') }}
+                @if (Str::length($board->description) > 120)
+                  <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>
+                @endif
+              </p>
+
+              <div class="flex items-center mt-3 justify-between text-gray-400 dark:text-gray-400 text-sm mb-6">
+                <div class="flex space-x-4">
+                  <p>投稿日: {{ $board->created_at->format('Y/m/d H:i') }}</p>
+                  <p>更新日: {{ $board->updated_at->format('Y/m/d H:i') }}</p>
+                  <p class="text-gray-500">閲覧数: {{ $board->view_count }}</p>
+                </div>
+              </div>
+            </div>
+          @endforeach
         </div>
-      @endforeach
+      @else
+        <div class="text-gray-500 mt-8">
+          あなたの投稿はまだありません。
+        </div>
+      @endif
+
     </div>
   </div>
-@else
-  <div class="mx-auto max-w-7xl sm:px-6 lg:px-8 mt-8 text-gray-500">
-    あなたの投稿はまだありません。
-  </div>
-@endif
-
-</div>
 </x-app-layout>

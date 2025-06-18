@@ -28,7 +28,7 @@
       <h3 class="text-2xl font-semibold text-gray-800">
         {{ Auth::user()->name }}
         @if (Auth::user()->is_runteq_student)
-          <span class="text-yellow-400">🌟</span>
+          <span class="text-yellow-400">🍎</span>
         @endif
       </h3>
     </div>

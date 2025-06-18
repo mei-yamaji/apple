@@ -77,12 +77,16 @@
               </div>
             @endif
 
-            <p class="text-sm text-gray-500 dark:text-gray-400">
+            <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
               <a href="{{ route('user.show', ['user' => $board->user->id]) }}" class="text-green-500 hover:underline">
                 {{ $board->user->name }}
               </a>
+              @if ($board->user->is_runteq_student)
+                <span class="text-yellow-400 ml-1">★</span>
+              @endif
             </p>
           </div>
+
 
         </div>
 

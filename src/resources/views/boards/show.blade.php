@@ -116,13 +116,15 @@
                      alt="デフォルトアイコン"
                      class="w-8 h-8 rounded-full object-cover">
               @endif
-
               <div>
                 <div class="flex items-center gap-2">
-                  <strong>
+                  <strong class="flex items-center">
                     <a href="{{ route('user.show', $comment->user->id ?? 0) }}" class="text-orange-400 hover:underline">
                       {{ $comment->user?->name ?? '名無し' }}
                     </a>
+                    @if ($comment->user?->is_runteq_student)
+                      <span class="text-yellow-400 text-sm ml-1">★</span>
+                    @endif
                   </strong>
                   <span class="text-sm text-gray-500">{{ $comment->created_at->format('Y-m-d H:i') }}</span>
                 </div>

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 class="w-1/2 mx-auto pt-2 px-8 font-semibold text-4xl text-gray-800 leading-tight">
+        <h1 class="w-1/2 mx-auto pt-2 px-8 font-semibold text-4xl text-orange-900 leading-tight">
             記事作成
         </h1>
     </x-slot>

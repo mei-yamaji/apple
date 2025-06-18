@@ -13,7 +13,7 @@ class Tag extends Model
 
     public function boards()
     {
-        return $this->belongsToMany(Board::class);
+        return $this->belongsToMany(Board::class, 'board_tag', 'tag_id', 'board_id');
     }
 
 }

@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Board extends Model
 {
     use HasFactory;
+
+    protected $with = ['user', 'category', 'tags'];
+
     protected $fillable = ['title', 'description','publish_date','category_id'];
  
     public function user()
@@ -22,7 +25,7 @@ class Board extends Model
 
     public function tags()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->belongsToMany(Tag::class, 'board_tag', 'board_id', 'tag_id');
     }
 
     public function likes()

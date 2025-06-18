@@ -104,7 +104,8 @@ class BoardController extends Controller
     {
         $this->authorize('update', $board);
         $categories = \App\Models\Category::all();
-        return view('boards.edit', compact('board', 'categories'));
+        $tags = $board->tags->pluck('name')->implode(', ');
+        return view('boards.edit', compact('board', 'categories', 'tags'));
     }
 
     public function update(Request $request, Board $board)

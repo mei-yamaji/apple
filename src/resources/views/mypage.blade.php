@@ -66,7 +66,27 @@
                 </a>
               </h5>
 
-              <p class="text-sm text-gray-600 mt-1">
+        <!-- カテゴリー表示 -->
+        <div class="mb-2">
+          <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+            {{ $board->category->name ?? '未分類' }}
+          </span>
+        </div>
+
+        <!-- タグ表示 -->
+        <div class="mb-4 flex-wrap">
+          @if (!empty($board->tags) && $board->tags->isNotEmpty())
+            <div class="flex flex-wrap">
+              @foreach ($board->tags as $tag)
+                <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold mr-2 mb-2 px-2.5 py-0.5 rounded-full">
+                  #{{ $tag->name }}
+                </span>
+              @endforeach
+            </div>
+          @endif
+        </div>              
+
+              <p class="text-sm text-gray-600 mt- mb-4">
                  公開状態: <span class="{{ $board->is_published ? 'text-green-600' : 'text-red-600' }}">
                    {{ $board->is_published ? '公開中' : '非公開' }}
                  </span>
@@ -75,11 +95,21 @@
               @php
   // Markdown画像記法（![alt](url)）を除去
   $cleanDescription = preg_replace('/!\[.*?\]\(.*?\)/', '', $board->description);
+
+      $plainText = strip_tags(\Illuminate\Support\Str::markdown($cleanDescription));
+
+    $limit = 120; 
+
+    $isLong = mb_strlen($plainText) > $limit;
+    $shortText = mb_substr($plainText, 0, $limit);
 @endphp
 
 <div class="prose prose-lg prose-slate max-w-none dark:prose-invert break-words mb-6 leading-relaxed">
+  {{ $isLong ? $shortText . '...' : $plainText }}
 
-  {!! \Illuminate\Support\Str::markdown($cleanDescription) !!}
+  @if ($isLong)
+    <a href="{{ route('boards.show', $board->id) }}" class="text-orange-400 hover:underline ml-1">続きを読む</a>
+  @endif
 </div>
 
 

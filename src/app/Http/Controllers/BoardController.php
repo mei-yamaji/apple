@@ -73,7 +73,9 @@ class BoardController extends Controller
 
     public function show(Board $board)
     {
+        $board->timestamps = false; 
         $board->increment('view_count');
+        $board->timestamps = true;
         $board->load(['tags', 'category', 'comments.user']);
         return view('boards.show', compact('board'));
     }

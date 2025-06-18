@@ -1,6 +1,6 @@
 @php use Illuminate\Support\Facades\Auth; @endphp
 <x-app-layout>
-  <div class="max-w-5xl mx-auto space-y-6 mt-6 px-4">
+  <div class="max-w-4xl mx-auto space-y-6 mt-6 px-4">
 
         <!-- 戻るボタン -->
       <div class="mt-4">
@@ -10,20 +10,53 @@
 
     <div class="p-6 border rounded-2xl shadow-lg bg-white dark:bg-gray-800">
       
-      <!-- タイトル -->
-      <h5 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
-        {{ $board->title }}
-      </h5>
+    <div class="flex justify-between items-center mb-6">
+        <!-- タイトル -->
+        <h5 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+            {{ $board->title }}
+        </h5>
 
-        <!-- カテゴリー表示 -->
-      <div class="mb-2">
-          <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
-              {{ $board->category->name ?? '未分類' }}
-          </span>
-      </div>
+    <!-- 右側ボタンたち -->
+    <div class="flex items-center space-x-2">
+      @if (Auth::check() && Auth::id() === $board->user_id)
+        <a href="{{ route('boards.edit', $board->id) }}" 
+          class="bg-blue-100 text-blue-600 rounded-full p-2 hover:bg-blue-200" 
+          title="編集">
+          <i class="ri-pencil-line text-lg"></i>
+        </a>
+        <form method="POST" action="{{ route('boards.destroy', $board->id) }}" onsubmit="return confirm('本当に削除しますか？');">
+          @csrf
+          @method('DELETE')
+          <button type="submit" 
+                  class="bg-red-100 text-red-600 rounded-full p-2 hover:bg-red-200" 
+                  title="削除">
+            <i class="ri-delete-bin-6-line text-lg"></i>
+          </button>
+        </form>
+      @endif
+ 
 
-      <!-- タグ表示 -->
-      <div class="flex flex-wrap">
+        <!-- いいねボタン -->
+        <div>
+            <button type="button"
+                    class="like-button focus:outline-none flex items-center"
+                    data-board-id="{{ $board->id }}">
+                <i class="ri-heart-fill text-2xl {{ $board->likes->contains('user_id', auth()->id()) ? 'text-red-500' : 'text-gray-400 hover:text-red-400' }}"></i>
+                <span class="ml-2" style="color: rgb(234, 88, 100);">{{ $board->like_count }}</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+    <!-- カテゴリー表示 -->
+    <div class="mb-2">
+        <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
+            {{ $board->category->name ?? '未分類' }}
+        </span>
+    </div>
+
+    <!-- タグ表示 -->
+    <div class="mb-8 flex-wrap">
         @if (!empty($board->tags) && $board->tags->isNotEmpty())
             <div class="flex flex-wrap">
                 @foreach ($board->tags as $tag)
@@ -33,24 +66,13 @@
                 @endforeach
             </div>
         @endif
-      </div>
+    </div>
 
-      <!-- 本文 -->
-<div class="prose prose-slate max-w-none dark:prose-invert break-words mb-6 leading-relaxed
-            prose-img:w-[700px] prose-img:h-auto prose-img:mx-auto prose-img:rounded">
-  {!! \Illuminate\Support\Str::markdown($board->description) !!}
-</div>
-
-      <!-- いいねボタン（右寄せ） -->
-<div class="flex justify-end mt-2">
-  <button type="button"
-          class="like-button focus:outline-none flex items-center"
-          data-board-id="{{ $board->id }}">
-    <i class="ri-heart-fill text-2xl {{ $board->likes->contains('user_id', auth()->id()) ? 'text-red-500' : 'text-gray-400 hover:text-red-400' }}"></i>
-    <span class="ml-2" style="color: rgb(234, 88, 100);">{{ $board->like_count }}</span>
-  </button>
-</div>
-
+    <!-- 本文 -->
+    <div class="prose prose-slate max-w-none dark:prose-invert break-words leading-relaxed
+                prose-img:w-[700px] prose-img:h-auto prose-img:mx-auto prose-img:rounded mb-6">
+        {!! \Illuminate\Support\Str::markdown($board->description) !!}
+    </div>
 
       <!-- 投稿日・更新日・閲覧数・ユーザー情報 -->
       <div class="flex items-center mt-3 justify-between text-gray-400 dark:text-gray-400 text-sm mb-6">
@@ -79,18 +101,6 @@
           </p>
         </div>
       </div>
-
-      <!-- 編集・削除ボタン（投稿者のみ） -->
-      @if (Auth::check() && Auth::id() === $board->user_id)
-        <div class="mt-6 flex space-x-4">
-          <a href="{{ route('boards.edit', $board->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">編集</a>
-          <form method="POST" action="{{ route('boards.destroy', $board->id) }}" onsubmit="return confirm('本当に削除しますか？');">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">削除</button>
-          </form>
-        </div>
-      @endif
     </div>
 
     <!-- コメントセクション -->

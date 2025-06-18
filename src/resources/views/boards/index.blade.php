@@ -92,6 +92,9 @@
  
       </div>
     @endforeach
+    <div class="mt-4">
+        {{ $boards->links() }}
+    </div>
   </div>
 </x-app-layout>
 

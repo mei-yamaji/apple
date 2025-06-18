@@ -20,7 +20,7 @@ public function mypage()
 {
     $boards = \App\Models\Board::where('user_id', auth()->id())
         ->latest()
-        ->get();
+        ->paginate(10);
 
     return view('mypage', compact('boards'));
 }

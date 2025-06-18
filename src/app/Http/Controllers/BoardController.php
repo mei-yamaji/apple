@@ -15,10 +15,10 @@ class BoardController extends Controller
 
    public function index()
 {
-    $boards = Board::latest()->get();
+    $boards = Board::latest()->paginate(10);
     $converter = new CommonMarkConverter();
 
-    $boards->map(function ($board) use ($converter) {
+    $boards->getCollection()->transform(function ($board) use ($converter) {
         $board->description_html = $converter->convert($board->description ?? '')->getContent();
         return $board;
     });

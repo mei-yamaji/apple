@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
     // ボード関連リソースルート（RESTful）
     Route::resource('boards', BoardController::class);
     Route::get('/boards/rankings/{type?}', [BoardController::class, 'fetchRanking'])->name('boards.rankings');
-    Route::get('/mypage', [App\Http\Controllers\BoardController::class, 'myBoards'])->name('mypage');
+    Route::get('/mypage/boards', [BoardController::class, 'myBoards'])->name('boards.my');
 
     // 人気・閲覧・最新ランキング用ルート（リソースルートの下に置く）
     Route::get('/boards/ranking/{type}', [BoardController::class, 'fetchRanking'])->name('boards.rankings');

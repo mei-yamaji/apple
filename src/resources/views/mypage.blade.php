@@ -52,10 +52,11 @@
 
   {{-- プロフィール編集ボタン --}}
   <div>
-    <a href="{{ route('profile.edit') }}"
-       class="inline-block bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+    <x-primary-button>
+    <a href="{{ route('profile.edit') }}">
       プロフィール編集
     </a>
+    </x-primary-button>
   </div>
 </div>
 

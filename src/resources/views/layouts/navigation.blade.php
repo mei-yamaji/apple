@@ -23,7 +23,7 @@
                     <x-slot name="trigger">
                         <button class="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-white bg-orange-400 rounded-full shadow-md hover:bg-orange-500 hover:scale-105 transition-all duration-200 focus:outline-none">
                             <i class="ri-pencil-line text-base"></i>
-                            <span>投稿する</span>
+                            <span>記事ナビ</span>
                             <svg class="ml-1 h-3 w-3 fill-current text-white transition-transform duration-200" xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 20 20" :class="{ 'rotate-180': open }">
                                 <path fill-rule="evenodd"

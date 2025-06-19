@@ -5,6 +5,7 @@
     </h2>
   </x-slot>
 
+  <div class="py-12">
   <div class="max-w-5xl mx-auto space-y-6 mt-6 px-4">
     <!-- 検索フォーム -->
 <form action="{{ route('boards.index') }}" method="GET" class="mb-6">

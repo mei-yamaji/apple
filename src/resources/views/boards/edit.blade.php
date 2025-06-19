@@ -11,6 +11,8 @@
                     @csrf
                     @method('PUT')
 
+                <div class="p-8 border rounded-2xl shadow-lg bg-orange-50 dark:bg-gray-800">
+
                     {{-- タイトル --}}
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">タイトル</label>
@@ -72,16 +74,16 @@
 
                     {{-- ボタン --}}
                     <div class="flex items-center justify-between">
-                        <button type="submit"
-                                class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                        <x-primary-button type="submit">
                             更新する
-                        </button>
+                        </x-primary-button>
 
-                        <a href="{{ route('boards.show', $board->id) }}" class="text-sm text-gray-600 hover:underline font-bold">
-                            戻る
+                        <a href="{{ route('boards.show', $board->id) }}" class="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-orange-500 bg-white border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
+                          <i class="ri-arrow-go-back-line"></i> 戻る
                         </a>
                     </div>
                 </form>
+                </div>
         </div>
     </div>
 

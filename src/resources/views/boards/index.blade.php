@@ -14,8 +14,8 @@
            value="{{ request('keyword') }}"
            class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-300" />
     <button type="submit"
-            class="bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600">
-      検索
+            class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-orange-400 rounded-full shadow-md hover:bg-orange-500 hover:scale-105 transition-all duration-200 focus:outline-none">
+      <i class="ri-search-line text-base"></i>
     </button>
   </div>
 </form>

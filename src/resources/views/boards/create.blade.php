@@ -13,6 +13,8 @@
         @endforeach
       </div>
     @endif
+
+    <div class="p-8 border rounded-2xl shadow-lg bg-orange-50 dark:bg-gray-800">
  
     <form class="rounded mb-4" method="POST" action="{{ route('boards.store') }}">
       @csrf
@@ -59,13 +61,13 @@
      </div>
  
       <div class="flex justify-end">
-        <button type="submit"
-          class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+        <x-primary-button type="submit">
           登録する
-        </button>
+        </x-primary-button>
       </div>
     </form>
   </div>
+</div>
  
   <!-- JS (画像アップロードとMarkdown挿入) -->
   <script>

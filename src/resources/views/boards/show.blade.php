@@ -2,10 +2,13 @@
 <x-app-layout>
   <div class="max-w-4xl mx-auto space-y-6 mt-6 px-4 pb-12">
 
-        <!-- 戻るボタン -->
-      <div class="mt-4">
-        <a href="{{ route('boards.index') }}" class="text-white hover:underline">＜ 一覧へ戻る</a>
-      </div>
+    <!-- 戻るボタン -->
+    <div class="mt-4">
+      <a href="{{ route('boards.index') }}" 
+        class="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold text-orange-500 border border-orange-400 rounded-full shadow bg-orange-100 hover:scale-105 transition-all duration-200">
+        一覧へ戻る
+      </a>
+    </div>
 
 
     <div class="p-6 border rounded-2xl shadow-lg bg-white dark:bg-gray-800">
@@ -202,9 +205,9 @@
           <textarea name="comment" rows="4" class="w-full border rounded px-3 py-2" required>{{ old('comment') }}</textarea>
         </div>
 
-        <button type="submit" class="bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700">
+        <x-primary-button type="submit">
           コメント投稿
-        </button>
+        </x-primary-button>
       </form>
     </div>
 

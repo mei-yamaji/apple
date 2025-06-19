@@ -12,10 +12,15 @@
                     <textarea name="comment" rows="4" class="w-full border rounded px-3 py-2" required>{{ old('comment', $comment->comment) }}</textarea>
                 </div>
 
-                <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+             <div class="flex justify-between items-center mt-4">
+                <x-primary-button type="submit">
                     更新する
-                </button>
-                <a href="{{ route('boards.show', $board) }}" class="ml-4 text-gray-600 hover:underline">戻る</a>
+                </x-primary-button>
+                <a href="{{ route('boards.show', $board) }}"
+                class="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-orange-500 border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
+                    <i class="ri-arrow-go-back-line"></i> 戻る
+                </a>
+             </div>
             </form>
         </div>
     </div>

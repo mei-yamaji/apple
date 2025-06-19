@@ -14,7 +14,7 @@ class BoardController extends Controller
     public function index()
     {
         // ユーザー情報を事前取得して20件ずつページネーション
-        $boards = Board::with('user')->paginate(20);
+        $boards = Board::with('user')->orderBy('created_at', 'desc')->paginate(20);
 
         return view('admin.boards.index', compact('boards'));
     }

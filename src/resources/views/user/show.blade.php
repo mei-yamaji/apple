@@ -25,6 +25,27 @@
     </p>
 
     <p class="text-gray-600 text-center mt-2">{{ $user->bio }}</p>
-</div>
+
+     {{-- お気に入り登録ボタン --}}
+    <form action="{{ route('favorites.toggle', $user->id) }}" method="POST" class="mt-4 text-center">
+        @csrf
+        <button type="submit" class="px-6 py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition">
+            @if (auth()->user()->hasFavorited($user->id))
+                お気に入り解除
+            @else
+                お気に入り登録
+            @endif
+        </button>
+    </form>
+
+    {{-- フラッシュメッセージ表示 --}}
+    @if (session('status'))
+        <p class="mt-2 text-center text-green-600">{{ session('status') }}</p>
+    @endif
+    @if (session('error'))
+        <p class="mt-2 text-center text-red-600">{{ session('error') }}</p>
+    @endif
+
+    </div>
 </x-app-layout>
  

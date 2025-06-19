@@ -1,11 +1,12 @@
 <?php
- 
+
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BoardController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Models\Board;
  
 Route::get('/', function () {
@@ -46,9 +47,17 @@ Route::middleware('auth')->group(function () {
 
     // 画像投稿機能
     Route::post('/boards/image-upload', [BoardController::class, 'uploadImage'])->name('boards.image-upload');
-
-
  
 });
 
+// 管理者認証が必要なルート
+Route::middleware('auth:admin')->group(function () {
+    Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard.index');
+});
+
 require __DIR__.'/auth.php';
+
+// 管理者用ルート（admin.phpを読み込む）
+Route::prefix('admin')->group(function () {
+    require __DIR__.'/admin.php';
+});

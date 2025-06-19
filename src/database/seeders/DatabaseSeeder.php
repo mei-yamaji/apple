@@ -11,9 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // CategoriesTableSeederを呼び出す
         $this->call([
             CategoriesTableSeeder::class,
+            UserSeeder::class,
+            BoardSeeder::class,
+            AdminUserSeeder::class,
         ]);
     }
 }

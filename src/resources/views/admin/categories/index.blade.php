@@ -23,13 +23,17 @@
                         <td class="px-4 py-2">{{ $category->id }}</td>
                         <td class="px-4 py-2">{{ $category->name }}</td>
                         <td class="px-4 py-2">{{ $category->created_at->format('Y-m-d H:i') }}</td>
-                        <td class="px-4 py-2">
-                            <a href="{{ route('admin.categories.edit', $category->id) }}" class="text-blue-600 hover:underline">編集</a>
+                        <td class="px-4 py-2 whitespace-nowrap">
+                            <a href="{{ route('admin.categories.edit', $category->id) }}"
+                               class="text-blue-600 hover:underline text-sm">編集</a>
 
-                            <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST" class="inline-block" onsubmit="return confirm('本当に削除しますか？');">
+                            <form action="{{ route('admin.categories.destroy', $category->id) }}"
+                                  method="POST"
+                                  class="inline-block ml-2"
+                                  onsubmit="return confirm('本当に削除しますか？');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-600 hover:underline ml-2">削除</button>
+                                <button type="submit" class="text-red-600 hover:underline text-sm">削除</button>
                             </form>
                         </td>
                     </tr>

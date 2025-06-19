@@ -8,26 +8,35 @@
 
     {{-- ヘッダー --}}
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-orange-900 leading-tight">
+        <h2 class="font-semibold text-xl text-orange-900 leading-tight text-center">
             記事ランキング
         </h2>
     </x-slot>
 
-    {{-- タイトル --}}
-    <div class="top-wrapper relative">
-        <div class="top-inner-text absolute inset-0 flex items-center justify-center">
-            <h1 class="text-6xl text-center font-bold" style="color:rgb(118, 58, 21);">APPLE</h1>
-        </div>
-    </div>
-
     {{-- コンテンツ部分 --}}
-    <div class="container mx-auto px-4 py-8">
+        <div class="container mx-auto px-4 py-8">
         <!-- 切り替えボタン -->
-        <div class="tabs flex gap-4 mb-4 justify-center">
-            <button onclick="loadBoards('latest')" class="tab-button active" id="btn-latest">最新</button>
-            <button onclick="loadBoards('popular')" class="tab-button" id="btn-popular">人気</button>
-            <button onclick="loadBoards('views')" class="tab-button" id="btn-views">閲覧</button>
-        </div>
+        <div class="tabs flex justify-center gap-6 mb-6">
+             <span class="text-5xl">🍎</span>
+             <span class="text-5xl">🍎</span>
+        <x-primary-button onclick="loadBoards('latest')" 
+            class="text-xl px-12 py-4"
+            id="btn-latest">
+            最新
+        </x-primary-button>
+        <x-primary-button onclick="loadBoards('popular')" 
+            class="text-xl px-12 py-4"
+            id="btn-popular">
+            人気
+        </x-primary-button>
+        <x-primary-button onclick="loadBoards('views')" 
+            class="text-xl px-12 py-4"
+            id="btn-views">
+            閲覧
+        </x-primary-button>
+         <span class="text-5xl">🍎</span>
+         <span class="text-5xl">🍎</span>
+    </div>
 
         <div id="ranking-container"></div>
 

@@ -18,7 +18,7 @@
         <main>
             <div class="flex flex-col md:flex-row">
                 @include('layouts.admin-sidebar')
-                <section class="w-full h-screen bg-white">
+                <section class="w-full h-screen">
                     <div id="main" class="main-content flex-1 mt-2 md:mt-2 pb-24 md:pb-5">
                         <div class="rounded-tl-3xl from-blue-900 p-4 text-2xl">
                             {{ $slot }}

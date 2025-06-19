@@ -1,6 +1,6 @@
 @php use Illuminate\Support\Facades\Auth; @endphp
 <x-app-layout>
-  <div class="max-w-4xl mx-auto space-y-6 mt-6 px-4">
+  <div class="max-w-4xl mx-auto space-y-6 mt-6 px-4 pb-12">
 
         <!-- 戻るボタン -->
       <div class="mt-4">
@@ -120,42 +120,62 @@
       @if($board->comments->count() > 0)
         <ul class="mb-6 space-y-4">
           @foreach ($board->comments as $comment)
-            <li class="border-b pb-2 flex items-start space-x-3">
-              @if ($comment->user && $comment->user->profile_image)
-                <img src="{{ asset('storage/' . $comment->user->profile_image) }}"
-                     alt="{{ $comment->user->name }}のプロフィール画像"
-                     class="w-8 h-8 rounded-full object-cover">
-              @else
-                <img src="{{ asset('storage/default_icon.png') }}"
-                     alt="デフォルトアイコン"
-                     class="w-8 h-8 rounded-full object-cover">
-              @endif
-              <div>
-                <div class="flex items-center gap-2">
-                  <strong class="flex items-center">
-                    <a href="{{ route('user.show', $comment->user->id ?? 0) }}" class="text-orange-400 hover:underline">
-                      {{ $comment->user?->name ?? '名無し' }}
-                    </a>
-                    @if ($comment->user?->is_runteq_student)
-                      <span>🍎</span>
-                    @endif
-                  </strong>
-                  <span class="text-sm text-gray-500">{{ $comment->created_at->format('Y-m-d H:i') }}</span>
-                </div>
-                <p>{{ $comment->comment }}</p>
+            <li class="border-b pb-2">
+  <div class="flex justify-between items-start">
+    {{-- 左側：プロフィール画像 + コメント --}}
+    <div class="flex space-x-3">
+      {{-- プロフィール画像 --}}
+      @if ($comment->user && $comment->user->profile_image)
+        <img src="{{ asset('storage/' . $comment->user->profile_image) }}"
+             alt="{{ $comment->user->name }}のプロフィール画像"
+             class="w-8 h-8 rounded-full object-cover">
+      @else
+        <img src="{{ asset('storage/default_icon.png') }}"
+             alt="デフォルトアイコン"
+             class="w-8 h-8 rounded-full object-cover">
+      @endif
 
-                @if (Auth::id() === $comment->user_id)
-                  <div class="text-sm text-gray-500 mt-1 flex space-x-2">
-                    <a href="{{ route('comments.edit', [$board, $comment]) }}" class="text-green-500 hover:underline">編集</a>
-                    <form action="{{ route('comments.destroy', [$board, $comment]) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');">
-                      @csrf
-                      @method('DELETE')
-                      <button type="submit" class="text-red-500 hover:underline">削除</button>
-                    </form>
-                  </div>
-                @endif
-              </div>
-            </li>
+      {{-- コメント内容 --}}
+      <div>
+        <div class="flex items-center gap-2">
+          <strong class="flex items-center">
+            <a href="{{ route('user.show', $comment->user->id ?? 0) }}" class="text-orange-400 hover:underline">
+              {{ $comment->user?->name ?? '名無し' }}
+            </a>
+            @if ($comment->user?->is_runteq_student)
+              <span>🍎</span>
+            @endif
+          </strong>
+          <span class="text-sm text-gray-500">{{ $comment->created_at->format('Y-m-d H:i') }}</span>
+        </div>
+        <p>{{ $comment->comment }}</p>
+      </div>
+    </div>
+
+    {{-- 右側：編集・削除ボタン --}}
+    @if (Auth::id() === $comment->user_id)
+      <div class="flex items-center space-x-2 text-sm text-gray-500">
+        {{-- 編集 --}}
+        <a href="{{ route('comments.edit', [$board, $comment]) }}" 
+           class="text-green-500 hover:text-green-700" 
+           title="編集">
+          <i class="ri-pencil-line text-lg"></i>
+        </a>
+
+        {{-- 削除 --}}
+        <form action="{{ route('comments.destroy', [$board, $comment]) }}" 
+              method="POST" 
+              onsubmit="return confirm('本当に削除しますか？');">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="text-red-500 hover:text-red-700" title="削除">
+            <i class="ri-delete-bin-line text-lg"></i>
+          </button>
+        </form>
+      </div>
+    @endif
+  </div>
+</li>
           @endforeach
         </ul>
       @else

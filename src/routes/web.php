@@ -7,6 +7,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\BoardController as AdminBoardController;
 use App\Models\Board;
  
 Route::get('/', function () {
@@ -53,6 +55,10 @@ Route::middleware('auth')->group(function () {
 // 管理者認証が必要なルート
 Route::middleware('auth:admin')->group(function () {
     Route::get('/admin', [DashboardController::class, 'index'])->name('dashboard.index');
+    Route::name('admin.')->prefix('admin')->group(function () {
+        Route::resource('users', AdminUserController::class)->only(['index',  'edit', 'update', 'destroy']);
+        Route::resource('boards', AdminBoardController::class)->only(['index', 'edit', 'update', 'destroy']);
+     });   
 });
 
 require __DIR__.'/auth.php';

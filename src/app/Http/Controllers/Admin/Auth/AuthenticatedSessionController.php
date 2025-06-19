@@ -23,22 +23,19 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-   public function store(LoginRequest $request): RedirectResponse
-{
-    $request->authenticate();
+    public function store(LoginRequest $request): RedirectResponse
+    {
+        $request->authenticate();
 
-    $request->session()->regenerate();
-
-    // ここは、LoginRequest内で使っているガードに合わせたリダイレクト先を指定すればOK
-    // 管理者ログインなら管理者ホームへ、そうでなければ一般ユーザーのホームへリダイレクト
-    $guard = $request->is('admin/*') ? 'admin' : 'web';
-
-    if ($guard === 'admin') {
+        $request->session()->regenerate();
+        
+    if (Auth::guard('admin')->check()) {
         return redirect()->intended(RouteServiceProvider::ADMIN_HOME);
-    } else {
-        return redirect()->intended(RouteServiceProvider::HOME);
     }
-}
+
+    return redirect()->intended(RouteServiceProvider::HOME);
+    }
+
     /**
      * Destroy an authenticated session.
      */

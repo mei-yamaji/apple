@@ -58,5 +58,15 @@ class User extends Authenticatable
         return $this->hasMany(Like::class);
     }
 
+    // 自分がお気に入りしているユーザー達
+    public function favorites()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'user_id', 'favorite_user_id')->withTimestamps();
+    }
+
+    public function hasFavorited($userId)
+    {
+        return $this->favorites()->where('favorite_user_id', $userId)->exists();
+    }
 
 }

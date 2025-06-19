@@ -6,6 +6,7 @@ use App\Http\Controllers\BoardController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\BoardController as AdminBoardController;
@@ -46,6 +47,9 @@ Route::middleware('auth')->group(function () {
     // ユーザー関連
     Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');
+
+    // ユーザーのお気に入り登録
+    Route::post('/favorites/{user}', [FavoriteController::class, 'toggle'])->name('favorites.toggle')->middleware('auth');
 
     // 画像投稿機能
     Route::post('/boards/image-upload', [BoardController::class, 'uploadImage'])->name('boards.image-upload');

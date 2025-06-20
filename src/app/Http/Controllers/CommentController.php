@@ -6,6 +6,7 @@ use App\Models\Board;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\CommentNotification;
 
 class CommentController extends Controller
 {
@@ -19,6 +20,10 @@ class CommentController extends Controller
             'user_id' => Auth::id(), 
             'comment' => $request->comment,
         ]);
+
+        if ($board->user->id !== Auth::id()) {
+    $board->user->notify(new CommentNotification(auth()->user(), $board));
+}
 
         return redirect()->route('boards.show', $board)->with('success', 'コメントが投稿されました');
     }

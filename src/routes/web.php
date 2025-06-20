@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\BoardController as AdminBoardController;
 use App\Models\Board;
+use App\Http\Controllers\NotificationController;
  
 Route::get('/', function () {
     return view('dashboard');
@@ -58,6 +59,12 @@ Route::middleware('auth')->group(function () {
 
     // 画像投稿機能
     Route::post('/boards/image-upload', [BoardController::class, 'uploadImage'])->name('boards.image-upload');
+
+    // 通知機能
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
+
+    Route::post('/notifications/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
  
 });
 
@@ -76,3 +83,4 @@ require __DIR__.'/auth.php';
 Route::prefix('admin')->group(function () {
     require __DIR__.'/admin.php';
 });
+

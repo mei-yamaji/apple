@@ -113,7 +113,7 @@
                         <a href="${board.detail_url}">${board.title}</a>
                         </h2>
                         <div class="text-sm text-gray-500 mb-4">
-                        投稿者: ${board.user.name || '不明'}
+                        投稿者: ${board.user.name}${board.user.is_runteq_student ? '<span>🍎</span>' : ''}
                         投稿日: ${dateStr}
                         </div>
                         <div class="prose prose-gray max-w-none">${shortDesc}${moreLink}</div>

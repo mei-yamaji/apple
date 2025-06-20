@@ -62,115 +62,137 @@
 
     {{-- 切り替えボタン --}}
 <div class="tabs flex justify-center gap-6 mb-6">
-     <span class="text-5xl">🍎</span>
-     <span class="text-5xl">🍎</span>
-    <a href="{{ route('mypage', ['view' => 'own']) }}">
-        <x-primary-button class="text-xl px-12 py-4 {{ $viewMode === 'own' ? 'bg-blue-600 text-white' : '' }}">
-            自分の投稿
-        </x-primary-button>
-    </a>
+    <span class="text-5xl">🍎</span>
+    <span class="text-5xl">🍎</span>
 
-    <a href="{{ route('mypage', ['view' => 'likes']) }}">
-        <x-primary-button class="text-xl px-12 py-4 {{ $viewMode === 'likes' ? 'bg-blue-600 text-white' : '' }}">
-            いいねした記事
-        </x-primary-button>
-    </a>
-      <span class="text-5xl">🍎</span>
-      <span class="text-5xl">🍎</span>
+    <button id="ownTabButton"
+        class="text-xl px-12 py-4 border rounded-xl transition-all tab-button {{ $viewMode === 'own' ? 'bg-blue-600 text-white' : '' }}">
+        自分の投稿
+    </button>
+
+    <button id="likesTabButton"
+        class="text-xl px-12 py-4 border rounded-xl transition-all tab-button {{ $viewMode === 'likes' ? 'bg-blue-600 text-white' : '' }}">
+        いいねした記事
+    </button>
+
+    <span class="text-5xl">🍎</span>
+    <span class="text-5xl">🍎</span>
 </div>
 
    {{-- 投稿一覧表示 --}}
-      @if ($viewMode === 'own')
+      <div id="ownPosts" style="{{ $viewMode === 'own' ? '' : 'display:none;' }}">
         {{-- 自分の投稿 --}}
-        @if ($boards->isNotEmpty())
-          @foreach ($boards as $board)
-            <div class="border rounded-2xl shadow-md p-6 mb-6 bg-white">
-              <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ $board->title }}</h2>
-              <div class="text-sm text-gray-500 mb-4">
-                投稿者: {{ $board->user->name ?? '不明' }}
-                投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
-              </div>
-              <div class="prose prose-gray max-w-none">
-              @php
-                // 画像だけ除去
-                $htmlWithoutImages = preg_replace('/<img[^>]*>/', '', $board->description_html ?? '');
+            @if ($boards->isNotEmpty())
+              @foreach ($boards as $board)
+                <div class="border rounded-2xl shadow-md p-6 mb-6 bg-white">
+                  <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ $board->title }}</h2>
+                  <div class="text-sm text-gray-500 mb-4">
+                    投稿者: {{ $board->user->name ?? '不明' }}
+                    投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
+                  </div>
+                  <div class="prose prose-gray max-w-none">
+                  @php
+                    // 画像だけ除去
+                    $htmlWithoutImages = preg_replace('/<img[^>]*>/', '', $board->description_html ?? '');
 
-                // プレーンテキストに変換（タグ除去）
-                $plainDescription = strip_tags($htmlWithoutImages);
+                    // プレーンテキストに変換（タグ除去）
+                    $plainDescription = strip_tags($htmlWithoutImages);
 
-                // 表示する最大文字数
-                $maxLength = 100;
+                    // 表示する最大文字数
+                    $maxLength = 100;
 
-                // 短縮された本文（必要なら）
-                $shortDescription = Str::limit($plainDescription, $maxLength);
-              @endphp
+                    // 短縮された本文（必要なら）
+                    $shortDescription = Str::limit($plainDescription, $maxLength);
+                  @endphp
 
-              {{ $shortDescription }}
+                  {{ $shortDescription }}
 
-              @if (Str::length($plainDescription) > $maxLength)
-                <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>
-              @endif
-            </div>
+                  @if (Str::length($plainDescription) > $maxLength)
+                    <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>
+                  @endif
+                </div>
 
-              <div class="mt-4 flex items-center gap-4">
-                <span class="text-sm text-gray-600">💖 {{ $board->likes_count ?? 0 }} 件のいいね</span>
-                @if (route('boards.show', $board->id, false))
-                  <a href="{{ route('boards.show', $board->id) }}" class="text-green-600 hover:underline text-sm">詳細を見る</a>
-                @endif
-              </div>
-            </div>
-          @endforeach
-          <div class="mt-4">{{ $boards->links() }}</div>
-        @else
-          <p class="text-gray-500 text-center">あなたの投稿はまだありません。</p>
-        @endif
+                  <div class="mt-4 flex items-center gap-4">
+                    <span class="text-sm text-gray-600">💖 {{ $board->likes_count ?? 0 }} 件のいいね</span>
+                    @if (route('boards.show', $board->id, false))
+                      <a href="{{ route('boards.show', $board->id) }}" class="text-green-600 hover:underline text-sm">詳細を見る</a>
+                    @endif
+                  </div>
+                </div>
+              @endforeach
+              <div class="mt-4">{{ $boards->links() }}</div>
+            @else
+              <p class="text-gray-500 text-center">あなたの投稿はまだありません。</p>
+            @endif
+    </div>
 
-      @elseif ($viewMode === 'likes')
+    <div id="likedPosts" style="{{ $viewMode === 'likes' ? '' : 'display:none;' }}">
         {{-- お気に入り --}}
-        @if ($likedBoards->isNotEmpty())
-          @foreach ($likedBoards as $board)
-            <div class="border rounded-2xl shadow-md p-6 mb-6 bg-white">
-              <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ $board->title }}</h2>
-              <div class="text-sm text-gray-500 mb-4">
-                投稿者: {{ $board->user->name ?? '不明' }}
-                投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
-              </div>
-              <div class="prose prose-gray max-w-none">
-              @php
-                // 画像だけ除去
-                $htmlWithoutImages = preg_replace('/<img[^>]*>/', '', $board->description_html ?? '');
+            @if ($likedBoards->isNotEmpty())
+              @foreach ($likedBoards as $board)
+                <div class="border rounded-2xl shadow-md p-6 mb-6 bg-white">
+                  <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ $board->title }}</h2>
+                  <div class="text-sm text-gray-500 mb-4">
+                    投稿者: {{ $board->user->name ?? '不明' }}
+                    投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
+                  </div>
+                  <div class="prose prose-gray max-w-none">
+                  @php
+                    // 画像だけ除去
+                    $htmlWithoutImages = preg_replace('/<img[^>]*>/', '', $board->description_html ?? '');
 
-                // プレーンテキストに変換（タグ除去）
-                $plainDescription = strip_tags($htmlWithoutImages);
+                    // プレーンテキストに変換（タグ除去）
+                    $plainDescription = strip_tags($htmlWithoutImages);
 
-                // 表示する最大文字数
-                $maxLength = 100;
+                    // 表示する最大文字数
+                    $maxLength = 100;
 
-                // 短縮された本文（必要なら）
-                $shortDescription = Str::limit($plainDescription, $maxLength);
-              @endphp
+                    // 短縮された本文（必要なら）
+                    $shortDescription = Str::limit($plainDescription, $maxLength);
+                  @endphp
 
-              {{ $shortDescription }}
+                  {{ $shortDescription }}
 
-              @if (Str::length($plainDescription) > $maxLength)
-                <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>
-              @endif
-            </div>
+                  @if (Str::length($plainDescription) > $maxLength)
+                    <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>
+                  @endif
+                </div>
 
-              <div class="mt-4 flex items-center gap-4">
-                <span class="text-sm text-gray-600">💖 {{ $board->likes_count ?? 0 }} 件のいいね</span>
-                @if (route('boards.show', $board->id, false))
-                  <a href="{{ route('boards.show', $board->id) }}" class="text-green-600 hover:underline text-sm">詳細を見る</a>
-                @endif
-              </div>
-            </div>
-          @endforeach
-        @else
-          <p class="text-gray-500 text-center">お気に入りの投稿はまだありません。</p>
-        @endif
-      @endif
-
+                  <div class="mt-4 flex items-center gap-4">
+                    <span class="text-sm text-gray-600">💖 {{ $board->likes_count ?? 0 }} 件のいいね</span>
+                    @if (route('boards.show', $board->id, false))
+                      <a href="{{ route('boards.show', $board->id) }}" class="text-green-600 hover:underline text-sm">詳細を見る</a>
+                    @endif
+                  </div>
+                </div>
+              @endforeach
+            @else
+              <p class="text-gray-500 text-center">お気に入りの投稿はまだありません。</p>
+            @endif
     </div>
   </div>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ownButton = document.getElementById('ownTabButton');
+        const likesButton = document.getElementById('likesTabButton');
+        const ownPosts = document.getElementById('ownPosts');
+        const likedPosts = document.getElementById('likedPosts');
+
+        ownButton.addEventListener('click', function () {
+            ownPosts.style.display = 'block';
+            likedPosts.style.display = 'none';
+            ownButton.classList.add('bg-blue-600', 'text-white');
+            likesButton.classList.remove('bg-blue-600', 'text-white');
+        });
+
+        likesButton.addEventListener('click', function () {
+            ownPosts.style.display = 'none';
+            likedPosts.style.display = 'block';
+            likesButton.classList.add('bg-blue-600', 'text-white');
+            ownButton.classList.remove('bg-blue-600', 'text-white');
+        });
+    });
+</script>
   
 </x-app-layout>

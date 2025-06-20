@@ -10,47 +10,40 @@ use League\CommonMark\CommonMarkConverter;
 class UserController extends Controller
 {
     public function mypage(Request $request)
-    {
-        $converter = new CommonMarkConverter();
-        $user = auth()->user();
-        $viewMode = $request->query('view', 'own'); // 'own'（自分の投稿）か 'likes'（いいね）
+{
+    $converter = new CommonMarkConverter();
+    $user = auth()->user();
+    $viewMode = $request->query('view', 'own'); // 初期表示判定用
 
-        if ($viewMode === 'likes') {
-            // ✅ いいねしたBoard一覧
-             $likedBoards = Board::withCount('likes')
-                    ->whereIn('id', $user->likes()->pluck('board_id'))
-                    ->latest()
-                    ->get();
+    // ✅ 自分の投稿（ページネーションあり）
+    $boards = Board::withCount('likes')
+        ->where('user_id', $user->id)
+        ->latest()
+        ->paginate(10);
 
-            $likedBoards->map(function ($board) use ($converter) {
-                $board->description_html = $converter->convert($board->description ?? '')->getContent();
-                return $board;
-            });
+    $boards->map(function ($board) use ($converter) {
+        $board->description_html = $converter->convert($board->description ?? '')->getContent();
+        return $board;
+    });
 
-            return view('mypage', [
-                'boards' => collect(), // 空のコレクション
-                'likedBoards' => $likedBoards,
-                'viewMode' => 'likes',
-            ]);
-        } else {
-            // ✅ 自分の投稿（ページネーションあり）
-            $boards = Board::withCount('likes')
-                ->where('user_id', $user->id)
-                ->latest()
-                ->paginate(10);
+    // ✅ いいねした記事（全部取得）
+    $likedBoards = Board::withCount('likes')
+        ->whereIn('id', $user->likes()->pluck('board_id'))
+        ->latest()
+        ->get();
 
-            $boards->map(function ($board) use ($converter) {
-                $board->description_html = $converter->convert($board->description ?? '')->getContent();
-                return $board;
-            });
+    $likedBoards->map(function ($board) use ($converter) {
+        $board->description_html = $converter->convert($board->description ?? '')->getContent();
+        return $board;
+    });
 
-            return view('mypage', [
-                'boards' => $boards,
-                'likedBoards' => collect(), // 空のコレクション
-                'viewMode' => 'own',
-            ]);
-        }
-    }
+    return view('mypage', [
+        'boards' => $boards,
+        'likedBoards' => $likedBoards,
+        'viewMode' => $viewMode, // 初期表示を切り替えられるように残しておく
+    ]);
+}
+
 
     public function show(User $user)
     {

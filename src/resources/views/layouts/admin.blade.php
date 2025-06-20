@@ -11,6 +11,9 @@
         @endif
         <!-- Scripts -->
         @vite(['resources/css/admin.css', 'resources/js/admin.js'])
+
+        <!-- Remix Icon CDN -->
+        <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
     </head>
     <body class="bg-gray-800 font-sans leading-normal tracking-normal mt-12">
         @include('layouts.admin-navigation')

@@ -4,7 +4,7 @@
         <div class="flex flex-wrap items-center justify-between">
             <div class="flex flex-shrink md:w-1/3 justify-center md:justify-start text-white">
                 <a href="/admin" aria-label="Home">
-                    <span class="text-xl pl-2">RUNTEQ BOARD</span>
+                    <span class="text-xl pl-2">APPLE BOARD</span>
                 </a>
             </div>
             <div>

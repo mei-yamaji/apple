@@ -11,6 +11,17 @@ class BoardController extends Controller
     /**
      * 掲示板一覧を表示（管理者用）
      */
+public function index(Request $request)
+{
+    $status = $request->input('status');
+
+    $query = Board::with('user')->orderBy('created_at', 'desc');
+
+    if ($status === 'published') {
+        $query->where('is_published', true);
+    } elseif ($status === 'unpublished') {
+        $query->where('is_published', false);
+    }
    public function index(Request $request)
 {
     // クエリビルダー開始。投稿に紐づくユーザー・タグ・カテゴリをEager Load
@@ -33,6 +44,11 @@ class BoardController extends Controller
     return view('admin.boards.index', compact('boards'));
 }
 
+
+    $boards = $query->paginate(20);
+
+    return view('admin.boards.index', compact('boards', 'status'));
+}
 
     /**
      * 編集画面を表示

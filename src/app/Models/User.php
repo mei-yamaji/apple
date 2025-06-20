@@ -68,4 +68,16 @@ class User extends Authenticatable
     {
         return $this->favorites()->where('favorite_user_id', $userId)->exists();
     }
+
+    // 自分がフォローしているユーザー
+    public function followings()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'user_id', 'favorite_user_id');
+    }
+
+    // 自分をフォローしているユーザー
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'favorites', 'favorite_user_id', 'user_id');
+    }
 }

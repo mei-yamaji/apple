@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
@@ -66,5 +67,24 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function followings(User $user)
+    {
+        $followings = $user->followings()->paginate(10);
+        return view('profile.followings', compact('user', 'followings'));
+    }
+
+    public function followers(User $user)
+    {
+        $followers = $user->followers()->paginate(10);
+        return view('profile.followers', compact('user', 'followers'));
+    }
+
+    public function show(User $user)
+    {
+        $boards = $user->boards()->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('user.show', compact('user','boards'));
     }
 }

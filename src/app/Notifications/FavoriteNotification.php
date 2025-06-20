@@ -36,7 +36,7 @@ class FavoriteNotification extends Notification
     {
         return [
             'type' => 'favorite',
-            'message' => "{$this->user->name} さんがお気に入りに追加しました。",
+            'message' => "{$this->user->name} さんにフォローされました。",
             'board_id' => $this->board->id,
         ];
     }

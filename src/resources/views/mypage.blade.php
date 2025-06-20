@@ -31,6 +31,23 @@
           <span class="text-yellow-400">🍎</span>
         @endif
       </h3>
+
+            {{-- フォロー・フォロワーボタン --}}
+      <div class="flex space-x-3 ml-6">
+          {{-- フォロー中 --}}
+          <a href="{{ route('profile.followings', Auth::id()) }}" 
+            class="flex items-center gap-1 px-3 py-1 text-xs bg-orange-100 text-orange-600 rounded-full shadow hover:bg-orange-200 hover:scale-105 transition-all duration-200">
+              <i class="ri-user-follow-line text-base"></i>
+              <span>フォロー中：{{ Auth::user()->followings()->count() }}人</span>
+          </a>
+
+          {{-- フォロワー --}}
+          <a href="{{ route('profile.followers', Auth::id()) }}" 
+            class="flex items-center gap-1 px-3 py-1 text-xs bg-orange-100 text-orange-600 rounded-full shadow hover:bg-orange-200 hover:scale-105 transition-all duration-200">
+              <i class="ri-group-line text-base"></i>
+              <span>フォロワー：{{ Auth::user()->followers()->count() }}人</span>
+          </a>
+      </div>
     </div>
 
     {{-- ひとこと --}}

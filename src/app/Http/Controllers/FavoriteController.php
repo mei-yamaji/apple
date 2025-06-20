@@ -26,7 +26,7 @@ class FavoriteController extends Controller
 
     if ($authUser->id === $user->id) {
 
-        return back()->with('error', '自分自身をお気に入り登録できません。');
+        return back()->with('error', '自分自身をフォローできません。');
 
     }
  
@@ -36,7 +36,7 @@ class FavoriteController extends Controller
 
         $authUser->favorites()->detach($user->id);
 
-        $message = 'お気に入りを解除しました。';
+        $message = 'フォローを解除しました。';
 
     } else {
 
@@ -46,7 +46,7 @@ class FavoriteController extends Controller
 
         $user->notify(new FavoriteNotification(auth()->user(), $user));
  
-        $message = 'お気に入りに登録しました。';
+        $message = 'フォローしました。';
 
     }
  

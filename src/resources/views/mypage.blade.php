@@ -91,7 +91,10 @@
                       </a>
                   </h2>
                   <div class="text-sm text-gray-500 mb-4">
-                    投稿者: ${board.user.name}${board.user.is_runteq_student ? '<span>🍎</span>' : ''}
+                    投稿者: {{ $board->user->name ?? '不明' }}
+                    @if (!empty($board->user->is_runteq_student) && $board->user->is_runteq_student)
+                      <span>🍎</span>
+                    @endif
                     投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
                   </div>
                   <div class="prose prose-gray max-w-none">
@@ -138,7 +141,10 @@
                       </a>
                   </h2>
                   <div class="text-sm text-gray-500 mb-4">
-                    投稿者: ${board.user.name}${board.user.is_runteq_student ? '<span>🍎</span>' : ''}
+                    投稿者: {{ $board->user->name ?? '不明' }}
+                    @if (!empty($board->user->is_runteq_student) && $board->user->is_runteq_student)
+                      <span>🍎</span>
+                    @endif
                     投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
                   </div>
                   <div class="prose prose-gray max-w-none">

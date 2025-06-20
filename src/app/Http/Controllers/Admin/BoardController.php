@@ -11,13 +11,28 @@ class BoardController extends Controller
     /**
      * 掲示板一覧を表示（管理者用）
      */
-    public function index()
-    {
-        // ユーザー情報を事前取得して20件ずつページネーション
-        $boards = Board::with('user')->orderBy('created_at', 'desc')->paginate(20);
+   public function index(Request $request)
+{
+    // クエリビルダー開始。投稿に紐づくユーザー・タグ・カテゴリをEager Load
+    $query = Board::with(['user', 'tags', 'category'])->orderBy('created_at', 'desc');
 
-        return view('admin.boards.index', compact('boards'));
-    }
+    // キーワード検索があれば絞り込み
+    if ($request->filled('keyword')) {
+    $keyword = $request->input('keyword');
+    $query->where(function ($q) use ($keyword) {
+        $q->where('title', 'like', "%{$keyword}%")
+          ->orWhere('description', 'like', "%{$keyword}%");
+    });
+}
+
+
+    // ページネーション（20件ずつ）
+    $boards = $query->paginate(20);
+
+    // ビューへデータ渡し
+    return view('admin.boards.index', compact('boards'));
+}
+
 
     /**
      * 編集画面を表示

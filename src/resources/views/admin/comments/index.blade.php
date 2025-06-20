@@ -21,9 +21,9 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="px-4 py-2">ID</th>
-                    <th class="px-4 py-2">ユーザー</th>
-                    <th class="px-4 py-2">ボード</th>
-                    <th class="px-4 py-2">内容</th>
+                    <th class="px-4 py-2">投稿者</th>
+                    <th class="px-4 py-2">タイトル</th>
+                    <th class="px-4 py-2">コメント</th>
                     <th class="px-4 py-2">作成日時</th>
                     <th class="px-4 py-2">操作</th>
                 </tr>

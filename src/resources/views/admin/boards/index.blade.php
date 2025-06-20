@@ -25,8 +25,8 @@
                     <th class="px-6 py-2">投稿者</th>
                     <th class="px-6 py-2">タイトル</th>
                     <th class="px-6 py-2 w-48">本文</th>
-                    <th class="px-6 py-2 w-36">作成日</th>
-                    <th class="px-6 py-2 w-36">更新日</th>
+                    <th class="px-6 py-2 w-36">作成日時</th>
+                    <th class="px-6 py-2 w-36">更新日時</th>
                     <th class="px-6 py-2">操作</th>
                 </tr>
             </thead>

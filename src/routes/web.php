@@ -26,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/{user}/followings', [ProfileController::class, 'followings'])->name('profile.followings');
+    Route::get('/profile/{user}/followers', [ProfileController::class, 'followers'])->name('profile.followers');
+    Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
 
     // ボード関連リソースルート（RESTful）
     Route::resource('boards', BoardController::class);

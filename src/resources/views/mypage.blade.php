@@ -65,15 +65,15 @@
     <span class="text-5xl">🍎</span>
     <span class="text-5xl">🍎</span>
 
-    <button id="ownTabButton"
-        class="text-xl px-12 py-4 border rounded-xl transition-all tab-button {{ $viewMode === 'own' ? 'bg-blue-600 text-white' : '' }}">
-        自分の投稿
-    </button>
+<x-primary-button 
+  class="tab-button" id="ownTabButton">
+  自分の投稿
+</x-primary-button>
 
-    <button id="likesTabButton"
-        class="text-xl px-12 py-4 border rounded-xl transition-all tab-button {{ $viewMode === 'likes' ? 'bg-blue-600 text-white' : '' }}">
+    <x-primary-button id="likesTabButton"
+        class="text-xl px-12 py-4 border transition-all tab-button {{ $viewMode === 'likes' ? 'bg-blue-600 text-white' : '' }}">
         いいねした記事
-    </button>
+    </x-primary-button>
 
     <span class="text-5xl">🍎</span>
     <span class="text-5xl">🍎</span>
@@ -174,25 +174,81 @@
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const ownButton = document.getElementById('ownTabButton');
-        const likesButton = document.getElementById('likesTabButton');
-        const ownPosts = document.getElementById('ownPosts');
-        const likedPosts = document.getElementById('likedPosts');
+    const ownButton = document.getElementById('ownTabButton');
+    const likesButton = document.getElementById('likesTabButton');
+    const ownPosts = document.getElementById('ownPosts');
+    const likedPosts = document.getElementById('likedPosts');
 
-        ownButton.addEventListener('click', function () {
+    function setActive(button) {
+        // まず非表示にして、activeクラスを外す
+        ownPosts.style.display = 'none';
+        likedPosts.style.display = 'none';
+
+        ownButton.classList.remove('active', 'bg-blue-600', 'text-white');
+        likesButton.classList.remove('active', 'bg-blue-600', 'text-white');
+
+        // クリックされたボタンを active にして
+        button.classList.add('active', 'bg-blue-600', 'text-white');
+
+        // 対応するコンテンツだけ表示
+        if (button === ownButton) {
             ownPosts.style.display = 'block';
-            likedPosts.style.display = 'none';
-            ownButton.classList.add('bg-blue-600', 'text-white');
-            likesButton.classList.remove('bg-blue-600', 'text-white');
-        });
-
-        likesButton.addEventListener('click', function () {
-            ownPosts.style.display = 'none';
+        } else if (button === likesButton) {
             likedPosts.style.display = 'block';
-            likesButton.classList.add('bg-blue-600', 'text-white');
-            ownButton.classList.remove('bg-blue-600', 'text-white');
-        });
+        }
+    }
+
+    // 初期表示
+    if (ownPosts.style.display === 'block') {
+        setActive(ownButton);
+    } else {
+        setActive(likesButton);
+    }
+
+    ownButton.addEventListener('click', function () {
+        setActive(ownButton);
     });
+
+    likesButton.addEventListener('click', function () {
+        setActive(likesButton);
+    });
+});
+
 </script>
+
+@push('styles')
+    <style>
+        .tab-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem; /* Tailwindの gap-2 = 0.5rem */
+    padding: 0.75rem 1.25rem; /* py-3=12px(0.75rem), px-5=20px(1.25rem) */
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 600; /* font-semibold */
+    color: white;
+    background-color: #fb923c; /* Tailwind orange-400 (#fb923c) */
+    border-radius: 9999px; /* rounded-full */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* shadow-md相当 */
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    outline: none;
+  }
+
+  .tab-button:hover {
+      background-color: #f97316; /* orange-500 */
+      transform: scale(1.05);
+  }
+
+  .tab-button:focus {
+      outline: none;
+  }
+
+  .tab-button.active {
+      background-color: #ea580c; /* ちょっと濃いオレンジ */
+      color: white;
+  }
+      </style>
+    @endpush
   
 </x-app-layout>

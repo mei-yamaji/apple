@@ -23,26 +23,29 @@
     {{-- コンテンツ部分 --}}
         <div class="container mx-auto px-4 py-8">
         <!-- 切り替えボタン -->
-        <div class="tabs flex justify-center gap-6 mb-6">
-             <span class="text-5xl">🍎</span>
-             <span class="text-5xl">🍎</span>
-        <x-primary-button onclick="loadBoards('latest')" 
-            class="text-xl px-12 py-4"
+    <div class="tabs flex justify-center gap-6 mb-6">
+        <span class="text-5xl">🍎</span>
+        <span class="text-5xl">🍎</span>
+        <x-primary-button 
+            onclick="loadBoards('latest')" 
+            class="tab-button text-xl px-12 py-4"
             id="btn-latest">
             最新
         </x-primary-button>
-        <x-primary-button onclick="loadBoards('popular')" 
-            class="text-xl px-12 py-4"
+        <x-primary-button 
+            onclick="loadBoards('popular')" 
+            class="tab-button text-xl px-12 py-4"
             id="btn-popular">
             人気
         </x-primary-button>
-        <x-primary-button onclick="loadBoards('views')" 
-            class="text-xl px-12 py-4"
+        <x-primary-button 
+            onclick="loadBoards('views')" 
+            class="tab-button text-xl px-12 py-4"
             id="btn-views">
             閲覧
         </x-primary-button>
-         <span class="text-5xl">🍎</span>
-         <span class="text-5xl">🍎</span>
+        <span class="text-5xl">🍎</span>
+        <span class="text-5xl">🍎</span>
     </div>
 
         <div id="ranking-container"></div>
@@ -55,88 +58,105 @@
      {{-- JS --}}
     <script>
         function loadBoards(type) {
-            fetch(`/boards/ranking/${type}`)
-                .then(res => res.json())
-                .then(data => {
-                    const container = document.getElementById('boards-container');
-                    container.innerHTML = ''; // 一旦クリア
+    fetch(`/boards/ranking/${type}`)
+        .then(res => res.json())
+        .then(data => {
+            const container = document.getElementById('boards-container');
+            container.innerHTML = ''; // 一旦クリア
 
-                    data.forEach((board, index) => {
-                            let rankMark = '';
-                            if (index === 0) rankMark = '🥇';  // 1位
-                            else if (index === 1) rankMark = '🥈';  // 2位
-                            else if (index === 2) rankMark = '🥉';  // 3位
-                        
-                        let profileImgHtml = '';
-                        if (board.user.profile_image) {
-                            profileImgHtml = `
-                                 <img src="/storage/${board.user.profile_image}" 
-                                      alt="Profile Image" 
-                                      class="w-16 h-16 rounded-full object-cover mr-3" />
-                            `;
-                        } else {
-                            profileImgHtml = `
-                                 <div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center mr-3">
-                                    <span class="text-gray-500 text-sm">No Image</span>
-                                 </div>
-                            `;
-                        }
+            data.forEach((board, index) => {
+                let rankMark = '';
+                if (index === 0) rankMark = '🥇';
+                else if (index === 1) rankMark = '🥈';
+                else if (index === 2) rankMark = '🥉';
 
-                        container.innerHTML += `
-                          <div class="board-item border p-4 rounded shadow bg-white flex items-center justify-between gap-4">
-                            <div>
-                              <span class="rank-mark text-xl">${rankMark}</span>
-                              <h3 class="text-lg font-semibold">
-                                <a href="${board.detail_url}" class="text-orange-600 hover:underline">
-                                  ${board.title}
-                                </a>
-                              </h3>
-                              <p>
-                                投稿者: ${board.user.name}
-                                ${board.user.is_runteq_student ? '<span">🍎</span>' : ''}
-                              </p>
-                              <p>いいね: ${board.likes_count} | 閲覧: ${board.view_count}</p>
-                              <p>投稿日: ${new Date(board.created_at).toLocaleDateString()}</p>
-                            </div>
-                            <div class="flex flex-col justify-end items-end">
-                              ${profileImgHtml}
-                            </div>
-                          </div>
-                        `;
-                    });
+                let profileImgHtml = '';
+                if (board.user.profile_image) {
+                    profileImgHtml = `
+                         <img src="/storage/${board.user.profile_image}" 
+                              alt="Profile Image" 
+                              class="w-16 h-16 rounded-full object-cover mr-3" />
+                    `;
+                } else {
+                    profileImgHtml = `
+                         <div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center mr-3">
+                            <span class="text-gray-500 text-sm">No Image</span>
+                         </div>
+                    `;
+                }
 
-                    // ボタンの active クラス切り替え
-                    document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-                    document.getElementById(`btn-${type}`).classList.add('active');
-                })
-                .catch(() => {
-                    alert('ランキングの読み込みに失敗しました');
-                });
-        }
+                container.innerHTML += `
+                  <div class="board-item border p-4 rounded shadow bg-white flex items-center justify-between gap-4">
+                    <div>
+                      <span class="rank-mark text-xl">${rankMark}</span>
+                      <h3 class="text-lg font-semibold">
+                        <a href="${board.detail_url}" class="text-orange-600 hover:underline">
+                          ${board.title}
+                        </a>
+                      </h3>
+                      <p>
+                        投稿者: ${board.user.name}
+                        ${board.user.is_runteq_student ? '<span>🍎</span>' : ''}
+                      </p>
+                      <p>いいね: ${board.likes_count} | 閲覧: ${board.view_count}</p>
+                      <p>投稿日: ${new Date(board.created_at).toLocaleDateString()}</p>
+                    </div>
+                    <div class="flex flex-col justify-end items-end">
+                      ${profileImgHtml}
+                    </div>
+                  </div>
+                `;
+            });
 
-        // ページ読み込み時に最新を表示
-        document.addEventListener('DOMContentLoaded', () => loadBoards('latest'));
+            // ここで active クラスを付ける（色を変える）
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-600', 'text-white');
+            });
+            const activeBtn = document.getElementById(`btn-${type}`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'bg-blue-600', 'text-white');
+            }
+        })
+        .catch(() => {
+            alert('ランキングの読み込みに失敗しました');
+        });
+    }
+
     </script>
 
     @push('styles')
     <style>
         .tab-button {
-            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem; /* Tailwindの gap-2 = 0.5rem */
+            padding: 1rem 1.75rem; 
+            font-size: 1.125rem; 
+            font-weight: 600; /* font-semibold */
+            color: white;
+            background-color: #fb923c; /* Tailwind orange-400 (#fb923c) */
+            border-radius: 9999px; /* rounded-full */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* shadow-md相当 */
             border: none;
-            background: #eee;
             cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.2s;
+            transition: all 0.2s ease-in-out;
+            outline: none;
+        }
+
+        .tab-button:hover {
+            background-color: #f97316; /* orange-500 */
+            transform: scale(1.05);
+        }
+
+        .tab-button:focus {
+            outline: none;
         }
 
         .tab-button.active {
-            background-color: #f97316;
+            background-color: #ea580c; /* ちょっと濃いオレンジ */
             color: white;
-        }
-
-        .board-card h3 {
-            margin: 0 0 5px;
         }
     </style>
     @endpush
-</x-app-layout>
+
+    </x-app-layout>

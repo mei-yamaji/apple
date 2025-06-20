@@ -11,13 +11,22 @@ class BoardController extends Controller
     /**
      * 掲示板一覧を表示（管理者用）
      */
-    public function index()
-    {
-        // ユーザー情報を事前取得して20件ずつページネーション
-        $boards = Board::with('user')->orderBy('created_at', 'desc')->paginate(20);
+public function index(Request $request)
+{
+    $status = $request->input('status');
 
-        return view('admin.boards.index', compact('boards'));
+    $query = Board::with('user')->orderBy('created_at', 'desc');
+
+    if ($status === 'published') {
+        $query->where('is_published', true);
+    } elseif ($status === 'unpublished') {
+        $query->where('is_published', false);
     }
+
+    $boards = $query->paginate(20);
+
+    return view('admin.boards.index', compact('boards', 'status'));
+}
 
     /**
      * 編集画面を表示

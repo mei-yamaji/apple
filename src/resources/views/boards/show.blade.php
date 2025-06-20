@@ -5,9 +5,21 @@
     <!-- 戻るボタン -->
     <div class="mt-4">
       <a href="{{ route('boards.index') }}" 
-        class="inline-flex items-center gap-1 px-3 py-1 text-xs font-semibold text-orange-500 border border-orange-400 rounded-full shadow bg-orange-100 hover:scale-105 transition-all duration-200">
+        class="inline-flex items-center gap-2 px-5 py-3 text-xs font-semibold text-orange-500 border border-orange-400 rounded-full shadow bg-orange-100 hover:scale-105 transition-all duration-200">
         一覧へ戻る
       </a>
+      @if (session('success'))
+    <div class="flex justify-center mb-6">
+        <div class="flex items-center space-x-2 max-w-lg w-full p-3 bg-green-50 text-green-700 rounded-md border border-green-200">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <p class="text-center text-sm font-medium">
+                {{ session('success') }}
+            </p>
+        </div>
+    </div>
+@endif
     </div>
 
 
@@ -113,12 +125,6 @@
     <!-- コメントセクション -->
     <div class="p-6 border rounded-2xl shadow-lg bg-white dark:bg-gray-800">
       <h3 class="text-xl font-semibold mb-4">コメント一覧</h3>
-
-      @if(session('success'))
-        <div class="mb-4 p-2 bg-green-100 text-green-800 rounded">
-          {{ session('success') }}
-        </div>
-      @endif
 
       @if($board->comments->count() > 0)
         <ul class="mb-6 space-y-4">

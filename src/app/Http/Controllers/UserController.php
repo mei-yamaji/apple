@@ -42,7 +42,7 @@ class UserController extends Controller
         'likedBoards' => $likedBoards,
         'viewMode' => $viewMode, // 初期表示を切り替えられるように残しておく
     ]);
-}
+    }
 
 
     public function show(User $user)

@@ -102,9 +102,16 @@
             @if ($boards->isNotEmpty())
               @foreach ($boards as $board)
                 <div class="border rounded-2xl shadow-md p-6 mb-6 bg-white">
-                  <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ $board->title }}</h2>
+                  <h2 class="text-2xl font-semibold text-orange-600 hover:underline mb-2">
+                      <a href="{{ route('boards.show', $board->id) }}">
+                          {{ $board->title }}
+                      </a>
+                  </h2>
                   <div class="text-sm text-gray-500 mb-4">
                     投稿者: {{ $board->user->name ?? '不明' }}
+                    @if (!empty($board->user->is_runteq_student) && $board->user->is_runteq_student)
+                      <span>🍎</span>
+                    @endif
                     投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
                   </div>
                   <div class="prose prose-gray max-w-none">
@@ -131,9 +138,6 @@
 
                   <div class="mt-4 flex items-center gap-4">
                     <span class="text-sm text-gray-600">💖 {{ $board->likes_count ?? 0 }} 件のいいね</span>
-                    @if (route('boards.show', $board->id, false))
-                      <a href="{{ route('boards.show', $board->id) }}" class="text-green-600 hover:underline text-sm">詳細を見る</a>
-                    @endif
                   </div>
                 </div>
               @endforeach
@@ -148,9 +152,16 @@
             @if ($likedBoards->isNotEmpty())
               @foreach ($likedBoards as $board)
                 <div class="border rounded-2xl shadow-md p-6 mb-6 bg-white">
-                  <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ $board->title }}</h2>
+                   <h2 class="text-2xl font-semibold text-orange-600 hover:underline mb-2">
+                      <a href="{{ route('boards.show', $board->id) }}">
+                          {{ $board->title }}
+                      </a>
+                  </h2>
                   <div class="text-sm text-gray-500 mb-4">
                     投稿者: {{ $board->user->name ?? '不明' }}
+                    @if (!empty($board->user->is_runteq_student) && $board->user->is_runteq_student)
+                      <span>🍎</span>
+                    @endif
                     投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
                   </div>
                   <div class="prose prose-gray max-w-none">
@@ -177,9 +188,6 @@
 
                   <div class="mt-4 flex items-center gap-4">
                     <span class="text-sm text-gray-600">💖 {{ $board->likes_count ?? 0 }} 件のいいね</span>
-                    @if (route('boards.show', $board->id, false))
-                      <a href="{{ route('boards.show', $board->id) }}" class="text-green-600 hover:underline text-sm">詳細を見る</a>
-                    @endif
                   </div>
                 </div>
               @endforeach
@@ -191,47 +199,42 @@
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-    const ownButton = document.getElementById('ownTabButton');
-    const likesButton = document.getElementById('likesTabButton');
-    const ownPosts = document.getElementById('ownPosts');
-    const likedPosts = document.getElementById('likedPosts');
+        const ownButton = document.getElementById('ownTabButton');
+        const likesButton = document.getElementById('likesTabButton');
+        const ownPosts = document.getElementById('ownPosts');
+        const likedPosts = document.getElementById('likedPosts');
 
-    function setActive(button) {
-        // まず非表示にして、activeクラスを外す
-        ownPosts.style.display = 'none';
-        likedPosts.style.display = 'none';
+        function setActive(button) {
+            // 全て非表示・スタイルリセット
+            ownPosts.style.display = 'none';
+            likedPosts.style.display = 'none';
 
-        ownButton.classList.remove('active', 'bg-blue-600', 'text-white');
-        likesButton.classList.remove('active', 'bg-blue-600', 'text-white');
+            ownButton.classList.remove('active', 'bg-blue-600', 'text-white');
+            likesButton.classList.remove('active', 'bg-blue-600', 'text-white');
 
-        // クリックされたボタンを active にして
-        button.classList.add('active', 'bg-blue-600', 'text-white');
-
-        // 対応するコンテンツだけ表示
-        if (button === ownButton) {
-            ownPosts.style.display = 'block';
-        } else if (button === likesButton) {
-            likedPosts.style.display = 'block';
+            // 対象を表示・アクティブ化
+            button.classList.add('active', 'bg-blue-600', 'text-white');
+            if (button === ownButton) {
+                ownPosts.style.display = 'block';
+            } else {
+                likedPosts.style.display = 'block';
+            }
         }
-    }
 
-    // 初期表示
-    if (ownPosts.style.display === 'block') {
+        // ✅ viewModeに関係なく、自分の投稿を初期選択
         setActive(ownButton);
-    } else {
-        setActive(likesButton);
-    }
 
-    ownButton.addEventListener('click', function () {
-        setActive(ownButton);
+        // クリック切り替え
+        ownButton.addEventListener('click', function () {
+            setActive(ownButton);
+        });
+
+        likesButton.addEventListener('click', function () {
+            setActive(likesButton);
+        });
     });
-
-    likesButton.addEventListener('click', function () {
-        setActive(likesButton);
-    });
-});
-
 </script>
+
 
 @push('styles')
     <style>

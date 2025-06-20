@@ -9,7 +9,7 @@
     <div class="max-w-5xl mx-auto space-y-6 mt-6 px-4">
 
       <!-- プロフィール表示エリア -->
-<div class="flex items-center space-x-6 bg-white p-6 rounded-2xl shadow-lg">
+  <div class="flex items-center space-x-6 bg-white p-6 rounded-2xl shadow-lg">
 
   {{-- プロフィール画像 --}}
   @if (Auth::user()->profile_image)
@@ -51,93 +51,126 @@
   </div>
 
   {{-- プロフィール編集ボタン --}}
-  <div>
-    <x-primary-button>
-    <a href="{{ route('profile.edit') }}">
-      プロフィール編集
-    </a>
-    </x-primary-button>
+    <div>
+      <x-primary-button>
+      <a href="{{ route('profile.edit') }}">
+        プロフィール編集
+      </a>
+      </x-primary-button>
+    </div>
   </div>
+
+    {{-- 切り替えボタン --}}
+<div class="tabs flex justify-center gap-6 mb-6">
+     <span class="text-5xl">🍎</span>
+     <span class="text-5xl">🍎</span>
+    <a href="{{ route('mypage', ['view' => 'own']) }}">
+        <x-primary-button class="text-xl px-12 py-4 {{ $viewMode === 'own' ? 'bg-blue-600 text-white' : '' }}">
+            自分の投稿
+        </x-primary-button>
+    </a>
+
+    <a href="{{ route('mypage', ['view' => 'likes']) }}">
+        <x-primary-button class="text-xl px-12 py-4 {{ $viewMode === 'likes' ? 'bg-blue-600 text-white' : '' }}">
+            いいねした記事
+        </x-primary-button>
+    </a>
+      <span class="text-5xl">🍎</span>
+      <span class="text-5xl">🍎</span>
 </div>
 
-
-      {{-- 投稿一覧 --}}
-      @if ($boards->isNotEmpty())
-        <div class="space-y-6 mt-8">
+   {{-- 投稿一覧表示 --}}
+      @if ($viewMode === 'own')
+        {{-- 自分の投稿 --}}
+        @if ($boards->isNotEmpty())
           @foreach ($boards as $board)
-            <div class="p-6 border rounded-2xl shadow-lg bg-white dark:bg-gray-800">
-              <h5 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white mb-4">
-                <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline">
-                  {{ $board->title }}
-                </a>
-              </h5>
-
-        <!-- カテゴリー表示 -->
-        <div class="mb-2">
-          <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">
-            {{ $board->category->name ?? '未分類' }}
-          </span>
-        </div>
-
-        <!-- タグ表示 -->
-        <div class="mb-4 flex-wrap">
-          @if (!empty($board->tags) && $board->tags->isNotEmpty())
-            <div class="flex flex-wrap">
-              @foreach ($board->tags as $tag)
-                <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold mr-2 mb-2 px-2.5 py-0.5 rounded-full">
-                  #{{ $tag->name }}
-                </span>
-              @endforeach
-            </div>
-          @endif
-        </div>              
-
-              <p class="text-sm text-gray-600 mt- mb-4">
-                 公開状態: <span class="{{ $board->is_published ? 'text-green-600' : 'text-red-600' }}">
-                   {{ $board->is_published ? '公開中' : '非公開' }}
-                 </span>
-              </p>
-
+            <div class="border rounded-2xl shadow-md p-6 mb-6 bg-white">
+              <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ $board->title }}</h2>
+              <div class="text-sm text-gray-500 mb-4">
+                投稿者: {{ $board->user->name ?? '不明' }}
+                投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
+              </div>
+              <div class="prose prose-gray max-w-none">
               @php
-  // Markdown画像記法（![alt](url)）を除去
-  $cleanDescription = preg_replace('/!\[.*?\]\(.*?\)/', '', $board->description);
+                // 画像だけ除去
+                $htmlWithoutImages = preg_replace('/<img[^>]*>/', '', $board->description_html ?? '');
 
-      $plainText = strip_tags(\Illuminate\Support\Str::markdown($cleanDescription));
+                // プレーンテキストに変換（タグ除去）
+                $plainDescription = strip_tags($htmlWithoutImages);
 
-    $limit = 120; 
+                // 表示する最大文字数
+                $maxLength = 100;
 
-    $isLong = mb_strlen($plainText) > $limit;
-    $shortText = mb_substr($plainText, 0, $limit);
-@endphp
+                // 短縮された本文（必要なら）
+                $shortDescription = Str::limit($plainDescription, $maxLength);
+              @endphp
 
-<div class="prose prose-lg prose-slate max-w-none dark:prose-invert break-words mb-6 leading-relaxed">
-  {{ $isLong ? $shortText . '...' : $plainText }}
+              {{ $shortDescription }}
 
-  @if ($isLong)
-    <a href="{{ route('boards.show', $board->id) }}" class="text-orange-400 hover:underline ml-1">続きを読む</a>
-  @endif
-</div>
+              @if (Str::length($plainDescription) > $maxLength)
+                <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>
+              @endif
+            </div>
 
-
-              <div class="flex items-center mt-3 justify-between text-gray-400 dark:text-gray-400 text-sm mb-6">
-                <div class="flex space-x-4">
-                  <p>投稿日: {{ $board->created_at->format('Y/m/d H:i') }}</p>
-                  <p>更新日: {{ $board->updated_at->format('Y/m/d H:i') }}</p>
-                  <p class="text-gray-500">閲覧数: {{ $board->view_count }}</p>
-                </div>
+              <div class="mt-4 flex items-center gap-4">
+                <span class="text-sm text-gray-600">💖 {{ $board->likes_count ?? 0 }} 件のいいね</span>
+                @if (route('boards.show', $board->id, false))
+                  <a href="{{ route('boards.show', $board->id) }}" class="text-green-600 hover:underline text-sm">詳細を見る</a>
+                @endif
               </div>
             </div>
           @endforeach
-          <div class="mt-4">
-              {{ $boards->links() }}
-          </div>
-        </div>
-      @else
-        <div class="text-gray-500 mt-8">
-          あなたの投稿はまだありません。
-        </div>
+          <div class="mt-4">{{ $boards->links() }}</div>
+        @else
+          <p class="text-gray-500 text-center">あなたの投稿はまだありません。</p>
+        @endif
+
+      @elseif ($viewMode === 'likes')
+        {{-- お気に入り --}}
+        @if ($likedBoards->isNotEmpty())
+          @foreach ($likedBoards as $board)
+            <div class="border rounded-2xl shadow-md p-6 mb-6 bg-white">
+              <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{ $board->title }}</h2>
+              <div class="text-sm text-gray-500 mb-4">
+                投稿者: {{ $board->user->name ?? '不明' }}
+                投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
+              </div>
+              <div class="prose prose-gray max-w-none">
+              @php
+                // 画像だけ除去
+                $htmlWithoutImages = preg_replace('/<img[^>]*>/', '', $board->description_html ?? '');
+
+                // プレーンテキストに変換（タグ除去）
+                $plainDescription = strip_tags($htmlWithoutImages);
+
+                // 表示する最大文字数
+                $maxLength = 100;
+
+                // 短縮された本文（必要なら）
+                $shortDescription = Str::limit($plainDescription, $maxLength);
+              @endphp
+
+              {{ $shortDescription }}
+
+              @if (Str::length($plainDescription) > $maxLength)
+                <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>
+              @endif
+            </div>
+
+              <div class="mt-4 flex items-center gap-4">
+                <span class="text-sm text-gray-600">💖 {{ $board->likes_count ?? 0 }} 件のいいね</span>
+                @if (route('boards.show', $board->id, false))
+                  <a href="{{ route('boards.show', $board->id) }}" class="text-green-600 hover:underline text-sm">詳細を見る</a>
+                @endif
+              </div>
+            </div>
+          @endforeach
+        @else
+          <p class="text-gray-500 text-center">お気に入りの投稿はまだありません。</p>
+        @endif
       @endif
 
     </div>
   </div>
+  
 </x-app-layout>

@@ -1,4 +1,21 @@
 <x-admin-layout>
+    <form method="GET" action="{{ route('admin.boards.index') }}" class="mb-6 flex items-center space-x-3">
+    <input
+        type="text"
+        name="keyword"
+        value="{{ request('keyword') }}"
+        placeholder="キーワードで検索"
+        class="border rounded px-3 h-10"
+    />
+    <button
+        type="submit"
+        class="bg-blue-500 text-white rounded px-4 h-10 flex items-center justify-center text-sm"
+    >
+        検索
+    </button>
+</form>
+
+
     <div class="overflow-x-auto bg-white p-4 rounded shadow">
         <h2 class="text-xl font-semibold mb-4">投稿一覧</h2>
 

@@ -38,6 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/likes', [LikeController::class, 'store'])->name('likes.store');
     Route::delete('/likes/{board}', [LikeController::class, 'destroy'])->name('likes.destroy');
     
+    //マイページ関連
+    Route::get('/mypage', [UserController::class, 'mypage'])->middleware('auth')->name('mypage');
+    Route::get('/mypage/likes', [UserController::class, 'likedBoards'])->middleware('auth')->name('mypage.likes');
+    
     // コメント関連
     Route::post('boards/{board}/comments', [CommentController::class, 'store'])->name('comments.store');
     Route::get('/boards/{board}/comments/{comment}/edit', [CommentController::class, 'edit'])->name('comments.edit');

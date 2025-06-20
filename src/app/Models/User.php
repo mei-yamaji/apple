@@ -68,5 +68,4 @@ class User extends Authenticatable
     {
         return $this->favorites()->where('favorite_user_id', $userId)->exists();
     }
-
 }

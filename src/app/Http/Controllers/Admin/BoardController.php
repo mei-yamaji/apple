@@ -22,6 +22,28 @@ public function index(Request $request)
     } elseif ($status === 'unpublished') {
         $query->where('is_published', false);
     }
+   public function index(Request $request)
+{
+    // クエリビルダー開始。投稿に紐づくユーザー・タグ・カテゴリをEager Load
+    $query = Board::with(['user', 'tags', 'category'])->orderBy('created_at', 'desc');
+
+    // キーワード検索があれば絞り込み
+    if ($request->filled('keyword')) {
+    $keyword = $request->input('keyword');
+    $query->where(function ($q) use ($keyword) {
+        $q->where('title', 'like', "%{$keyword}%")
+          ->orWhere('description', 'like', "%{$keyword}%");
+    });
+}
+
+
+    // ページネーション（20件ずつ）
+    $boards = $query->paginate(20);
+
+    // ビューへデータ渡し
+    return view('admin.boards.index', compact('boards'));
+}
+
 
     $boards = $query->paginate(20);
 

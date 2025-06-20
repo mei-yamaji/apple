@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\FavoriteNotification;
 
 class FavoriteController extends Controller
 {
@@ -16,23 +17,42 @@ class FavoriteController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function toggle(User $user)
-    {
-        $authUser = Auth::user();
 
-        // 自分自身をお気に入り登録させない（任意）
-        if ($authUser->id === $user->id) {
-            return back()->with('error', '自分自身をお気に入り登録できません。');
-        }
+{
 
-        // すでにお気に入り登録済みなら解除、それ以外は登録
-        if ($authUser->hasFavorited($user->id)) {
-            $authUser->favorites()->detach($user->id);
-            $message = 'お気に入りを解除しました。';
-        } else {
-            $authUser->favorites()->attach($user->id);
-            $message = 'お気に入りに登録しました。';
-        }
+    $authUser = Auth::user();
+ 
+    // 自分自身をお気に入り登録させない（任意）
 
-        return back()->with('status', $message);
+    if ($authUser->id === $user->id) {
+
+        return back()->with('error', '自分自身をお気に入り登録できません。');
+
     }
+ 
+    // すでにお気に入り登録済みなら解除、それ以外は登録
+
+    if ($authUser->hasFavorited($user->id)) {
+
+        $authUser->favorites()->detach($user->id);
+
+        $message = 'お気に入りを解除しました。';
+
+    } else {
+
+        $authUser->favorites()->attach($user->id);
+ 
+        // 🔔 通知を送る
+
+        $user->notify(new FavoriteNotification(auth()->user(), $user));
+ 
+        $message = 'お気に入りに登録しました。';
+
+    }
+ 
+    return back()->with('status', $message);
+
+}
+
+ 
 }

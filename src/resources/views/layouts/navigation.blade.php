@@ -16,8 +16,42 @@
                 </a>
             </div>
 
-            <!-- Right Side: Post + User -->
-            <div class="hidden sm:flex sm:items-center sm:space-x-4">
+            <!-- Right Side: Notification + Post + User -->
+<div class="hidden sm:flex sm:items-center sm:space-x-4">
+ 
+    <!-- Notification Button -->
+<div class="relative">
+<button id="notificationButton" class="relative text-gray-600 hover:text-orange-500">
+<i class="ri-notification-3-line text-2xl"></i>
+
+            @if (auth()->user()->unreadNotifications->count() > 0)
+<!-- 通知件数バッジ -->
+<span id="notificationCount" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5" 
+      style="{{ Auth::user()->unreadNotifications->count() > 0 ? '' : 'display: none;' }}">
+    {{ Auth::user()->unreadNotifications->count() }}
+</span>
+
+            @endif
+</button>
+ 
+        <!-- Notification Dropdown -->
+<div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white border rounded-lg shadow-lg z-50">
+<div class="p-4 max-h-96 overflow-y-auto" id="notificationList">
+
+                @forelse (auth()->user()->unreadNotifications as $notification)
+<div class="mb-2 p-2 bg-gray-100 rounded hover:bg-gray-200 transition">
+
+                        {{ $notification->data['message'] ?? '新しい通知があります' }}
+</div>
+
+                @empty
+<div class="text-gray-500 text-sm">通知はありません</div>
+
+                @endforelse
+</div>
+</div>
+</div>
+ 
                 <!-- Post Dropdown -->
                 <x-dropdown width="48">
                     <x-slot name="trigger">
@@ -117,3 +151,43 @@
         </div>
     </div>
 </nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const button = document.getElementById('notificationButton');
+        const dropdown = document.getElementById('notificationDropdown');
+        const badge = document.getElementById('notificationCount');
+
+        button.addEventListener('click', function () {
+            dropdown.classList.toggle('hidden');
+            markNotificationsAsRead();
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        function markNotificationsAsRead() {
+            fetch('{{ route('notifications.read') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                // 通知数バッジを非表示にする
+                if (badge) {
+                    badge.textContent = '';
+                    badge.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('通知の既読処理でエラー:', error);
+            });
+        }
+    });
+</script>

@@ -1,4 +1,21 @@
 <x-admin-layout>
+    <form method="GET" action="{{ route('admin.boards.index') }}" class="mb-6 flex items-center space-x-3">
+    <input
+        type="text"
+        name="keyword"
+        value="{{ request('keyword') }}"
+        placeholder="キーワードで検索"
+        class="border rounded px-3 h-10"
+    />
+    <button
+        type="submit"
+        class="bg-blue-500 text-white rounded px-4 h-10 flex items-center justify-center text-sm"
+    >
+        検索
+    </button>
+</form>
+
+
     <div class="overflow-x-auto bg-white p-4 rounded shadow">
         <h2 class="text-xl font-semibold mb-4">投稿一覧</h2>
 
@@ -7,20 +24,22 @@
                 <tr class="bg-gray-100">
                     <th class="px-6 py-2">投稿者</th>
                     <th class="px-6 py-2">タイトル</th>
-                    <th class="px-6 py-2">本文</th>
-                    <th class="px-6 py-2">作成日</th>
-                    <th class="px-6 py-2">更新日</th>
+                    <th class="px-6 py-2 w-48">本文</th>
+                    <th class="px-6 py-2 w-36">作成日</th>
+                    <th class="px-6 py-2 w-36">更新日</th>
                     <th class="px-6 py-2">操作</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($boards as $board)
                     <tr class="border-b">
-                        <td class="px-6 py-2">{{ $board->user->name }}</td>
+                        <td class="px-6 py-2 whitespace-nowrap">{{ $board->user->name }}</td>
+
                         <td class="px-6 py-2">{{ $board->title }}</td>
-                        <td class="px-6 py-2">{{ Str::limit($board->description, 50) }}</td>
-                        <td class="px-6 py-2">{{ $board->created_at->format('Y-m-d H:i') }}</td>
-                        <td class="px-6 py-2">{{ $board->updated_at->format('Y-m-d H:i') }}</td>
+                        <td class="px-6 py-2 truncate max-w-xs">{{ Str::limit($board->description, 50) }}</td>
+
+                        <td class="px-6 py-2 whitespace-nowrap w-36">{{ $board->created_at->format('Y-m-d H:i') }}</td>
+                        <td class="px-6 py-2 whitespace-nowrap w-36">{{ $board->updated_at->format('Y-m-d H:i') }}</td>
                         <td class="px-6 py-2 whitespace-nowrap">
                             <a href="{{ route('admin.boards.edit', $board->id) }}"
                                class="text-blue-600 hover:underline text-sm"

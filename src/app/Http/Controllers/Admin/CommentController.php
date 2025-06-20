@@ -8,11 +8,25 @@ use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function index()
-    {
-        $comments = Comment::with('user', 'board')->paginate(20);
-        return view('admin.comments.index', compact('comments'));
-    }
+    public function index(Request $request)
+{
+    $query = Comment::with('user', 'board')->orderBy('created_at', 'desc');
+
+    if ($request->filled('keyword')) {
+    $keyword = $request->input('keyword');
+    $query->where(function ($q) use ($keyword) {
+        $q->where('comment', 'like', "%{$keyword}%") // ← 修正ここ！
+          ->orWhereHas('user', function ($userQuery) use ($keyword) {
+              $userQuery->where('name', 'like', "%{$keyword}%");
+          });
+    });
+}
+
+    $comments = $query->paginate(20);
+
+    return view('admin.comments.index', compact('comments'));
+}
+
 
     public function edit(Comment $comment)
     {

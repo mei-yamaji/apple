@@ -18,7 +18,7 @@
             <div class="flex items-center justify-between">
                 <button type="submit"
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline text-sm">
-                    <i class="ri-add-circle-line"></i> 作成
+                    <i class="ri-add-circle-line"></i> 作成する
                 </button>
 
                 <a href="{{ route('admin.categories.index') }}"

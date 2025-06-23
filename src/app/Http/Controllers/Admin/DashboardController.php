@@ -7,17 +7,24 @@ use App\Models\Board;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Comment;
-use Illuminate\Http\Request;
+use App\Models\Tag; // ← ここを忘れずに！
 
 class DashboardController extends Controller
 {
-  public function index()
-  {
+    public function index()
+    {
         $boardCount = Board::count();
         $userCount = User::count();
         $categoryCount = Category::count();
         $commentCount = Comment::count();
+        $tagCount = Tag::count();
 
-    return view('admin.dashboard', compact('boardCount', 'userCount', 'categoryCount', 'commentCount'));
-  }
+        return view('admin.dashboard', compact(
+            'boardCount',
+            'userCount',
+            'categoryCount',
+            'commentCount',
+            'tagCount' 
+        ));
+    }
 }

@@ -41,15 +41,35 @@
                 >{{ old('description', $board->description) }}</textarea>
             </div>
 
-            <div>
-                <label for="imageUpload" class="block text-gray-700 text-sm font-medium mb-2">画像アップロード</label>
-                <input
-                    type="file"
-                    id="imageUpload"
-                    accept="image/*"
-                    class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-300 transition"
-                >
-            </div>
+            <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-medium mb-2" for="imageUpload">画像アップロード</label>
+
+    <label
+    for="imageUpload"
+    class="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded focus:outline-none focus:shadow-outline text-sm inline-block"
+>
+    ファイルを選択
+</label>
+
+    <span id="fileName" class="ml-3 text-sm text-gray-600">ファイルが選択されていません</span>
+
+    <input
+        type="file"
+        id="imageUpload"
+        accept="image/*"
+        name="image"
+        class="hidden"
+    >
+</div>
+
+<script>
+    document.getElementById('imageUpload').addEventListener('change', function () {
+        const fileName = this.files.length ? this.files[0].name : 'ファイルが選択されていません';
+        document.getElementById('fileName').textContent = fileName;
+    });
+</script>
+
+
 
             <div class="flex items-center justify-between">
                 <button

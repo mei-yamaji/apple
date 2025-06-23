@@ -7,7 +7,7 @@
         @hasSection('title')
             <title>RUNTEQ BOARD | @yield('title')</title>
         @else
-            <title>RUNTEQ BOARD</title>
+            <title>APPLE BOARD</title>
         @endif
         <!-- Scripts -->
         @vite(['resources/css/admin.css', 'resources/js/admin.js'])

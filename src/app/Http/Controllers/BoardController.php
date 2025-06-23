@@ -6,6 +6,7 @@ use App\Models\Board;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use League\CommonMark\CommonMarkConverter;
 
@@ -45,14 +46,23 @@ class BoardController extends Controller
     });
 
     return view('boards.index', compact('boards'));
-}
+    }
 
 
-    public function create()
+    public function create(Request $request)
     {
         $categories = \App\Models\Category::all();
-        return view('boards.create', compact('categories'));
+
+        if ($request->query('preview') == 1) {
+            $old = session('board_preview', []);
+        } else {
+            session()->forget('board_preview');
+            $old = [];
+        }
+
+        return view('boards.create', compact('categories', 'old'));
     }
+
 
     public function store(Request $request)
     {
@@ -197,5 +207,37 @@ class BoardController extends Controller
 
          return response()->json(['url' => $url]);
     }
-    
-   }
+
+    public function preview(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required|max:65535',
+            'category_id' => 'required|exists:categories,id',
+            'tags' => 'nullable|string',
+            'is_published' => 'nullable|boolean',
+        ]);
+
+        // セッションに保存
+        session([
+            'board_preview' => $validated
+        ]);
+
+        $converter = new \League\CommonMark\CommonMarkConverter();
+        $htmlDescription = $converter->convert($validated['description'])->getContent();
+
+        $category = \App\Models\Category::find($validated['category_id']);
+        $tags = array_filter(array_map('trim', explode(',', $validated['tags'] ?? '')));
+        $is_published = $request->has('is_published');
+
+        return view('boards.preview', [
+            'title' => $validated['title'],
+            'description' => $validated['description'],
+            'htmlDescription' => $htmlDescription,
+            'category' => $category,
+            'tags' => $tags,
+            'is_published' => $is_published,
+        ]);
+    }
+
+}

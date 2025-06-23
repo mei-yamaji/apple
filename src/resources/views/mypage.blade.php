@@ -26,11 +26,14 @@
           <div class="flex items-center">
             <i class="ri-user-line text-orange-500 text-3xl "></i>
             <h3 class="text-2xl font-semibold text-gray-800">
+            <a href="{{ route('user.show', Auth::user()->id) }}" class="hover:underline hover:text-orange-600">
               {{ Auth::user()->name }}
-              @if (Auth::user()->is_runteq_student)
-                <span class="text-yellow-400">🍎</span>
-              @endif
-            </h3>
+            </a>
+            @if (Auth::user()->is_runteq_student)
+              <span class="text-yellow-400">🍎</span>
+            @endif
+          </h3>
+
 
             {{-- フォロー・フォロワーボタン --}}
             <div class="flex space-x-3 ml-6">

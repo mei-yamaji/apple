@@ -49,13 +49,20 @@ class BoardController extends Controller
     }
 
 
-    public function create()
+    public function create(Request $request)
     {
         $categories = \App\Models\Category::all();
-        $old = session('board_preview', []); // プレビュー用セッションからデータ取得（あれば）
+
+        if ($request->query('preview') == 1) {
+            $old = session('board_preview', []);
+        } else {
+            session()->forget('board_preview');
+            $old = [];
+        }
 
         return view('boards.create', compact('categories', 'old'));
     }
+
 
     public function store(Request $request)
     {

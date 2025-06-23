@@ -18,13 +18,14 @@
     <!-- プレビュー内容など -->
 
     <div class="flex justify-between">
-        <form action="{{ route('boards.create') }}" method="GET">
-            <x-primary-button type="submit">
-                編集に戻る
-            </x-primary-button>
-        </form>
-
-        <form action="{{ route('boards.store') }}" method="POST">
+      <form action="{{ route('boards.create') }}" method="GET">
+        <input type="hidden" name="preview" value="1">
+        <x-primary-button type="submit">
+            編集に戻る
+        </x-primary-button>
+      </form>
+      
+            <form action="{{ route('boards.store') }}" method="POST">
             @csrf
             <input type="hidden" name="title" value="{{ $title }}">
             <input type="hidden" name="description" value="{{ $description }}">

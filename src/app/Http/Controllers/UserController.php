@@ -26,11 +26,12 @@ class UserController extends Controller
         return $board;
     });
 
-    // ✅ いいねした記事（全部取得）
+    // いいねした記事（ページネーション対応）
     $likedBoards = Board::withCount('likes')
         ->whereIn('id', $user->likes()->pluck('board_id'))
         ->latest()
-        ->get();
+        ->paginate(10, ['*'], 'liked_page'); 
+
 
     $likedBoards->map(function ($board) use ($converter) {
         $board->description_html = $converter->convert($board->description ?? '')->getContent();

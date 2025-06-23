@@ -47,8 +47,9 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $query = Board::where('user_id', $user->id)
-                    ->orderBy('created_at', 'desc');
+        $query = Board::withCount('likes') // ← ここを追加！
+                  ->where('user_id', $user->id)
+                  ->orderBy('created_at', 'desc');
 
         if (auth()->id() !== $user->id) {
             $query->where('is_published', true);

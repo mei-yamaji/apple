@@ -82,10 +82,10 @@
     <span class="text-5xl">🍎</span>
     <span class="text-5xl">🍎</span>
 
-<x-primary-button 
-  class="tab-button" id="ownTabButton">
-  自分の投稿
-</x-primary-button>
+    <x-primary-button 
+      class="tab-button" id="ownTabButton">
+      自分の投稿
+    </x-primary-button>
 
     <x-primary-button id="likesTabButton"
         class="text-xl px-12 py-4 border transition-all tab-button {{ $viewMode === 'likes' ? 'bg-blue-600 text-white' : '' }}">

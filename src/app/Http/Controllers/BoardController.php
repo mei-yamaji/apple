@@ -6,6 +6,7 @@ use App\Models\Board;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use League\CommonMark\CommonMarkConverter;
 
@@ -51,7 +52,9 @@ class BoardController extends Controller
     public function create()
     {
         $categories = \App\Models\Category::all();
-        return view('boards.create', compact('categories'));
+        $old = session('board_preview', []); // プレビュー用セッションからデータ取得（あれば）
+
+        return view('boards.create', compact('categories', 'old'));
     }
 
     public function store(Request $request)
@@ -200,8 +203,7 @@ class BoardController extends Controller
 
     public function preview(Request $request)
     {
-        // 投稿時のバリデーションに合わせてvalidate
-        $data = $request->validate([
+        $validated = $request->validate([
             'title' => 'required|max:255',
             'description' => 'required|max:65535',
             'category_id' => 'required|exists:categories,id',
@@ -209,26 +211,26 @@ class BoardController extends Controller
             'is_published' => 'nullable|boolean',
         ]);
 
-        // マークダウンをHTMLに変換
-        $converter = new CommonMarkConverter();
-        $htmlDescription = $converter->convertToHtml($data['description']);
+        // セッションに保存
+        session([
+            'board_preview' => $validated
+        ]);
 
-        // カテゴリ名を取得（ビュー表示用）
-        $category = \App\Models\Category::find($data['category_id']);
+        $converter = new \League\CommonMark\CommonMarkConverter();
+        $htmlDescription = $converter->convert($validated['description'])->getContent();
 
-        // タグ配列（カンマ区切りを配列に）
-        $tagNames = [];
-        if (!empty($data['tags'])) {
-            $tagNames = array_filter(array_map('trim', explode(',', $data['tags'])));
-        }
+        $category = \App\Models\Category::find($validated['category_id']);
+        $tags = array_filter(array_map('trim', explode(',', $validated['tags'] ?? '')));
+        $is_published = $request->has('is_published');
 
         return view('boards.preview', [
-            'title' => $data['title'],
-            'description' => $data['description'],
+            'title' => $validated['title'],
+            'description' => $validated['description'],
             'htmlDescription' => $htmlDescription,
             'category' => $category,
-            'tags' => $tagNames,
-            'is_published' => $request->has('is_published'),
+            'tags' => $tags,
+            'is_published' => $is_published,
         ]);
     }
+
 }

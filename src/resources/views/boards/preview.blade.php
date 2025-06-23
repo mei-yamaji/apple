@@ -19,7 +19,7 @@
 
     <div class="flex justify-between">
         <form action="{{ route('boards.create') }}" method="GET">
-            <x-primary-button type="submit" class="bg-gray-400 hover:bg-gray-500 text-black">
+            <x-primary-button type="submit">
                 編集に戻る
             </x-primary-button>
         </form>

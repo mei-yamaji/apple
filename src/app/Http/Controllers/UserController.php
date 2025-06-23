@@ -47,10 +47,16 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $boards = Board::where('user_id', $user->id)
-                            ->orderBy('created_at', 'desc')
-                            ->paginate(10);
-                   
+        $query = Board::where('user_id', $user->id)
+                    ->orderBy('created_at', 'desc');
+
+        if (auth()->id() !== $user->id) {
+            $query->where('is_published', true);
+        }
+
+        $boards = $query->paginate(10);
+
         return view('user.show', compact('user', 'boards'));
     }
+
 }

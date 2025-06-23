@@ -13,11 +13,11 @@
                         @else
                             <i class="ri-user-3-line text-orange-400 text-2xl"></i>
                         @endif
-                        <a href="{{ route('profile.show', $follower->id) }}" class="text-lg font-semibold text-gray-700 hover:underline">
+                        <a href="{{ route('user.show', $follower->id) }}" class="text-lg font-semibold text-gray-700 hover:underline">
                             {{ $follower->name }}
                         </a>
                     </div>
-                    <a href="{{ route('profile.show', $follower->id) }}" class="text-xs text-white bg-orange-400 px-3 py-1 rounded-full shadow hover:bg-orange-500 transition-all duration-200">
+                    <a href="{{ route('user.show', $follower->id) }}" class="text-xs text-white bg-orange-400 px-3 py-1 rounded-full shadow hover:bg-orange-500 transition-all duration-200">
                         プロフィールを見る
                     </a>
                 </div>

@@ -40,15 +40,6 @@
     </div>
   </a>
 
-  {{-- カテゴリ数 --}}
-<a href="{{ route('admin.categories.index') }}" class="flex items-center space-x-2 bg-blue-100 rounded-lg p-3 shadow max-w-xs w-full hover:scale-105 transition-all duration-200">
-  <i class="ri-folder-3-fill text-3xl text-blue-500"></i>
-  <div>
-    <p class="text-3xl font-bold text-blue-800">{{ $categoryCount }}</p>
-    <p class="text-sm font-semibold text-blue-800">カテゴリ数</p>
-  </div>
-</a>
-
 
   {{-- コメント数 --}}
   <a href="{{ route('admin.comments.index') }}" class="flex items-center space-x-2 bg-purple-100 rounded-lg p-3 shadow max-w-xs w-full hover:scale-105 transition-all duration-200">
@@ -58,6 +49,15 @@
       <p class="text-sm font-semibold text-purple-800">コメント数</p>
     </div>
   </a>
+
+  {{-- カテゴリ数 --}}
+<a href="{{ route('admin.categories.index') }}" class="flex items-center space-x-2 bg-blue-100 rounded-lg p-3 shadow max-w-xs w-full hover:scale-105 transition-all duration-200">
+  <i class="ri-folder-3-fill text-3xl text-blue-500"></i>
+  <div>
+    <p class="text-3xl font-bold text-blue-800">{{ $categoryCount }}</p>
+    <p class="text-sm font-semibold text-blue-800">カテゴリ数</p>
+  </div>
+</a>
 
   {{-- タグ数 --}}
 <a href="{{ route('admin.tags.index') }}" class="flex items-center space-x-2 bg-pink-100 rounded-lg p-3 shadow max-w-xs w-full hover:scale-105 transition-all duration-200">

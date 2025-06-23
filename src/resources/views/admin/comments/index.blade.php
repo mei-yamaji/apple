@@ -19,8 +19,7 @@
         <h2 class="text-xl font-semibold mb-4">コメント一覧</h2>
         <table class="w-full table-auto text-sm text-left text-gray-600">
             <thead>
-                <tr class="bg-gray-100">
-                    <th class="px-4 py-2">ID</th>
+                <tr class="bg-gray-100">                  
                     <th class="px-4 py-2">投稿者</th>
                     <th class="px-4 py-2">タイトル</th>
                     <th class="px-4 py-2">コメント</th>
@@ -31,7 +30,6 @@
             <tbody>
                 @foreach ($comments as $comment)
                     <tr class="border-b">
-                        <td class="px-4 py-2">{{ $comment->id }}</td>
                         <td class="px-4 py-2">{{ $comment->user->name ?? '不明' }}</td>
                         <td class="px-4 py-2">{{ $comment->board->title ?? '不明' }}</td>
                         <td class="px-4 py-2">{{ Str::limit($comment->comment, 50) }}</td>

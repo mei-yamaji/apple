@@ -12,7 +12,7 @@
             <thead>
                 <tr class="bg-gray-100">
                     <th class="px-4 py-2">ID</th>
-                    <th class="px-4 py-2">名前</th>
+                    <th class="px-4 py-2">カテゴリ名</th>
                     <th class="px-4 py-2">作成日時</th>
                     <th class="px-4 py-2">操作</th>
                 </tr>

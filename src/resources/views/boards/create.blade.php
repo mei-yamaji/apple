@@ -16,56 +16,55 @@
 
     <div class="p-8 border rounded-2xl shadow-lg bg-orange-50 dark:bg-gray-800">
  
-    <form class="rounded mb-4" method="POST" action="{{ route('boards.store') }}">
-      @csrf
- 
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">タイトル</label>
-        <input class="shadow border border-slate-300 rounded w-full py-2 px-3" type="text" name="title" value="{{ old('title') }}">
-      </div>
- 
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">カテゴリー</label>
-        <select name="category_id" class="border border-slate-300 rounded w-full py-2 px-3">
-          @foreach($categories as $category)
-            <option value="{{ $category->id }}">{{ $category->name }}</option>
-          @endforeach
-        </select>
-      </div>
- 
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">タグ（カンマ区切り）</label>
-        <input class="shadow border border-slate-300 rounded w-full py-2 px-3" type="text" name="tags" value="{{ old('tags') }}">
-        <p class="text-sm text-gray-500">例: Laravel, PHP</p>
-      </div>
- 
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">本文（Markdown可）</label>
-        <textarea id="description" name="description" rows="6"
-          class="shadow border border-slate-300 rounded w-full py-2 px-3">{{ old('description') }}</textarea>
-      </div>
- 
-      <!-- 画像アップロード -->
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2">画像アップロード</label>
-        <input type="file" id="imageUpload" accept="image/*" />
-        <p class="text-sm text-gray-500">アップロード後、自動でMarkdown形式を本文に挿入します</p>
-      </div>
+    <form class="rounded mb-4" method="POST" action="{{ route('boards.preview') }}">
+  @csrf
 
-      <div class="mb-4">
-        <label class="inline-flex items-center">
-         <input type="checkbox" name="is_published" value="1" class="form-checkbox text-orange-500"
-           {{ old('is_published') ? 'checked' : '' }}>
-         <span class="ml-2 text-gray-700">公開する</span>
-       </label>
-     </div>
- 
-      <div class="flex justify-end">
-        <x-primary-button type="submit">
-          登録する
-        </x-primary-button>
-      </div>
-    </form>
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">タイトル</label>
+    <input class="shadow border border-slate-300 rounded w-full py-2 px-3" type="text" name="title" value="{{ old('title') }}">
+  </div>
+
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">カテゴリー</label>
+    <select name="category_id" class="border border-slate-300 rounded w-full py-2 px-3">
+      @foreach($categories as $category)
+        <option value="{{ $category->id }}" @if(old('category_id') == $category->id) selected @endif>{{ $category->name }}</option>
+      @endforeach
+    </select>
+  </div>
+
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">タグ（カンマ区切り）</label>
+    <input class="shadow border border-slate-300 rounded w-full py-2 px-3" type="text" name="tags" value="{{ old('tags') }}">
+    <p class="text-sm text-gray-500">例: Laravel, PHP</p>
+  </div>
+
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">本文（Markdown可）</label>
+    <textarea id="description" name="description" rows="6" class="shadow border border-slate-300 rounded w-full py-2 px-3">{{ old('description') }}</textarea>
+  </div>
+
+  <!-- 画像アップロード -->
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">画像アップロード</label>
+    <input type="file" id="imageUpload" accept="image/*" />
+    <p class="text-sm text-gray-500">アップロード後、自動でMarkdown形式を本文に挿入します</p>
+  </div>
+
+  <div class="mb-4">
+    <label class="inline-flex items-center">
+      <input type="checkbox" name="is_published" value="1" class="form-checkbox text-orange-500" {{ old('is_published') ? 'checked' : '' }}>
+      <span class="ml-2 text-gray-700">公開する</span>
+    </label>
+  </div>
+
+  <div class="flex justify-end">
+    <x-primary-button type="submit">
+      プレビューを確認
+    </x-primary-button>
+  </div>
+</form>
+
   </div>
 </div>
  

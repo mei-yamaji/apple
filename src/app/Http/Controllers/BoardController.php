@@ -45,7 +45,7 @@ class BoardController extends Controller
     });
 
     return view('boards.index', compact('boards'));
-}
+    }
 
 
     public function create()
@@ -197,5 +197,38 @@ class BoardController extends Controller
 
          return response()->json(['url' => $url]);
     }
-    
-   }
+
+    public function preview(Request $request)
+    {
+        // 投稿時のバリデーションに合わせてvalidate
+        $data = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required|max:65535',
+            'category_id' => 'required|exists:categories,id',
+            'tags' => 'nullable|string',
+            'is_published' => 'nullable|boolean',
+        ]);
+
+        // マークダウンをHTMLに変換
+        $converter = new CommonMarkConverter();
+        $htmlDescription = $converter->convertToHtml($data['description']);
+
+        // カテゴリ名を取得（ビュー表示用）
+        $category = \App\Models\Category::find($data['category_id']);
+
+        // タグ配列（カンマ区切りを配列に）
+        $tagNames = [];
+        if (!empty($data['tags'])) {
+            $tagNames = array_filter(array_map('trim', explode(',', $data['tags'])));
+        }
+
+        return view('boards.preview', [
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'htmlDescription' => $htmlDescription,
+            'category' => $category,
+            'tags' => $tagNames,
+            'is_published' => $request->has('is_published'),
+        ]);
+    }
+}

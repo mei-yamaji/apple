@@ -36,6 +36,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/mypage/boards', [BoardController::class, 'myBoards'])->name('boards.my');
     Route::get('/user/{id}', [UserController::class, 'show']);
 
+    //投稿作成関連
+    Route::get('/boards/create', [BoardController::class, 'create'])->name('boards.create');
+    Route::post('/boards/preview', [BoardController::class, 'preview'])->name('boards.preview');
+    Route::post('/boards', [BoardController::class, 'store'])->name('boards.store');
+
     // 人気・閲覧・最新ランキング用ルート（リソースルートの下に置く）
     Route::get('/boards/ranking/{type}', [BoardController::class, 'fetchRanking'])->name('boards.rankings');
 

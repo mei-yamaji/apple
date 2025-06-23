@@ -113,6 +113,16 @@
                       <span>🍎</span>
                     @endif
                     投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
+
+                    {{-- ここにステータス表示を追加 --}}
+                  <span class="ml-4 font-semibold">
+                    ステータス: 
+                    @if($board->is_published)
+                      <span class="text-green-600">公開中</span>
+                    @else
+                      <span class="text-red-600">非公開中</span>
+                    @endif
+                  </span>
                   </div>
                   <div class="prose prose-gray max-w-none">
                   @php

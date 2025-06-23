@@ -71,9 +71,9 @@
             @endforelse
 
             <!-- ページネーションリンク -->
-            <div class="mt-4">
+           <div class="mt-4" style="border:none; padding:0;">
                 {{ $boards->links() }}
-            </div>
+           </div>
         </div>
     </div>
 </x-app-layout>

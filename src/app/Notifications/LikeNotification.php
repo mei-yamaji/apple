@@ -38,6 +38,7 @@ class LikeNotification extends Notification
             'type' => 'like',
             'message' => "{$this->liker->name} さんがあなたの投稿にいいねしました。",
             'board_id' => $this->board->id,
+            'url' => route('boards.show', $this->board->id),
         ];
     }
 }

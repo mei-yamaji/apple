@@ -38,6 +38,7 @@ class FavoriteNotification extends Notification
             'type' => 'favorite',
             'message' => "{$this->user->name} さんにフォローされました。",
             'board_id' => $this->board->id,
+            'url' => route('user.show', $this->user->id),
         ];
     }
 }

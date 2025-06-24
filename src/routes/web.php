@@ -70,10 +70,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/boards/image-upload', [BoardController::class, 'uploadImage'])->name('boards.image-upload');
 
     // 通知機能
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
-    Route::post('/notifications/{id}/read', [NotificationController::class, 'read'])->name('notifications.read');
-
-    Route::post('/notifications/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('notifications.read');
+    Route::get('/notifications', [NotificationController::class, 'notifications'])->name('notifications.index');
+    Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+    Route::post('/notifications/mark-selected-read', [NotificationController::class, 'markSelectedAsRead'])->name('notifications.markSelectedAsRead');
  
 });
 

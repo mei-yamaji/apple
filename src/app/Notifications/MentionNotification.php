@@ -30,6 +30,7 @@ class MentionNotification extends Notification
             'board_id' => $this->board->id,
             'comment_id' => $this->comment->id,
             'message' => "{$this->fromUser->name} さんがあなたをコメントでメンションしました。",
+            'url' => route('boards.show', $this->board->id),
         ];
     }
 }

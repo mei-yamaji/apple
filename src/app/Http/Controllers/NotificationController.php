@@ -42,7 +42,7 @@ class NotificationController extends Controller
     {
         auth()->user()->unreadNotifications->markAsRead();
  
-        return response()->json(['message' => '通知を既読にしました']);
+        return response()->json(['status' => 'success']);
     }
 
     // 選択した通知のみ既読にする

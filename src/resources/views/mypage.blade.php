@@ -99,6 +99,22 @@
         <span class="text-5xl">🍎</span>
       </div>
 
+          {{-- 記事検索機能 --}}
+        <form action="{{ route('mypage') }}" method="GET" class="mb-6">
+      <input type="hidden" name="view" value="likes" />
+      <div class="flex space-x-2">
+        <input type="text" name="keyword" placeholder="いいねした記事で検索"
+              value="{{ request('keyword') ?? '' }}"
+              class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-300" />
+        <button type="submit"
+                class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-orange-400 rounded-full shadow-md hover:bg-orange-500 hover:scale-105 transition-all duration-200 focus:outline-none">
+          <i class="ri-search-line text-base"></i> 
+        </button>
+      </div>
+    </form>
+
+    
+
       {{-- 自分の投稿一覧 --}}
       <div id="ownPosts" style="{{ $viewMode === 'own' ? '' : 'display:none;' }}">
         @if ($boards->isNotEmpty())
@@ -153,6 +169,9 @@
         @endif
       </div>
 
+    
+
+
       {{-- いいねした記事一覧 --}}
       <div id="likedPosts" style="{{ $viewMode === 'likes' ? '' : 'display:none;' }}">
         @if ($likedBoards->isNotEmpty())
@@ -194,7 +213,7 @@
             {{ $likedBoards->appends(['view' => 'likes'])->links() }}
           </div>
         @else
-          <p class="text-gray-500 text-center">お気に入りの投稿はまだありません。</p>
+          <p class="text-gray-500 text-center">いいねした投稿はまだありません。</p>
         @endif
       </div>
     </div>

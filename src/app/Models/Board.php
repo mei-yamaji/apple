@@ -12,6 +12,8 @@ class Board extends Model
     protected $with = ['user', 'category', 'tags'];
 
     protected $fillable = ['title', 'description','publish_date','category_id','is_published'];
+
+    protected $casts = ['is_pinned' => 'boolean',];
  
     public function user()
     {

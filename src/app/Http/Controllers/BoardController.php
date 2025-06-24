@@ -240,4 +240,19 @@ class BoardController extends Controller
         ]);
     }
 
+    // app/Http/Controllers/BoardController.php
+
+    public function togglePin(Board $board)
+    {
+        if (auth()->id() !== $board->user_id) {
+            abort(403); // 自分の投稿じゃなければ拒否
+        }
+
+        $board->is_pinned = !$board->is_pinned;
+        $board->save();
+
+        return back()->with('status', 'ピン留め状態を更新しました');
+    }
+
+
 }

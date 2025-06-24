@@ -163,26 +163,28 @@
 
     {{-- 右側：編集・削除ボタン --}}
     @if (Auth::id() === $comment->user_id)
-      <div class="flex items-center space-x-2 text-sm text-gray-500">
-        {{-- 編集 --}}
-        <a href="{{ route('comments.edit', [$board, $comment]) }}" 
-           class="text-green-500 hover:text-green-700" 
-           title="編集">
-          <i class="ri-pencil-line text-lg"></i>
-        </a>
+  <div class="flex items-center space-x-2">
+    {{-- 編集 --}}
+    <a href="{{ route('comments.edit', [$board, $comment]) }}" 
+       class="bg-blue-100 text-blue-600 rounded-full p-2 hover:bg-blue-200" 
+       title="編集">
+      <i class="ri-pencil-line text-lg"></i>
+    </a>
 
-        {{-- 削除 --}}
-        <form action="{{ route('comments.destroy', [$board, $comment]) }}" 
-              method="POST" 
-              onsubmit="return confirm('本当に削除しますか？');">
-          @csrf
-          @method('DELETE')
-          <button type="submit" class="text-red-500 hover:text-red-700" title="削除">
-            <i class="ri-delete-bin-line text-lg"></i>
-          </button>
-        </form>
-      </div>
-    @endif
+    {{-- 削除 --}}
+    <form action="{{ route('comments.destroy', [$board, $comment]) }}" 
+          method="POST" 
+          onsubmit="return confirm('本当に削除しますか？');">
+      @csrf
+      @method('DELETE')
+      <button type="submit" 
+              class="bg-red-100 text-red-600 rounded-full p-2 hover:bg-red-200" 
+              title="削除">
+        <i class="ri-delete-bin-6-line text-lg"></i>
+      </button>
+    </form>
+  </div>
+@endif
   </div>
 </li>
           @endforeach

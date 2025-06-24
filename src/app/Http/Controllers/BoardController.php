@@ -162,7 +162,7 @@ class BoardController extends Controller
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
             'category_id' => $validatedData['category_id'],
-            'is_published' => $request->has('is_published'),
+            'is_published' => $request->boolean('is_published'),
         ]);
 
         if (!empty($validatedData['tags'])) {
@@ -240,7 +240,25 @@ class BoardController extends Controller
         ]);
     }
 
-    // app/Http/Controllers/BoardController.php
+    public function previewUpdate(Request $request, Board $board)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'tags' => 'nullable|string', 
+            'is_published' => 'sometimes|boolean',
+            
+        ]);
+
+        // プレビュー用ビューを表示（保存はまだしない）
+        return view('boards.preview-edit', [
+            'board' => $board,
+            'input' => $validated,
+        ]);
+    }
+
+
 
     public function togglePin(Board $board)
     {

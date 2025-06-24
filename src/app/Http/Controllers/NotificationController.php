@@ -33,7 +33,7 @@ class NotificationController extends Controller
     public function notifications()
     {
 
-        $notifications = auth()->user()->unreadNotifications;
+        $notifications = auth()->user()->notifications()->latest()->paginate(20);
         return view('notifications.index', compact('notifications'));
 
     }
@@ -44,6 +44,27 @@ class NotificationController extends Controller
  
         return response()->json(['message' => '通知を既読にしました']);
     }
+
+    // 選択した通知のみ既読にする
+    public function markSelectedAsRead(Request $request)
+    {
+        $ids = $request->input('notification_ids', []);
+
+        if (empty($ids)) {
+            return response()->json(['status' => 'error', 'message' => '通知が選択されていません。']);
+        }
+
+        foreach ($ids as $id) {
+            $notification = auth()->user()->notifications()->find($id);
+            if ($notification) {
+                $notification->markAsRead();
+            }
+        }
+
+        return response()->json(['status' => 'success']);
+    }
+
+
 
 }
 

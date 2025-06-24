@@ -34,22 +34,78 @@
             @endif
 </button>
  
-        <!-- Notification Dropdown -->
-<div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white border rounded-lg shadow-lg z-50">
-<div class="p-4 max-h-96 overflow-y-auto" id="notificationList">
+    <!-- 通知ドロップダウン -->
+    <div id="notificationDropdown" class="hidden absolute right-0 mt-2 w-96 bg-white border rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto p-4">
 
-                @forelse (auth()->user()->unreadNotifications as $notification)
-<div class="mb-2 p-2 bg-gray-100 rounded hover:bg-gray-200 transition">
+        <!-- 選択既読フォーム -->
+        <form id="markReadForm">
+            @csrf
 
-                        {{ $notification->data['message'] ?? '新しい通知があります' }}
-</div>
+            <!-- ボタンエリア -->
+            <div class="flex justify-between items-center mb-4">
+                <!-- 選択した通知を既読にするボタン -->
+                <button type="submit"
+                    class="px-3 py-1 bg-orange-400 hover:bg-orange-500 text-white rounded-full shadow hover:scale-105 transition-all duration-200">
+                    選択した通知を既読にする
+                </button>
 
-                @empty
-<div class="text-gray-500 text-sm">通知はありません</div>
+                <!-- すべて既読にするボタン -->
+                <button type="button" id="markAllReadBtn"
+                    class="px-3 py-1 bg-gray-400 hover:bg-gray-500 text-white rounded-full shadow hover:scale-105 transition-all duration-200">
+                    すべて既読にする
+                </button>
+            </div>
 
-                @endforelse
-</div>
-</div>
+            <!-- 通知リスト -->
+            @forelse ($notifications as $notification)
+                @php
+                    $type = class_basename($notification->type);
+                    $message = $notification->data['message'] ?? '新しい通知があります';
+                    $url = $notification->data['url'] ?? '#';
+                    $isUnread = is_null($notification->read_at);
+
+                    // 色分け
+                    if ($type === 'LikeNotification') {
+                        $bgColor = $isUnread ? 'bg-orange-100' : 'bg-gray-100';
+                        $icon = '<i class="ri-heart-fill text-red-500 text-2xl"></i>';
+                    } elseif ($type === 'CommentNotification') {
+                        $bgColor = $isUnread ? 'bg-blue-100' : 'bg-gray-100';
+                        $icon = '<i class="ri-chat-3-fill text-blue-500 text-2xl"></i>';
+                    } elseif ($type === 'FavoriteNotification') {
+                        $bgColor = $isUnread ? 'bg-yellow-100' : 'bg-gray-100';
+                        $icon = '<i class="ri-star-fill text-yellow-500 text-2xl"></i>';
+                    } elseif ($type === 'FollowNotification') {
+                        $bgColor = $isUnread ? 'bg-green-100' : 'bg-gray-100';
+                        $icon = '<i class="ri-user-follow-fill text-green-500 text-2xl"></i>';
+                    } else {
+                        $bgColor = 'bg-gray-100';
+                        $icon = '<i class="ri-notification-3-fill text-gray-500 text-2xl"></i>';
+                    }
+                @endphp
+
+                <div class="flex items-center justify-between p-3 mb-2 rounded {{ $bgColor }}">
+                    <div class="flex items-center gap-3">
+                        {!! $icon !!}
+                        <div>
+                            <a href="{{ $url }}" class="text-sm text-gray-800 hover:underline">
+                                {{ $message }}
+                            </a>
+                            <div class="text-xs text-gray-500">{{ $notification->created_at->diffForHumans() }}</div>
+                        </div>
+                    </div>
+
+                    <div class="w-5 flex justify-center">
+                        @if ($isUnread)
+                            <input type="checkbox" name="notification_ids[]" value="{{ $notification->id }}"
+                                class="w-4 h-4 text-orange-500 rounded border-gray-300 focus:ring-orange-500">
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <p class="text-center text-gray-500 mt-4">通知はありません。</p>
+            @endforelse
+        </form>
+    </div>
 </div>
  
                 <!-- Post Dropdown -->
@@ -156,11 +212,11 @@
     document.addEventListener('DOMContentLoaded', function () {
         const button = document.getElementById('notificationButton');
         const dropdown = document.getElementById('notificationDropdown');
-        const badge = document.getElementById('notificationCount');
+        const markAllReadBtn = document.getElementById('markAllReadBtn');
+        const markReadForm = document.getElementById('markReadForm');
 
         button.addEventListener('click', function () {
             dropdown.classList.toggle('hidden');
-            markNotificationsAsRead();
         });
 
         document.addEventListener('click', function (e) {
@@ -169,8 +225,9 @@
             }
         });
 
-        function markNotificationsAsRead() {
-            fetch('{{ route('notifications.read') }}', {
+        // すべて既読にする
+        markAllReadBtn.addEventListener('click', function () {
+            fetch('{{ route('notifications.markAsRead') }}', {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -179,15 +236,54 @@
             })
             .then(response => response.json())
             .then(data => {
-                // 通知数バッジを非表示にする
-                if (badge) {
-                    badge.textContent = '';
-                    badge.style.display = 'none';
+                location.reload(); // 再読み込みで反映
+            })
+            .catch(error => {
+                alert('エラーが発生しました');
+                console.error(error);
+            });
+        });
+
+        // 選択した通知を既読にする
+        markReadForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(markReadForm);
+            const ids = formData.getAll('notification_ids[]');
+
+            if (ids.length === 0) {
+                alert('通知を選択してください。');
+                return;
+            }
+
+            fetch('{{ route('notifications.markSelectedAsRead') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ notification_ids: ids })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    ids.forEach(id => {
+                        const checkbox = document.querySelector(`input[value="${id}"]`);
+                        if (checkbox) {
+                            checkbox.classList.add('hidden'); // チェックボックスを非表示に
+                            const parentDiv = checkbox.closest('div.p-3');
+                            parentDiv.classList.remove('bg-orange-100', 'bg-blue-100', 'bg-yellow-100', 'bg-green-100');
+                            parentDiv.classList.add('bg-gray-100');
+                        }
+                    });
+                } else {
+                    alert('処理に失敗しました。');
                 }
             })
             .catch(error => {
-                console.error('通知の既読処理でエラー:', error);
+                alert('エラーが発生しました');
+                console.error(error);
             });
-        }
+        });
     });
 </script>

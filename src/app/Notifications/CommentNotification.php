@@ -38,6 +38,7 @@ class CommentNotification extends Notification
             'type' => 'comment',
             'message' => "{$this->commenter->name} さんがあなたの投稿にコメントしました。",
             'board_id' => $this->board->id,
+            'url' => route('boards.show', $this->board->id),
         ];
     }
 }

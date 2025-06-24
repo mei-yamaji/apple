@@ -17,4 +17,13 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function getFormattedBodyAttribute()
+    {
+        return preg_replace_callback('/@([ぁ-んァ-ン一-龥a-zA-Z0-9\-_]+)/u', function ($matches) {
+            $username = $matches[1];
+            return '<span class="mention">@' . htmlspecialchars($username, ENT_QUOTES, 'UTF-8') . '</span>';
+        }, e($this->comment));
+    }
+
 }

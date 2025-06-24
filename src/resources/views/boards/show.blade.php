@@ -157,7 +157,7 @@
           </strong>
           <span class="text-sm text-gray-500">{{ $comment->created_at->format('Y-m-d H:i') }}</span>
         </div>
-        <p>{{ $comment->comment }}</p>
+        <p>{!! $comment->formatted_body !!}</p>
       </div>
     </div>
 
@@ -218,6 +218,13 @@
     </div>
 
   </div>
+      <style>
+    .mention {
+      color:green; 
+      font-weight: bold;
+    }
+    </style>
+
 </x-app-layout>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

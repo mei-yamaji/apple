@@ -48,10 +48,12 @@ class UserController extends Controller
 
     public function show(User $user)
     {
-        $query = Board::withCount('likes') // ← ここを追加！
+        $query = Board::withCount('likes') 
                   ->where('user_id', $user->id)
+                  ->orderByDesc('is_pinned') 
                   ->orderBy('created_at', 'desc');
 
+        // 他人のプロフィールなら、公開済みのみ表示
         if (auth()->id() !== $user->id) {
             $query->where('is_published', true);
         }

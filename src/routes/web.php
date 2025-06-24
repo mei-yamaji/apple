@@ -61,6 +61,7 @@ Route::middleware('auth')->group(function () {
     // ユーザー関連
     Route::get('/mypage', [UserController::class, 'mypage'])->name('mypage');
     Route::get('/users/{user}', [UserController::class, 'show'])->name('user.show');
+    Route::patch('/boards/{board}/toggle-pin', [BoardController::class, 'togglePin'])->name('boards.togglePin');
 
     // ユーザーのお気に入り登録
     Route::post('/favorites/{user}', [FavoriteController::class, 'toggle'])->name('favorites.toggle')->middleware('auth');

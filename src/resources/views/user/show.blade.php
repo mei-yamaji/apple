@@ -51,19 +51,31 @@
       </div>
 
       <!-- 投稿記事一覧 -->
-       <div class="mt-8">
-            <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
-                <i class="ri-article-line text-orange-400 text-2xl"></i> 投稿記事一覧
-            </h3>
+    <div class="mt-8">
+      <h3 class="text-lg font-semibold text-gray-700 mb-4 flex items-center gap-2">
+        <i class="ri-article-line text-orange-400 text-2xl"></i> 投稿記事一覧
+      </h3>
+
       <div>
         @if ($boards->isNotEmpty())
           @foreach ($boards as $board)
             <div class="border rounded-2xl shadow-md p-6 mb-6 bg-white">
+
+              {{-- 📌 ピン留め中なら表示 --}}
+              @if ($board->is_pinned)
+                <div class="text-sm text-yellow-600 font-semibold mb-2 flex items-center gap-1">
+                  <span class="text-lg">📌</span> ピン留め中の投稿
+                </div>
+              @endif
+
+              {{-- 投稿タイトル --}}
               <h2 class="text-2xl font-semibold text-orange-600 hover:underline mb-2">
                 <a href="{{ route('boards.show', $board->id) }}">
                   {{ $board->title }}
                 </a>
               </h2>
+
+              {{-- 投稿情報 --}}
               <div class="text-sm text-gray-500 mb-4">
                 投稿者: {{ $board->user->name ?? '不明' }}
                 @if (!empty($board->user->is_runteq_student) && $board->user->is_runteq_student)
@@ -71,6 +83,8 @@
                 @endif
                 投稿日: {{ $board->created_at->format('Y/m/d H:i') }}
               </div>
+
+              {{-- 本文（100文字以内 & 「続きを読む」リンク） --}}
               <div class="prose prose-gray max-w-none">
                 @php
                   $htmlWithoutImages = preg_replace('/<img[^>]*>/', '', $board->description_html ?? '');
@@ -86,17 +100,35 @@
                 @endif
               </div>
 
+              {{-- いいね数・ピン切り替え --}}
               <div class="mt-4 flex items-center gap-4">
                 <span class="text-sm text-gray-600">💖 {{ $board->likes_count ?? 0 }} 件のいいね</span>
+
+                {{-- 🔁 自分のプロフィールだけピン留めボタン表示 --}}
+                @if (Auth::id() === $user->id)
+                  <form method="POST" action="{{ route('boards.togglePin', $board->id) }}">
+                    @csrf
+                    @method('PATCH')
+                    <button type="submit"
+                            class="text-xs px-3 py-1 rounded border transition
+                                  {{ $board->is_pinned ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' }}">
+                      {{ $board->is_pinned ? 'ピンを外す' : '📌 ピン留めする' }}
+                    </button>
+                  </form>
+                @endif
               </div>
             </div>
           @endforeach
 
+          {{-- ページネーション --}}
           <div class="mt-4">{{ $boards->links() }}</div>
+
         @else
           <p class="text-gray-500 text-center">まだ投稿がありません。</p>
         @endif
       </div>
+    </div>
+
 
     </div>
   </div>

@@ -16,17 +16,35 @@ class CommentController extends Controller
             'comment' => 'required',
         ]);
 
-        $board->comments()->create([
-            'user_id' => Auth::id(), 
+        $comment = $board->comments()->create([
+            'user_id' => Auth::id(),
             'comment' => $request->comment,
         ]);
 
+        // 投稿者に通知（自分自身以外の場合）
         if ($board->user->id !== Auth::id()) {
-    $board->user->notify(new CommentNotification(auth()->user(), $board));
-}
+            $board->user->notify(new CommentNotification(auth()->user(), $board));
+        }
 
-        return redirect()->route('boards.show', $board)->with('success', 'コメントが投稿されました');
+        // メンションを検出 (@username)
+        preg_match_all('/@([\w\-]+)/u', $request->comment, $matches);
+
+        if (!empty($matches[1])) {
+            $mentionedUsernames = array_unique($matches[1]);
+
+            $mentionedUsers = \App\Models\User::whereIn('name', $mentionedUsernames)
+                ->where('id', '!=', Auth::id()) // 自分へのメンションは無視
+                ->get();
+
+            foreach ($mentionedUsers as $mentionedUser) {
+                // 通知を送信（例：MentionNotification）
+                $mentionedUser->notify(new \App\Notifications\MentionNotification(Auth::user(), $board, $comment));
+            }
+        }
+
+        return back()->with('success', 'コメントを投稿しました。');
     }
+
 
     public function edit(Board $board, Comment $comment)
     {

@@ -26,10 +26,12 @@
 
             @if (auth()->user()->unreadNotifications->count() > 0)
 <!-- 通知件数バッジ -->
-<span id="notificationCount" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5" 
-      style="{{ Auth::user()->unreadNotifications->count() > 0 ? '' : 'display: none;' }}">
+<span id="notificationCount" data-count="{{ Auth::user()->unreadNotifications->count() }}"
+    class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full px-1.5 py-0.5"
+    style="{{ Auth::user()->unreadNotifications->count() > 0 ? '' : 'display: none;' }}">
     {{ Auth::user()->unreadNotifications->count() }}
 </span>
+
 
             @endif
 </button>
@@ -209,81 +211,125 @@
 </nav>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const button = document.getElementById('notificationButton');
-        const dropdown = document.getElementById('notificationDropdown');
-        const markAllReadBtn = document.getElementById('markAllReadBtn');
-        const markReadForm = document.getElementById('markReadForm');
+document.addEventListener('DOMContentLoaded', function () {
+    const button = document.getElementById('notificationButton');
+    const dropdown = document.getElementById('notificationDropdown');
+    const markAllReadBtn = document.getElementById('markAllReadBtn');
+    const markReadForm = document.getElementById('markReadForm');
 
-        button.addEventListener('click', function () {
-            dropdown.classList.toggle('hidden');
-        });
+    button.addEventListener('click', function () {
+        dropdown.classList.toggle('hidden');
+    });
 
-        document.addEventListener('click', function (e) {
-            if (!button.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.add('hidden');
+    document.addEventListener('click', function (e) {
+        if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
+
+    // 通知数の更新を一括管理
+    function updateNotificationCount() {
+        // チェックボックスが存在する＝未読通知数
+        const unreadCheckboxes = document.querySelectorAll('input[name="notification_ids[]"]:not(.hidden)');
+        const unreadCount = unreadCheckboxes.length;
+        const badge = document.getElementById('notificationCount');
+
+        if (badge) {
+            if (unreadCount > 0) {
+                badge.textContent = unreadCount;
+                badge.style.display = 'inline-flex';
+            } else {
+                badge.style.display = 'none';
+                badge.textContent = '';
             }
-        });
+        }
+    }
 
-        // すべて既読にする
-        markAllReadBtn.addEventListener('click', function () {
-            fetch('{{ route('notifications.markAsRead') }}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json',
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                location.reload(); // 再読み込みで反映
-            })
-            .catch(error => {
-                alert('エラーが発生しました');
-                console.error(error);
-            });
-        });
+    // すべて既読にするボタン処理
+    const markAllBtn = document.getElementById('markAllReadBtn');
+    markAllBtn.addEventListener('click', function () {
+        if (!confirm('すべての通知を既読にしますか？')) return;
 
-        // 選択した通知を既読にする
-        markReadForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const formData = new FormData(markReadForm);
-            const ids = formData.getAll('notification_ids[]');
-
-            if (ids.length === 0) {
-                alert('通知を選択してください。');
-                return;
+        fetch('{{ route('notifications.markAsRead') }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === 'success') {
+                // すべてのチェックボックスを非表示にし、背景色をグレーに
+                document.querySelectorAll('input[name="notification_ids[]"]').forEach(cb => {
+                    cb.classList.add('hidden');
+                    const parentDiv = cb.closest('div.p-3');
+                    parentDiv.classList.remove('bg-orange-100', 'bg-blue-100', 'bg-yellow-100', 'bg-green-100');
+                    parentDiv.classList.add('bg-gray-100');
+                });
 
-            fetch('{{ route('notifications.markSelectedAsRead') }}', {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ notification_ids: ids })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    ids.forEach(id => {
-                        const checkbox = document.querySelector(`input[value="${id}"]`);
-                        if (checkbox) {
-                            checkbox.classList.add('hidden'); // チェックボックスを非表示に
-                            const parentDiv = checkbox.closest('div.p-3');
-                            parentDiv.classList.remove('bg-orange-100', 'bg-blue-100', 'bg-yellow-100', 'bg-green-100');
-                            parentDiv.classList.add('bg-gray-100');
-                        }
-                    });
-                } else {
-                    alert('処理に失敗しました。');
-                }
-            })
-            .catch(error => {
-                alert('エラーが発生しました');
-                console.error(error);
-            });
+                updateNotificationCount(); // バッジ更新
+
+            } else {
+                alert('処理に失敗しました。');
+            }
+        })
+        .catch(error => {
+            alert('エラーが発生しました');
         });
     });
+
+    // 選択した通知を既読にするボタン処理
+    markReadForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(markReadForm);
+        const ids = formData.getAll('notification_ids[]');
+
+        if (ids.length === 0) {
+            alert('通知を選択してください。');
+            return;
+        }
+
+        fetch('{{ route('notifications.markSelectedAsRead') }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ notification_ids: ids })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                ids.forEach(id => {
+                    const checkbox = document.querySelector(`input[value="${id}"]`);
+                    if (checkbox) {
+                        checkbox.classList.add('hidden'); // チェックボックス非表示
+                        const parentDiv = checkbox.closest('div.p-3');
+                        parentDiv.classList.remove('bg-orange-100', 'bg-blue-100', 'bg-yellow-100', 'bg-green-100');
+                        parentDiv.classList.add('bg-gray-100');
+                    }
+                });
+
+                updateNotificationCount(); // バッジ更新
+
+            } else {
+                alert('処理に失敗しました。');
+            }
+        })
+        .catch(error => {
+            alert('エラーが発生しました');
+            console.error(error);
+        });
+    });
+
+    // ページ読み込み時にバッジを最新状態にセット
+    updateNotificationCount();
+});
 </script>

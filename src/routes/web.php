@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\BoardController as AdminBoardController;
 use App\Models\Board;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\MypageController;
  
 Route::get('/', function () {
     return view('dashboard');
@@ -52,8 +53,13 @@ Route::middleware('auth')->group(function () {
     Route::delete('/likes/{board}', [LikeController::class, 'destroy'])->name('likes.destroy');
     
     //マイページ関連
-    Route::get('/mypage', [UserController::class, 'mypage'])->middleware('auth')->name('mypage');
-    Route::get('/mypage/likes', [UserController::class, 'likedBoards'])->middleware('auth')->name('mypage.likes');
+    // UserControllerのmypage関連は削除またはコメントアウト
+Route::middleware(['auth'])->group(function () {
+    Route::get('/mypage', [MypageController::class, 'index'])->name('mypage.index');
+    // いいね機能もMypageControllerに実装し、ルート追加
+    Route::get('/mypage/likes', [MypageController::class, 'likes'])->name('mypage.likes');
+});
+
     
     // コメント関連
     Route::post('boards/{board}/comments', [CommentController::class, 'store'])->name('comments.store');

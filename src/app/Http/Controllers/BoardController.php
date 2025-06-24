@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Board;
 use App\Models\Tag;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -251,10 +252,13 @@ class BoardController extends Controller
             
         ]);
 
+        $category = Category::find($validated['category_id']);
+
         // プレビュー用ビューを表示（保存はまだしない）
         return view('boards.preview-edit', [
             'board' => $board,
             'input' => $validated,
+            'category' => $category,
         ]);
     }
 

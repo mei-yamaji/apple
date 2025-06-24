@@ -7,9 +7,9 @@
 
     <div class="py-12">
         <div class="w-1/2 mx-auto pt-6 px-8 pb-8">
-                <form action="{{ route('boards.update', $board->id) }}" method="POST">
+                <form action="{{ route('boards.update', $board->id) }}">
                     @csrf
-                    @method('PUT')
+                    @method('POST')
 
                 <div class="p-8 border rounded-2xl shadow-lg bg-orange-50 dark:bg-gray-800">
 
@@ -73,17 +73,21 @@
                     </div>
 
                     {{-- ボタン --}}
-                    <div class="flex items-center justify-between">
-                        <x-primary-button type="submit">
-                            更新する
-                        </x-primary-button>
+                     <div class="flex items-center justify-between mt-4">
+                    {{-- プレビュー用ボタン --}}
+                    <x-primary-button type="submit" name="action" value="preview"
+                        formaction="{{ route('boards.preview.update', $board->id) }}">
+                        プレビュー
+                    </x-primary-button>
 
-                        <a href="{{ route('boards.show', $board->id) }}" class="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-orange-500 bg-white border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
-                          <i class="ri-arrow-go-back-line"></i> 戻る
-                        </a>
-                    </div>
-                </form>
+                    {{-- 戻るボタン --}}
+                    <a href="{{ route('boards.show', $board->id) }}"
+                        class="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-orange-500 bg-white border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
+                        <i class="ri-arrow-go-back-line"></i> 戻る
+                    </a>
                 </div>
+            </form>
+         </div>
         </div>
     </div>
 

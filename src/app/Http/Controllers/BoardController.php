@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Board;
 use App\Models\Tag;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -162,7 +163,7 @@ class BoardController extends Controller
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
             'category_id' => $validatedData['category_id'],
-            'is_published' => $request->has('is_published'),
+            'is_published' => $request->boolean('is_published'),
         ]);
 
         if (!empty($validatedData['tags'])) {
@@ -240,7 +241,28 @@ class BoardController extends Controller
         ]);
     }
 
-    // app/Http/Controllers/BoardController.php
+    public function previewUpdate(Request $request, Board $board)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'tags' => 'nullable|string', 
+            'is_published' => 'sometimes|boolean',
+            
+        ]);
+
+        $category = Category::find($validated['category_id']);
+
+        // プレビュー用ビューを表示（保存はまだしない）
+        return view('boards.preview-edit', [
+            'board' => $board,
+            'input' => $validated,
+            'category' => $category,
+        ]);
+    }
+
+
 
     public function togglePin(Board $board)
     {

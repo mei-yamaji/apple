@@ -1,29 +1,32 @@
 <x-app-layout>
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-white p-6 rounded shadow">
-            <h2 class="text-2xl font-bold mb-4">コメント編集</h2>
+  <x-slot name="header">
+    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+      コメント編集
+    </h2>
+  </x-slot>
 
-            <form method="POST" action="{{ route('comments.update', [$board, $comment]) }}">
-                @csrf
-                @method('PUT')
+  <div class="max-w-3xl mx-auto bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg my-10">
+    <form method="POST" action="{{ route('comments.update', [$board, $comment]) }}">
+      @csrf
+      @method('PUT')
 
-                <div class="mb-4">
-                    <label class="block mb-1 font-medium">コメント</label>
-                    <textarea name="comment" rows="4" class="w-full border rounded px-3 py-2" required>{{ old('comment', $comment->comment) }}</textarea>
-                </div>
+      <div class="mb-6">
+        <label for="comment" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">コメント</label>
+        <textarea id="comment" name="comment" rows="6" 
+          class="w-full border border-gray-300 rounded-md p-3 text-gray-900 dark:text-gray-100 dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
+          required>{{ old('comment', $comment->comment) }}</textarea>
+      </div>
 
-             <div class="flex justify-between items-center mt-4">
-                <x-primary-button type="submit">
-                    更新する
-                </x-primary-button>
-                <a href="{{ route('boards.show', $board) }}"
-                class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-orange-500 border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
-                    <i class="ri-arrow-go-back-line mr-1"></i> 戻る
-                </a>
+      <div class="flex justify-between">
+        <x-primary-button type="submit">
+          編集に戻る
+        </x-primary-button>
 
-
-             </div>
-            </form>
-        </div>
+            <form action="{{ route('boards.show', $board) }}" method="GET">
+        <x-primary-button type="submit">
+        更新する
+        </x-primary-button>
+    </form>
     </div>
+  </div>
 </x-app-layout>

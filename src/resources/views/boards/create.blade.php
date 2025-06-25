@@ -22,13 +22,13 @@
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2">タイトル</label>
-          <input type="text" name="title" class="shadow border border-slate-300 rounded w-full py-2 px-3"
+          <input type="text" name="title" class="shadow border border-slate-300 rounded w-full py-2 px-3 focus:ring-green-500 focus:border-green-500"
             value="{{ old('title', $old['title'] ?? '') }}">
         </div>
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2">カテゴリー</label>
-          <select name="category_id" class="border border-slate-300 rounded w-full py-2 px-3">
+          <select name="category_id" class="border border-slate-300 rounded w-full py-2 px-3 focus:ring-green-500 focus:border-green-500">
             @foreach($categories as $category)
               <option value="{{ $category->id }}"
                 @if(old('category_id', $old['category_id'] ?? '') == $category->id) selected @endif>
@@ -40,7 +40,7 @@
 
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2">タグ（カンマ区切り）</label>
-          <input type="text" name="tags" class="shadow border border-slate-300 rounded w-full py-2 px-3"
+          <input type="text" name="tags" class="shadow border border-slate-300 rounded w-full py-2 px-3 focus:ring-green-500 focus:border-green-500"
             value="{{ old('tags', $old['tags'] ?? '') }}">
           <p class="text-sm text-gray-500">例: Laravel, PHP</p>
         </div>
@@ -48,7 +48,7 @@
         <div class="mb-4">
           <label class="block text-gray-700 text-sm font-bold mb-2">本文（Markdown可）</label>
           <textarea id="description" name="description" rows="6"
-            class="shadow border border-slate-300 rounded w-full py-2 px-3">{{ old('description', $old['description'] ?? '') }}</textarea>
+            class="shadow border border-slate-300 rounded w-full py-2 px-3 focus:ring-green-500 focus:border-green-500">{{ old('description', $old['description'] ?? '') }}</textarea>
         </div>
 
         <div class="mb-4">
@@ -59,7 +59,7 @@
 
         <div class="mb-4">
           <label class="inline-flex items-center">
-            <input type="checkbox" name="is_published" value="1" class="form-checkbox text-orange-500"
+            <input type="checkbox" name="is_published" value="1" class="form-checkbox text-orange-500 focus:ring-green-500 focus:border-green-500"
               {{ old('is_published', $old['is_published'] ?? false) ? 'checked' : '' }}>
             <span class="ml-2 text-gray-700">公開する</span>
           </label>

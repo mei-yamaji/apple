@@ -13,7 +13,7 @@
       <div class="mb-6">
         <label for="comment" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">コメント</label>
         <textarea id="comment" name="comment" rows="6" 
-          class="w-full border border-gray-300 rounded-md p-3 text-gray-900 dark:text-gray-100 dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-400 transition"
+          class="w-full border border-gray-300 rounded-md p-3 text-gray-900 dark:text-gray-100 dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition"
           required>{{ old('comment', $comment->comment) }}</textarea>
       </div>
 

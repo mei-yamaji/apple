@@ -44,7 +44,7 @@
 
           {{-- この内容で更新ボタン --}}
           <x-primary-button type="submit">
-            この内容で更新
+            更新する
           </x-primary-button>
         </div>
       </form>

@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-xl text-orange-900 leading-tight">
             投稿プレビュー
         </h2>
     </x-slot>
@@ -21,7 +21,7 @@
       <form action="{{ route('boards.create') }}" method="GET">
         <input type="hidden" name="preview" value="1">
         <x-primary-button type="submit">
-            編集に戻る
+            戻る
         </x-primary-button>
       </form>
       

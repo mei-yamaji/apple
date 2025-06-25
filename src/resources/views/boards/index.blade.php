@@ -76,10 +76,12 @@
     @endif
   </p>
 
+    <!-- いいね機能 -->
   <button class="like-button flex items-center focus:outline-none ml-4" data-board-id="{{ $board->id }}">
     <i class="ri-heart-fill text-xl {{ $board->likes->contains('user_id', auth()->id()) ? 'text-red-500' : 'text-gray-400 hover:text-red-400' }}"></i>
     <span class="ml-2" style="color:rgb(234, 88, 100);">{{ $board->like_count }}</span>
   </button>
+  
 </div>
 
 
@@ -143,12 +145,21 @@ $(function() {
         _token: '{{ csrf_token() }}'
       },
       success: function(response) {
+        const icon = button.find('i');
+
         if (response.liked) {
-          button.find('i').removeClass('text-gray-400 hover:text-red-400').addClass('text-red-500');
+          icon.removeClass('text-gray-400 hover:text-red-400').addClass('text-red-500');
         } else {
-          button.find('i').removeClass('text-red-500').addClass('text-gray-400 hover:text-red-400');
+          icon.removeClass('text-red-500').addClass('text-gray-400 hover:text-red-400');
         }
+
+        // 数字更新
         button.find('span').text(response.likeCount);
+
+        // ❤️ アニメーションを付ける
+        icon.removeClass('heart-animate');
+        void icon[0].offsetWidth;  // ←これ重要（再アニメ用）
+        icon.addClass('heart-animate');
       },
       error: function() {
         alert('通信エラーが発生しました。');
@@ -157,3 +168,20 @@ $(function() {
   });
 });
 </script>
+  <style>
+  @keyframes heart-pop {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.4);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .heart-animate {
+    animation: heart-pop 0.3s ease;
+  }
+  </style>

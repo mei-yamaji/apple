@@ -9,7 +9,7 @@
 
        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico?v=1') }}">
        
-        <title>apple</title>
+        <title>APPLE</title>
  
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Comic+Relief&family=IBM+Plex+Sans+JP&display=swap" rel="stylesheet">

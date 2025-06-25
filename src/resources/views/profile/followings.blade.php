@@ -1,9 +1,16 @@
 <x-app-layout>
     <div class="max-w-3xl mx-auto py-8 px-4">
-        <h2 class="text-2xl font-bold text-orange-500 mb-6 text-center flex items-center justify-center gap-2">
-            <i class="ri-user-follow-line text-3xl"></i>
+        <x-slot name="header">
+        <div class="flex items-center gap-2">
+        <i class="ri-user-follow-line text-3xl text-orange-600"></i>
+        <h2 class="text-2xl font-bold text-orange-900">
             {{ $user->name }}さんがフォロー中
         </h2>
+        </div>
+      </x-slot>
+
+      <div class="max-w-3xl mx-auto py-8 px-4">
+
 
         @forelse ($followings as $following)
             <div class="flex items-center justify-between bg-orange-50 p-4 mb-4 rounded-xl shadow hover:bg-orange-100 transition-all duration-200">

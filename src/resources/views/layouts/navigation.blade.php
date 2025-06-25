@@ -76,12 +76,12 @@
                     } elseif ($type === 'FavoriteNotification') {
                         $bgColor = $isUnread ? 'bg-yellow-100' : 'bg-gray-100';
                         $icon = '<i class="ri-star-fill text-yellow-500 text-2xl"></i>';
-                    } elseif ($type === 'FollowNotification') {
+                    } elseif ($type === 'MentionNotification') {
                         $bgColor = $isUnread ? 'bg-green-100' : 'bg-gray-100';
-                        $icon = '<i class="ri-user-follow-fill text-green-500 text-2xl"></i>';
+                        $icon = '<i class="ri-at-line text-green-500 text-2xl"></i>';
                     } else {
-                        $bgColor = 'bg-green-100';
-                        $icon = '<i class="ri-notification-3-fill text-green-500 text-2xl"></i>';
+                        $bgColor = 'bg-gray-100';
+                        $icon = '<i class="ri-notification-3-fill text-gray-500 text-2xl"></i>';
                     }
                 @endphp
 

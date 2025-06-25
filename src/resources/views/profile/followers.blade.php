@@ -1,7 +1,7 @@
 <x-app-layout>
       <x-slot name="header">
         <div class="flex items-center gap-2">
-        <i class="ri-user-follow-line text-3xl text-orange-600"></i>
+        <i class="ri-group-line text-3xl text-orange-600"></i>
         <h2 class="text-2xl font-bold text-orange-900">
             {{ $user->name }}さんのフォロワー
         </h2>

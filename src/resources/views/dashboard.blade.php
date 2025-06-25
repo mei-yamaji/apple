@@ -16,7 +16,7 @@
     {{-- ヘッダー --}}
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-orange-900 leading-tight text-center">
-            記事ランキング
+           ⭒⭒⭒記事ランキング⭒⭒⭒
         </h2>
     </x-slot>
 

@@ -17,16 +17,17 @@
           required>{{ old('comment', $comment->comment) }}</textarea>
       </div>
 
-      <div class="flex justify-between">
+            <div class="flex justify-between items-center">
         <x-primary-button type="submit">
-          編集に戻る
+            更新する
         </x-primary-button>
 
-            <form action="{{ route('boards.show', $board) }}" method="GET">
-        <x-primary-button type="submit">
-        更新する
-        </x-primary-button>
+        <a href="{{ route('boards.show', $board->id) }}"
+            class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-orange-500 bg-white border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
+            <i class="ri-arrow-go-back-line mr-1"></i> 戻る
+        </a>
+        </div>
+
     </form>
-    </div>
   </div>
 </x-app-layout>

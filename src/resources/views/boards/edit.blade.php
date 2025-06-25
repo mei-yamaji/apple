@@ -16,7 +16,7 @@
                     {{-- タイトル --}}
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">タイトル</label>
-                      <input class="shadow border border-slate-300 rounded w-full py-2 px-3"
+                      <input class="shadow border border-slate-300 rounded w-full py-2 px-3 focus:ring-green-500 focus:border-green-500"
                                type="text" name="title" value="{{ old('title', $board->title) }}">
                         @error('title')
                             <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
@@ -26,7 +26,7 @@
                     {{-- カテゴリー --}}
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">カテゴリー</label>
-                        <select name="category_id" class="border border-slate-300 rounded w-full py-2 px-3">
+                        <select name="category_id" class="border border-slate-300 rounded w-full py-2 px-3 focus:ring-green-500 focus:border-green-500">
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}" {{ $board->category_id == $category->id ? 'selected' : '' }}>
                                     {{ $category->name }}
@@ -38,7 +38,7 @@
                     {{-- タグ --}}
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">タグ（カンマ区切り）</label>
-                        <input class="shadow border border-slate-300 rounded w-full py-2 px-3"
+                        <input class="shadow border border-slate-300 rounded w-full py-2 px-3 focus:ring-green-500 focus:border-green-500"
                                type="text" name="tags" value="{{ old('tags', $tags) }}">
                         <p class="text-sm text-gray-500">例: Laravel, PHP</p>
                     </div>
@@ -47,7 +47,7 @@
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">本文（Markdown可）</label>
                         <textarea id="description" name="description" rows="6"
-                                  class="shadow border border-slate-300 rounded w-full py-2 px-3">{{ old('description', $board->description) }}</textarea>
+                                  class="shadow border border-slate-300 rounded w-full py-2 px-3 focus:ring-green-500 focus:border-green-500">{{ old('description', $board->description) }}</textarea>
                         @error('description')
                             <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
                         @enderror
@@ -58,7 +58,7 @@
                                  type="checkbox"
                                  name="is_published"
                                  value="1"
-                                 class="form-checkbox text-orange-500"
+                                 class="form-checkbox text-orange-500 focus:ring-green-500 focus:border-green-500"
                                 {{ old('is_published', $board->is_published) ? 'checked' : '' }}>
                             <span class="ml-2 text-gray-700">公開する</span>
                          </label>

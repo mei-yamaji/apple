@@ -13,7 +13,7 @@ class Board extends Model
 
     protected $fillable = ['title', 'description','publish_date','category_id','is_published'];
 
-    protected $casts = ['is_pinned' => 'boolean',];
+    protected $casts = ['is_pinned' => 'boolean',  'is_published' => 'boolean',];
  
     public function user()
     {

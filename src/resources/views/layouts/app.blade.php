@@ -7,10 +7,8 @@
  
         <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
 
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico?v=123') }}">
-
- 
- 
+       <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico?v=1') }}">
+       
         <title>apple</title>
  
         <!-- Fonts -->

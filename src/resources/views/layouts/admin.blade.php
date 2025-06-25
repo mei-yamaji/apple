@@ -14,6 +14,10 @@
 
         <!-- Remix Icon CDN -->
         <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('admin-favicon.ico?v=2') }}">
+
+
     </head>
     <body class="bg-gray-800 font-sans leading-normal tracking-normal mt-12">
         @include('layouts.admin-navigation')

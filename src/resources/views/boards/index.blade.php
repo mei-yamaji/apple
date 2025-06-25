@@ -110,7 +110,7 @@
             @endif
 
             <p class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-              <a href="{{ route('user.show', ['user' => $board->user->id]) }}" class="text-green-500 hover:underline">
+              <a href="{{ route('user.show', ['user' => $board->user->id]) }}" class="font-bold text-green-500 hover:underline">
                 {{ $board->user->name }}
               </a>
               @if ($board->user->is_runteq_student)

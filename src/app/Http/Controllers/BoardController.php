@@ -17,28 +17,28 @@ class BoardController extends Controller
 
 
     public function index(Request $request)
-{
-    $converter = new CommonMarkConverter();
+    {
+        $converter = new CommonMarkConverter();
 
-    // クエリビルダ生成（公開済みの記事を対象）
-    $query = Board::where('is_published', true)
-        ->with(['user', 'category', 'tags', 'likes'])
-        ->withCount('comments'); // コメント数を取得
+        // クエリビルダ生成（公開済みの記事を対象）
+        $query = Board::where('is_published', true)
+            ->with(['user', 'category', 'tags', 'likes'])
+            ->withCount('comments'); // コメント数を取得
 
-    // キーワード検索（タイトル・本文・タグ・カテゴリ）
-    if ($request->filled('keyword')) {
-        $keyword = $request->input('keyword');
+        // キーワード検索（タイトル・本文・タグ・カテゴリ）
+        if ($request->filled('keyword')) {
+            $keyword = $request->input('keyword');
 
-        $query->where(function ($q) use ($keyword) {
-            $q->where('title', 'like', '%' . $keyword . '%')
-              ->orWhere('description', 'like', '%' . $keyword . '%')
-              ->orWhereHas('tags', function ($tagQuery) use ($keyword) {
-                  $tagQuery->where('name', 'like', '%' . $keyword . '%');
-              })
-              ->orWhereHas('category', function ($categoryQuery) use ($keyword) {
-                  $categoryQuery->where('name', 'like', '%' . $keyword . '%');
-              });
-        });
+            $query->where(function ($q) use ($keyword) {
+                $q->where('title', 'like', '%' . $keyword . '%')
+                ->orWhere('description', 'like', '%' . $keyword . '%')
+                ->orWhereHas('tags', function ($tagQuery) use ($keyword) {
+                    $tagQuery->where('name', 'like', '%' . $keyword . '%');
+                })
+                ->orWhereHas('category', function ($categoryQuery) use ($keyword) {
+                    $categoryQuery->where('name', 'like', '%' . $keyword . '%');
+                });
+            });
     }
 
     // 最新順・ページネーション
@@ -84,7 +84,7 @@ class BoardController extends Controller
         $board->description = $validatedData['description'];
         $board->category_id = $validatedData['category_id'];
         $board->user_id = auth()->id();
-        $board->is_published = $request->has('is_published'); // チェックがあればtrue、なければfalse
+        $board->is_published = $request->boolean('is_published');
         $board->save();
 
         if (!empty($validatedData['tags'])) {

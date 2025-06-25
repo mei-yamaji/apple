@@ -111,6 +111,7 @@ class BoardController extends Controller
         $board->increment('view_count');
         $board->timestamps = true;
         $board->load(['tags', 'category', 'comments.user']);
+        $board->loadCount('comments');
         return view('boards.show', compact('board'));
     }
 

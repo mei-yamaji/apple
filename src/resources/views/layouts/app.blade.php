@@ -9,7 +9,7 @@
 
        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico?v=1') }}">
        
-        <title>apple</title>
+        <title>APPLE</title>
  
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

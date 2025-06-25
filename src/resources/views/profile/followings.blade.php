@@ -1,8 +1,10 @@
 <x-app-layout>
     <div class="max-w-3xl mx-auto py-8 px-4">
-        <h2 class="text-2xl font-bold text-orange-500 mb-6 text-center flex items-center justify-center gap-2">
+        <h2 class="text-2xl font-bold text-orange-600 mb-6 text-center flex justify-center">
+        <span class="flex items-center justify-between bg-orange-50 p-4 mb-4 rounded-xl">
             <i class="ri-user-follow-line text-3xl"></i>
             {{ $user->name }}さんがフォロー中
+        </span>
         </h2>
 
         @forelse ($followings as $following)

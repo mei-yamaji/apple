@@ -16,7 +16,7 @@
                     {{-- タイトル --}}
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2">タイトル</label>
-                        <input class="shadow border border-slate-300 rounded w-full py-2 px-3"
+                      <input class="shadow border border-slate-300 rounded w-full py-2 px-3"
                                type="text" name="title" value="{{ old('title', $board->title) }}">
                         @error('title')
                             <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
@@ -82,8 +82,8 @@
 
                     {{-- 戻るボタン --}}
                     <a href="{{ route('boards.show', $board->id) }}"
-                        class="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-orange-500 bg-white border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
-                        <i class="ri-arrow-go-back-line"></i> 戻る
+                    class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-orange-500 bg-white border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
+                        <i class="ri-arrow-go-back-line mr-1"></i> 戻る
                     </a>
                 </div>
             </form>

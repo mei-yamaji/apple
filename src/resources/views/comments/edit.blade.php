@@ -17,9 +17,11 @@
                     更新する
                 </x-primary-button>
                 <a href="{{ route('boards.show', $board) }}"
-                class="flex items-center gap-1 px-3 py-1 text-xs font-semibold text-orange-500 border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
-                    <i class="ri-arrow-go-back-line"></i> 戻る
+                class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-orange-500 border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
+                    <i class="ri-arrow-go-back-line mr-1"></i> 戻る
                 </a>
+
+
              </div>
             </form>
         </div>

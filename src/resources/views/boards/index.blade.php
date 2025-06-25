@@ -89,8 +89,10 @@
           <div class="flex space-x-4">
             <p>投稿日: {{ $board->created_at->format('Y/m/d H:i') }}</p>
             <p>更新日: {{ $board->updated_at->format('Y/m/d H:i') }}</p>
-            <p class="text-gray-500">閲覧数: {{ $board->view_count }}</p>
-            <p class="text-gray-500">コメント数: {{ $board->comments_count }}</p>
+            <p class="text-gray-400">
+              <i class="ri-eye-fill"></i> : {{ $board->view_count }}</p>
+            <p class="text-gray-400">
+              <i class="ri-chat-3-line"></i> : {{ $board->comments_count }}</p>
           </div>
 
           <!-- 投稿者情報 -->

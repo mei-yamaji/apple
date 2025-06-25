@@ -74,18 +74,19 @@
 
                     {{-- ボタン --}}
                      <div class="flex items-center justify-between mt-4">
-                    {{-- プレビュー用ボタン --}}
-                    <x-primary-button type="submit" name="action" value="preview"
-                        formaction="{{ route('boards.preview.update', $board->id) }}">
-                        プレビュー
-                    </x-primary-button>
-
                     {{-- 戻るボタン --}}
                     <a href="{{ route('boards.show', $board->id) }}"
                     class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-orange-500 bg-white border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
                         <i class="ri-arrow-go-back-line mr-1"></i> 戻る
                     </a>
-                </div>
+
+                    {{-- プレビュー用ボタン --}}
+                    <x-primary-button type="submit" name="action" value="preview"
+                        formaction="{{ route('boards.preview.update', $board->id) }}">
+                        プレビュー
+                    </x-primary-button>
+                    </div>
+
             </form>
          </div>
         </div>

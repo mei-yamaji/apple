@@ -1,7 +1,7 @@
 <x-app-layout>
   <x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-      コメント編集
+    <h2 class="font-semibold text-xl text-orange-900 leading-tight">
+    コメント編集
     </h2>
   </x-slot>
 
@@ -17,16 +17,19 @@
           required>{{ old('comment', $comment->comment) }}</textarea>
       </div>
 
-            <div class="flex justify-between items-center">
-        <x-primary-button type="submit">
-            更新する
-        </x-primary-button>
+           <div class="flex justify-between items-center">
+            {{-- 戻るボタン --}}
+            <a href="{{ route('boards.show', $board->id) }}"
+                class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-orange-500 bg-white border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
+                <i class="ri-arrow-go-back-line mr-1"></i> 戻る
+            </a>
 
-        <a href="{{ route('boards.show', $board->id) }}"
-            class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-orange-500 bg-white border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
-            <i class="ri-arrow-go-back-line mr-1"></i> 戻る
-        </a>
-        </div>
+            {{-- 更新するボタン --}}
+            <x-primary-button type="submit">
+                更新する
+            </x-primary-button>
+            </div>
+
 
     </form>
   </div>

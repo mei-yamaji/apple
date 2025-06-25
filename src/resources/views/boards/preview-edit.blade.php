@@ -1,8 +1,8 @@
 <x-app-layout>
   <x-slot name="header">
-    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-        投稿編集プレビュー
-    </h2>
+    <h2 class="font-semibold text-xl text-orange-900 leading-tight">
+    投稿編集プレビュー
+   </h2>
   </x-slot>
 
   <div class="px-4">
@@ -34,19 +34,20 @@
         <input type="hidden" name="category_id" value="{{ $input['category_id'] }}">
         <input type="hidden" name="is_published" value="{{ $input['is_published'] ?? 0 }}">
 
-        <div class="flex justify-between">
-          {{-- 戻って修正ボタン --}}
-          <form action="{{ route('boards.edit', $board->id) }}" method="GET">
-            <x-primary-button type="submit">
-         編集に戻る
-            </x-primary-button>
-          </form>
+        <div class="flex justify-between items-center">
+  {{-- 編集に戻るリンク --}}
+  <a href="{{ route('boards.edit', $board->id) }}"
+     class="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold text-orange-500 bg-white border border-orange-400 rounded-full shadow hover:bg-orange-100 hover:scale-105 transition-all duration-200">
+    <i class="ri-arrow-go-back-line mr-1"> 戻る
+    </i>
+  </a>
 
-          {{-- この内容で更新ボタン --}}
-          <x-primary-button type="submit">
-            更新する
-          </x-primary-button>
-        </div>
+  {{-- 更新ボタン（フォーム内） --}}
+  <x-primary-button type="submit">
+    更新する
+  </x-primary-button>
+</div>
+
       </form>
 
     </div>

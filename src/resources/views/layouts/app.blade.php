@@ -6,6 +6,9 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
  
         <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico?v=123') }}">
+
  
  
         <title>apple</title>

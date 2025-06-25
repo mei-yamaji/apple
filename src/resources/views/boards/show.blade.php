@@ -213,7 +213,7 @@
 
         <div class="mb-4">
           <label class="block mb-1 font-medium">コメント</label>
-          <textarea name="comment" rows="4" class="w-full border rounded px-3 py-2" required>{{ old('comment') }}</textarea>
+          <textarea name="comment" rows="4" class="w-full border rounded px-3 py-2 focus:ring-green-500 focus:border-green-500" required>{{ old('comment') }}</textarea>
         </div>
 
         <x-primary-button type="submit">

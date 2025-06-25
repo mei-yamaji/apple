@@ -105,7 +105,7 @@
       <div class="flex space-x-2">
         <input type="text" name="keyword" placeholder="いいねした記事で検索"
               value="{{ request('keyword') ?? '' }}"
-              class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring focus:border-blue-300" />
+              class="w-full border border-gray-300 rounded px-4 py-2 focus:outline-none focus:ring-green-500 focus:border-green-500" />
         <button type="submit"
                 class="flex items-center gap-2 px-4 py-2 text-sm font-semibold text-white bg-orange-400 rounded-full shadow-md hover:bg-orange-500 hover:scale-105 transition-all duration-200 focus:outline-none">
           <i class="ri-search-line text-base"></i> 

@@ -80,8 +80,8 @@
                         $bgColor = $isUnread ? 'bg-green-100' : 'bg-gray-100';
                         $icon = '<i class="ri-user-follow-fill text-green-500 text-2xl"></i>';
                     } else {
-                        $bgColor = 'bg-gray-100';
-                        $icon = '<i class="ri-notification-3-fill text-gray-500 text-2xl"></i>';
+                        $bgColor = 'bg-green-100';
+                        $icon = '<i class="ri-notification-3-fill text-green-500 text-2xl"></i>';
                     }
                 @endphp
 

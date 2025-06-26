@@ -80,10 +80,11 @@
                         <i class="ri-arrow-go-back-line mr-1"></i> 戻る
                     </a>
 
+
                     {{-- プレビュー用ボタン --}}
                     <x-primary-button type="submit" name="action" value="preview"
                         formaction="{{ route('boards.preview.update', $board->id) }}">
-                        プレビュー
+                        プレビューを確認
                     </x-primary-button>
                     </div>
 

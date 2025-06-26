@@ -70,7 +70,10 @@ class UserController extends Controller
 
         $boards = $query->paginate(10);
 
-        return view('user.show', compact('user', 'boards'));
+        $user->loadCount(['followings', 'followers', 'boards']);
+        $latestPost = $user->boards()->latest()->first();
+
+        return view('user.show', compact('user', 'boards','latestPost'));
     }
 
 }

@@ -85,6 +85,6 @@ class ProfileController extends Controller
     {
         $boards = $user->boards()->orderBy('created_at', 'desc')->paginate(10);
 
-        return view('user.show', compact('user','boards'));
+        return view('user.show', compact('user','boards','latestPost'));
     }
 }

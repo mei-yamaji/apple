@@ -78,11 +78,16 @@
                 let mark = ['🥇', '🥈', '🥉'][idx] || '';
 
                 // プロフィール画像 or プレースホルダー
+                const userProfileUrl = `/users/${board.user.id}`;
                 const imgHtml = board.user.profile_image
-                    ? `<img src="/storage/${board.user.profile_image}" class="w-16 h-16 rounded-full object-cover mr-3" alt="Profile Image">`
-                    : `<div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center mr-3">
+                    ? `<a href="${userProfileUrl}">
+                      <img src="/storage/${board.user.profile_image}" class="w-16 h-16 rounded-full object-cover mr-3 hover:opacity-80 transition" alt="Profile Image">
+                      </a>`
+                    : `<a href="${userProfileUrl}">
+                       <div class="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center mr-3 hover:opacity-80 transition">
                         <span class="text-gray-500 text-sm">No Image</span>
-                    </div>`;
+                    </div>
+                       </a>`;
 
                 // 投稿日時フォーマット（日本時間）
                 const date = new Date(board.created_at);

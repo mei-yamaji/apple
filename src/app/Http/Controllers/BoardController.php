@@ -102,7 +102,7 @@ class BoardController extends Controller
             $board->tags()->sync($tagIds);
         }
 
-        return redirect()->route('boards.index')->with('success', '投稿が完了しました');
+        return redirect()->route('boards.index')->with('success', '投稿しました');
     }
 
     public function show(Board $board)

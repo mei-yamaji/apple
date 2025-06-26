@@ -47,13 +47,13 @@
             <div class="flex justify-between items-center mb-4">
                 <!-- 選択した通知を既読にするボタン -->
                 <button type="submit"
-                    class="px-3 py-1 bg-orange-400 hover:bg-orange-500 text-white rounded-full shadow hover:scale-105 transition-all duration-200">
+                    class="px-3 py-1 bg-orange-400 hover:bg-orange-500 text-white rounded-full shadow hover:scale-105 transition-all duration-200 text-sm">
                     選択した通知を既読にする
                 </button>
 
                 <!-- すべて既読にするボタン -->
                 <button type="button" id="markAllReadBtn"
-                    class="px-3 py-1 bg-gray-400 hover:bg-gray-500 text-white rounded-full shadow hover:scale-105 transition-all duration-200">
+                    class="px-3 py-1 bg-gray-400 hover:bg-gray-500 text-white rounded-full shadow hover:scale-105 transition-all duration-200 text-sm">
                     すべて既読にする
                 </button>
             </div>

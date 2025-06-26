@@ -12,8 +12,7 @@
         <title>APPLE</title>
  
         <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css2?family=Comic+Relief&family=IBM+Plex+Sans+JP&display=swap" rel="stylesheet">
-
+        <link href="https://fonts.googleapis.com/css2?family=Nunito&family=Zen+Maru+Gothic&display=swap" rel="stylesheet">
 
  
         <!-- Scripts -->

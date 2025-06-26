@@ -13,7 +13,7 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-                //kiwirelief: ['IBM Plex Sans JP', 'Comic Relief', 'serif'],
+                kiwirelief: ['Zen Maru Gothic', 'Nunito', 'serif'],
             },
         },
     },

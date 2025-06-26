@@ -69,7 +69,7 @@
 @endphp
 
 <div class="flex justify-between items-start mb-0">
-  <p class="text-gray-700 dark:text-gray-400 break-words leading-relaxed max-w-[calc(100%-4.5rem)] mb-0  text-xl">
+  <p class="text-gray-700 dark:text-gray-400 break-words leading-relaxed max-w-[calc(100%-4.5rem)] mb-0  text-lg">
     {{ $textOnly }}
     @if (Str::length(strip_tags($plainDescription)) > $maxLength)
       <a href="{{ route('boards.show', $board->id) }}" class="text-orange-500 hover:underline ml-1">続きを読む</a>

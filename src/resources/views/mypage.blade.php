@@ -258,8 +258,8 @@
         padding: 0.75rem 1.25rem;
         font-size: 0.875rem;
         font-weight: 600;
-        color: white;
-        background-color: #fb923c;
+        color: orange;
+        background-color:rgb(255, 255, 255);
         border-radius: 9999px;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         border: none;
@@ -269,7 +269,7 @@
       }
 
       .tab-button:hover {
-        background-color: #f97316;
+        background-color:rgb(255, 255, 255);
         transform: scale(1.05);
       }
 

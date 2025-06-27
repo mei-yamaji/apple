@@ -163,8 +163,8 @@
             padding: 1rem 1.75rem; 
             font-size: 1.125rem; 
             font-weight: 600; /* font-semibold */
-            color: white;
-            background-color: #fb923c; /* Tailwind orange-400 (#fb923c) */
+            color: orange;
+            background-color:rgb(255, 255, 255); /* Tailwind orange-400 (#fb923c) */
             border-radius: 9999px; /* rounded-full */
             box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* shadow-md相当 */
             border: none;
@@ -174,7 +174,7 @@
         }
 
         .tab-button:hover {
-            background-color: #f97316; /* orange-500 */
+            background-color:rgb(255, 255, 255); /* orange-500 */
             transform: scale(1.05);
         }
 

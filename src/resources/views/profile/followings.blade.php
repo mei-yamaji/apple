@@ -12,7 +12,7 @@
     <div class="max-w-5xl mx-auto space-y-6 mt-6 px-4">
       
      @forelse ($followings as $following)
-  <div class="flex items-center justify-between bg-orange-50 p-4 rounded-xl shadow hover:bg-orange-100 transition-all duration-200 w-full">
+  <div class="flex items-center justify-between bg-white p-4 rounded-xl shadow hover:bg-orange-100 transition-all duration-200 w-full">
     <div class="flex items-center gap-4">
       @if ($following->profile_image)
         <img src="{{ asset('storage/' . $following->profile_image) }}" alt="プロフィール画像" class="w-8 h-8 rounded-full object-cover" />
